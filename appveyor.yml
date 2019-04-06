@@ -1,0 +1,21 @@
+version: 0.0.{build}
+image: Visual Studio 2017
+configuration: Release
+skip_commits:
+  message: /.*\[ci\-skip\].*/
+before_build:
+  - cmd: dotnet restore src/Vlingo.Directory.sln
+build:
+  project: src/Vlingo.Directory.sln
+  verbosity: minimal
+  publish_nuget: true
+test_script:
+  - cmd: dotnet test src/Vlingo.Directory.Tests
+deploy:
+  - provider: NuGet
+    api_key:
+      secure: ER1SvlwXa82GFaqs/jAIKoEwmyWfyxB0kmcQuUfZrGtsqRBO3llOyTtZIPj1UHwu
+    skip_symbols: true
+    artifact: /.*\.nupkg/
+    on:
+      branch: master
