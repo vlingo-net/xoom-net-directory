@@ -7,6 +7,7 @@
 
 using System.Linq;
 using Vlingo.Directory.Client;
+using Vlingo.Wire.Node;
 using Xunit;
 
 namespace Vlingo.Directory.Tests.Client
@@ -41,6 +42,28 @@ namespace Vlingo.Directory.Tests.Client
                 });
             
             Assert.Equal(info, infoAgain);
+        }
+
+        [Fact]
+        public void TestToFrom()
+        {
+            var twoLocations = new []
+            {
+                new ServiceRegistrationInfo.Location("1.2.3.4", 111),
+                new ServiceRegistrationInfo.Location("1.2.3.45", 222), 
+            };
+
+            var twoAddresses = ServiceRegistrationInfo.Location.ToAddresses(twoLocations);
+
+            var adresses = twoAddresses.ToList();
+            Assert.Equal(new Address(Host.Of("1.2.3.4"), 111, AddressType.Main), adresses[0]);
+            Assert.Equal(new Address(Host.Of("1.2.3.45"), 222, AddressType.Main), adresses[1]);
+
+            var locations = twoLocations.ToList();
+            Assert.Equal(locations[0], ServiceRegistrationInfo.Location.From(adresses[0]));
+
+            var convertedLocations = ServiceRegistrationInfo.Location.From(adresses);
+            Assert.Equal(locations, convertedLocations);
         }
     }
 }
