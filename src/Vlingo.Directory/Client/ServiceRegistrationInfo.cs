@@ -14,6 +14,12 @@ namespace Vlingo.Directory.Client
 {
     public sealed class ServiceRegistrationInfo : IComparable<ServiceRegistrationInfo>
     {
+        public ServiceRegistrationInfo(string name, IEnumerable<Location> locations)
+        {
+            Name = name;
+            Locations = locations;
+        }
+        
         public string Name { get; }
         
         public IEnumerable<Location> Locations { get; }
