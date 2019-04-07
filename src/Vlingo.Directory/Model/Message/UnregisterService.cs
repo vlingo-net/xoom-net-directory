@@ -11,28 +11,28 @@ using Vlingo.Wire.Node;
 
 namespace Vlingo.Directory.Model.Message
 {
-    public class ServiceUnregistered : IMessage
+    public class UnregisterService : IMessage
     {
-        public static string TypeName { get; } = "SRVCUNREGD";
+        public static string TypeName { get; } = "UNREGSRVC";
 
         public bool IsValid => !Name.HasNoName;
         
         public Name Name { get; }
 
-        public static ServiceUnregistered From(string content)
+        public static UnregisterService From(string content)
         {
             if (content.StartsWith(TypeName))
             {
                 var name = MessagePartsBuilder.NameFrom(content);
-                return new ServiceUnregistered(name);
+                return new UnregisterService(name);
             }
             
-            return new ServiceUnregistered(Name.NoNodeName);
+            return new UnregisterService(Name.NoNodeName);
         }
 
-        public static ServiceUnregistered As(Name name) => new ServiceUnregistered(name);
+        public static UnregisterService As(Name name) => new UnregisterService(name);
         
-        public ServiceUnregistered(Name name)
+        public UnregisterService(Name name)
         {
             Name = name;
         }
