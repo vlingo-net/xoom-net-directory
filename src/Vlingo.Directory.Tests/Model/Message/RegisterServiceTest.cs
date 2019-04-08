@@ -22,7 +22,7 @@ namespace Vlingo.Directory.Tests.Model.Message
             var registerService = new RegisterService(Name.Of("test-service"),
                 Address.From(Host.Of("1.2.3.4"), 111, AddressType.Main));
             
-            Assert.Equal(1, registerService.Addresses.Count());
+            Assert.Single(registerService.Addresses);
             Assert.Equal(_textMessage, registerService.ToString());
         }
 
