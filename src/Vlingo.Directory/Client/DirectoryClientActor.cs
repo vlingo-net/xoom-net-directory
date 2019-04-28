@@ -101,7 +101,7 @@ namespace Vlingo.Directory.Client
 
         public void IntervalSignal(IScheduled<object> scheduled, object data)
         {
-            _subscriber.ProbeChannelAsync().Wait();
+            _subscriber.ProbeChannel().Wait();
 
             Task.Run(async () => await RegisterServiceAsync());
         }
@@ -139,7 +139,7 @@ namespace Vlingo.Directory.Client
             if (_directoryChannel != null && _registerService != null)
             {
                 var expected = _registerService.TotalLength;
-                var actual = await _directoryChannel.WriteAsync(_registerService, _buffer);
+                var actual = await _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {
                     Logger.Log($"DIRECTORY CLIENT: Did not send full service registration message:  {_registerService.AsTextMessage()}");
@@ -154,7 +154,7 @@ namespace Vlingo.Directory.Client
                 var unregister = UnregisterService.As(serviceName);
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
-                var actual = await _directoryChannel.WriteAsync(unregisterServiceMessage, _buffer);
+                var actual = await _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {
                     Logger.Log($"DIRECTORY CLIENT: Did not send full service unregister message: {unregisterServiceMessage.AsTextMessage()}");

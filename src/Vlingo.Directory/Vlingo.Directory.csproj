@@ -28,7 +28,8 @@
         <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Vlingo.Wire" Version="0.2.1" />
+      <PackageReference Include="Vlingo.Cluster" Version="0.2.0" />
+      <PackageReference Include="Vlingo.Wire" Version="0.3.4" />
     </ItemGroup>
 
 </Project>
