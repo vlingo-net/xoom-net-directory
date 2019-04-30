@@ -46,81 +46,81 @@ namespace Vlingo.Directory.Client
         }
 
         public override string ToString() => $"ServiceRegistrationInfo[name={Name}, locations={Locations}]";
+    }
 
-        public class Location : IComparable<Location>
+    public class Location : IComparable<Location>
+    {
+        public static Location From(Address address) => new Location(address.HostName, address.Port);
+
+        public static IEnumerable<Location> From(IEnumerable<Address> addresses)
         {
-            public static Location From(Address address) => new Location(address.HostName, address.Port);
-
-            public static IEnumerable<Location> From(IEnumerable<Address> addresses)
+            var listAddresses = addresses.ToList();
+            var locations = new List<Location>(listAddresses.Count);
+            foreach (var address in listAddresses)
             {
-                var listAddresses = addresses.ToList();
-                var locations = new List<Location>(listAddresses.Count);
-                foreach (var address in listAddresses)
-                {
-                    locations.Add(new Location(address.HostName, address.Port));
-                }
-
-                return locations;
+                locations.Add(new Location(address.HostName, address.Port));
             }
 
-            public static IEnumerable<Address> ToAddresses(IEnumerable<Location> locations)
-            {
-                var listLocations = locations.ToList();
-                var addresses = new List<Address>(listLocations.Count);
-                foreach (var location in listLocations)
-                {
-                    addresses.Add(new Address(Host.Of(location.Address), location.Port, AddressType.Main));
-                }
-
-                return addresses;
-            }
-
-            public Location(string address, int port)
-            {
-                Address = address;
-                Port = port;
-            }
-            
-            public string Address { get; }
-        
-            public int Port { get; }
-            
-            public int CompareTo(Location other)
-            {
-                if (other == null || other.GetType() != typeof(Location))
-                {
-                    return 1;
-                }
-
-                var result =  String.Compare(Address, other.Address, StringComparison.InvariantCulture);
-                if (result != 0)
-                {
-                    return result;
-                }
-
-                result = Port.CompareTo(other.Port);
-                if (result != 0)
-                {
-                    return result;
-                }
-
-                return 0;
-            }
-        
-            public override bool Equals(object obj)
-            {
-                if (obj == null || obj.GetType() != typeof(Location))
-                {
-                    return false;
-                }
-
-                var otherLocation = (Location) obj;
-                return Address.Equals(otherLocation.Address) && Port.Equals(otherLocation.Port);
-            }
-
-            public override int GetHashCode() => 31 * (Address.GetHashCode() + Port.GetHashCode());
-
-            public override string ToString() => $"Location[address={Address}, port={Port}]";
+            return locations;
         }
+
+        public static IEnumerable<Address> ToAddresses(IEnumerable<Location> locations)
+        {
+            var listLocations = locations.ToList();
+            var addresses = new List<Address>(listLocations.Count);
+            foreach (var location in listLocations)
+            {
+                addresses.Add(new Address(Host.Of(location.Address), location.Port, AddressType.Main));
+            }
+
+            return addresses;
+        }
+
+        public Location(string address, int port)
+        {
+            Address = address;
+            Port = port;
+        }
+            
+        public string Address { get; }
+        
+        public int Port { get; }
+            
+        public int CompareTo(Location other)
+        {
+            if (other == null || other.GetType() != typeof(Location))
+            {
+                return 1;
+            }
+
+            var result =  String.Compare(Address, other.Address, StringComparison.InvariantCulture);
+            if (result != 0)
+            {
+                return result;
+            }
+
+            result = Port.CompareTo(other.Port);
+            if (result != 0)
+            {
+                return result;
+            }
+
+            return 0;
+        }
+        
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Location))
+            {
+                return false;
+            }
+
+            var otherLocation = (Location) obj;
+            return Address.Equals(otherLocation.Address) && Port.Equals(otherLocation.Port);
+        }
+
+        public override int GetHashCode() => 31 * (Address.GetHashCode() + Port.GetHashCode());
+
+        public override string ToString() => $"Location[address={Address}, port={Port}]";
     }
 }

@@ -55,7 +55,7 @@ namespace Vlingo.Directory.Client
         
         public void Register(ServiceRegistrationInfo info)
         {
-            var converted = RegisterService.As(Name.Of(info.Name), ServiceRegistrationInfo.Location.ToAddresses(info.Locations));
+            var converted = RegisterService.As(Name.Of(info.Name), Location.ToAddresses(info.Locations));
             _registerService = RawMessage.From(0, 0, converted.ToString());
         }
 
@@ -78,7 +78,7 @@ namespace Vlingo.Directory.Client
             {
                 _interest.InformDiscovered(
                     new ServiceRegistrationInfo(serviceRegistered.Name.Value,
-                        ServiceRegistrationInfo.Location.From(serviceRegistered.Addresses)));
+                        Location.From(serviceRegistered.Addresses)));
             }
             else
             {

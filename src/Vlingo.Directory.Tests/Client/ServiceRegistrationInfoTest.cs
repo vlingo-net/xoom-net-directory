@@ -21,8 +21,8 @@ namespace Vlingo.Directory.Tests.Client
                 "test-service", 
                 new []
                 {
-                    new ServiceRegistrationInfo.Location("1.2.3.4", 111),
-                    new ServiceRegistrationInfo.Location("1.2.3.45", 222), 
+                    new Location("1.2.3.4", 111),
+                    new Location("1.2.3.45", 222), 
                 });
             
             Assert.Equal("test-service", info.Name);
@@ -30,15 +30,15 @@ namespace Vlingo.Directory.Tests.Client
 
             var locations = info.Locations.ToList();
             
-            Assert.Equal(new ServiceRegistrationInfo.Location("1.2.3.4", 111), locations[0]);
-            Assert.Equal(new ServiceRegistrationInfo.Location("1.2.3.45", 222), locations[1]);
+            Assert.Equal(new Location("1.2.3.4", 111), locations[0]);
+            Assert.Equal(new Location("1.2.3.45", 222), locations[1]);
             
             var infoAgain = new ServiceRegistrationInfo(
                 "test-service", 
                 new []
                 {
-                    new ServiceRegistrationInfo.Location("1.2.3.4", 111),
-                    new ServiceRegistrationInfo.Location("1.2.3.45", 222), 
+                    new Location("1.2.3.4", 111),
+                    new Location("1.2.3.45", 222), 
                 });
             
             Assert.Equal(info, infoAgain);
@@ -49,20 +49,20 @@ namespace Vlingo.Directory.Tests.Client
         {
             var twoLocations = new []
             {
-                new ServiceRegistrationInfo.Location("1.2.3.4", 111),
-                new ServiceRegistrationInfo.Location("1.2.3.45", 222), 
+                new Location("1.2.3.4", 111),
+                new Location("1.2.3.45", 222), 
             };
 
-            var twoAddresses = ServiceRegistrationInfo.Location.ToAddresses(twoLocations);
+            var twoAddresses = Location.ToAddresses(twoLocations);
 
             var adresses = twoAddresses.ToList();
             Assert.Equal(new Address(Host.Of("1.2.3.4"), 111, AddressType.Main), adresses[0]);
             Assert.Equal(new Address(Host.Of("1.2.3.45"), 222, AddressType.Main), adresses[1]);
 
             var locations = twoLocations.ToList();
-            Assert.Equal(locations[0], ServiceRegistrationInfo.Location.From(adresses[0]));
+            Assert.Equal(locations[0], Location.From(adresses[0]));
 
-            var convertedLocations = ServiceRegistrationInfo.Location.From(adresses);
+            var convertedLocations = Location.From(adresses);
             Assert.Equal(locations, convertedLocations);
         }
     }
