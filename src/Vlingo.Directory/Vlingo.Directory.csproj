@@ -26,6 +26,15 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+        <None Update="vlingo-actors.properties">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="vlingo-cluster.properties">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="vlingo-directory.properties">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Vlingo.Cluster" Version="0.2.0" />
