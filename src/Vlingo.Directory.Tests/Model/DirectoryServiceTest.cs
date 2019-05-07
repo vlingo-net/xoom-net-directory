@@ -33,7 +33,7 @@ namespace Vlingo.Directory.Tests.Model
         private Node _node;
         private TestWorld _testWorld;
 
-        [Fact(Skip = "Waiting to fix proxy generator in vlingo.actors")]
+        [Fact]
         public void TestShouldInformInterest()
         {
             _directory.Actor.Start();
@@ -49,9 +49,9 @@ namespace Vlingo.Directory.Tests.Model
             _client1.Actor.Register(info);
             MockServiceDiscoveryInterest.InterestsSeen.Completes();
     
-            Assert.Empty(_interest1.ServicesSeen);
+            Assert.NotEmpty(_interest1.ServicesSeen);
             Assert.Contains("test-service", _interest1.ServicesSeen);
-            Assert.Empty(_interest1.DiscoveredServices);
+            Assert.NotEmpty(_interest1.DiscoveredServices);
             Assert.Contains(info, _interest1.DiscoveredServices);
         }
         
@@ -88,7 +88,7 @@ namespace Vlingo.Directory.Tests.Model
                 Definition.Has<DirectoryClientActor>(
                     Definition.Parameters(_interest3, _group, 1024, 50, 10)));
     
-            _interests = new List<MockServiceDiscoveryInterest> {_interest1, _interest2, _interest3};
+            _interests = new List<MockServiceDiscoveryInterest> {_interest1/*, _interest2, _interest3*/};
         }
 
         public void Dispose()

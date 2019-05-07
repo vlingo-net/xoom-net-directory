@@ -55,14 +55,14 @@ namespace Vlingo.Directory.Client
         
         public void Register(ServiceRegistrationInfo info)
         {
-            var converted = RegisterService.As(Name.Of(info.Name), Location.ToAddresses(info.Locations));
+            var converted = Model.Message.RegisterService.As(Name.Of(info.Name), Location.ToAddresses(info.Locations));
             _registerService = RawMessage.From(0, 0, converted.ToString());
         }
 
         public void Unregister(string serviceName)
         {
             _registerService = null;
-            Task.Run(async () => await UnregisterServiceAsync(Name.Of(serviceName)));
+            UnregisterService(Name.Of(serviceName)).Wait();
         }
         
         //====================================
@@ -102,8 +102,7 @@ namespace Vlingo.Directory.Client
         public void IntervalSignal(IScheduled<object> scheduled, object data)
         {
             _subscriber.ProbeChannel().Wait();
-
-            Task.Run(async () => await RegisterServiceAsync());
+            RegisterService().Wait();
         }
         
         //====================================
@@ -134,7 +133,7 @@ namespace Vlingo.Directory.Client
             }
         }
 
-        private async Task RegisterServiceAsync()
+        private async Task RegisterService()
         {
             if (_directoryChannel != null && _registerService != null)
             {
@@ -147,11 +146,11 @@ namespace Vlingo.Directory.Client
             }
         }
 
-        private async Task UnregisterServiceAsync(Name serviceName)
+        private async Task UnregisterService(Name serviceName)
         {
             if (_directoryChannel != null)
             {
-                var unregister = UnregisterService.As(serviceName);
+                var unregister = Model.Message.UnregisterService.As(serviceName);
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
                 var actual = await _directoryChannel.Write(unregisterServiceMessage, _buffer);
