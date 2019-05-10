@@ -25,7 +25,7 @@
         </AssemblyAttribute>
     </ItemGroup>
     <ItemGroup>
-        <None Include="..\..\LICENSE" />
+        <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
         <None Update="vlingo-actors.properties">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
