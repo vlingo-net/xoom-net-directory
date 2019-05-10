@@ -30,12 +30,13 @@ namespace Vlingo.Directory.Model
         private ICancellable _cancellablePublishing;
         private IAttributesProtocol _attributesClient;
         private bool _leader;
-        private Node _localNode;
-        private int _maxMessageSize;
-        private Network _network;
+        private readonly Node _localNode;
+        private readonly int _maxMessageSize;
+        private readonly Network _network;
         private MulticastPublisherReader _publisher;
-        private Timing _timing;
-        private int _unpublishedNotifications;
+        private readonly Timing _timing;
+        private readonly int _unpublishedNotifications;
+        private bool _stopped;
 
         public DirectoryServiceActor(
             Node localNode,
@@ -49,6 +50,7 @@ namespace Vlingo.Directory.Model
             _maxMessageSize = maxMessageSize;
             _timing = timing;
             _unpublishedNotifications = unpublishedNotifications;
+            _stopped = false;
         }
         
         //=========================================
@@ -75,6 +77,11 @@ namespace Vlingo.Directory.Model
         
         public void IntervalSignal(IScheduled<IntervalType> scheduled, IntervalType data)
         {
+            if (_stopped)
+            {
+                return;
+            }
+            
             if (!_leader)
             {
                 return;
@@ -202,6 +209,7 @@ namespace Vlingo.Directory.Model
 
         private void StartProcessing()
         {
+            _stopped = false;
             if (_publisher == null)
             {
                 try
@@ -243,6 +251,8 @@ namespace Vlingo.Directory.Model
 
         private void StopProcessing()
         {
+            _stopped = true;
+            
             if (_publisher != null)
             {
                 try

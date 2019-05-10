@@ -24,20 +24,20 @@ namespace Vlingo.Directory.Tests.Model
 {
     public class DirectoryServiceTest : IDisposable
     {
-        private TestActor<IDirectoryClient> _client1;
-        private TestActor<IDirectoryClient> _client2;
-        private TestActor<IDirectoryClient> _client3;
-        private TestActor<IDirectoryService> _directory;
+        private readonly TestActor<IDirectoryClient> _client1;
+        private readonly TestActor<IDirectoryClient> _client2;
+        private readonly TestActor<IDirectoryClient> _client3;
+        private readonly TestActor<IDirectoryService> _directory;
         private Group _group;
-        private MockServiceDiscoveryInterest _interest1;
-        private MockServiceDiscoveryInterest _interest2;
-        private MockServiceDiscoveryInterest _interest3;
-        private List<MockServiceDiscoveryInterest> _interests;
+        private readonly MockServiceDiscoveryInterest _interest1;
+        private readonly MockServiceDiscoveryInterest _interest2;
+        private readonly MockServiceDiscoveryInterest _interest3;
+        private readonly List<MockServiceDiscoveryInterest> _interests;
         private Node _node;
-        private TestWorld _testWorld;
+        private readonly TestWorld _testWorld;
         private readonly ITestOutputHelper _output;
 
-        [Fact(Skip = "AppVeyor not finishing")]
+        [Fact]
         public void TestShouldInformInterest()
         {
             _directory.Actor.Start();
@@ -122,7 +122,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.DoesNotContain(info1, _interest1.DiscoveredServices);
         }
 
-        [Fact(Skip = "AppVeyor failing")]
+        [Fact]
         public void TestAlteredLeadership()
         {
             _directory.Actor.Start();
