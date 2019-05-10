@@ -126,7 +126,7 @@ namespace Vlingo.Directory.Model
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
-            //Logger.Log($"SRV: {incoming}");
+
             var registerService = RegisterService.From(incoming);
             if (registerService.IsValid)
             {
