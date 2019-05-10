@@ -28,6 +28,7 @@ namespace Vlingo.Directory.Client
         private readonly IServiceDiscoveryInterest _interest;
         private RawMessage _registerService;
         private readonly MulticastSubscriber _subscriber;
+        private Address _testAddress;
 
         public DirectoryClientActor(
             IServiceDiscoveryInterest interest,
@@ -115,6 +116,15 @@ namespace Vlingo.Directory.Client
             _cancellable.Cancel();
             base.Stop();
         }
+        
+        //====================================
+        // Unit testing
+        //====================================
+        public void TestSetDirectoryAddress(Address testAddress)
+        {
+            _testAddress = testAddress;
+        }
+        
         //====================================
         // internal implementation
         //====================================
@@ -129,7 +139,7 @@ namespace Vlingo.Directory.Client
                 {
                     _directory = publisherAvailability;
                     _directoryChannel?.Close();
-                    _directoryChannel = new SocketChannelWriter(_directory.ToAddress(), Logger);
+                    _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
                 }
             }
         }
