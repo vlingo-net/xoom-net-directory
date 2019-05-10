@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Common;
@@ -125,7 +126,7 @@ namespace Vlingo.Directory.Model
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
-    
+            //Logger.Log($"SRV: {incoming}");
             var registerService = RegisterService.From(incoming);
             if (registerService.IsValid)
             {
@@ -160,7 +161,7 @@ namespace Vlingo.Directory.Model
 
         private void PublishAllServices()
         {
-            foreach (var set in _attributesClient.All)
+            foreach (var set in _attributesClient.All.ToList())
             {
                 if (set.Name.StartsWith(_serviceNamePrefix))
                 {

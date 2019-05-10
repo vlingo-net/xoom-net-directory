@@ -72,6 +72,8 @@ namespace Vlingo.Directory.Client
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
+            //if (!incoming.StartsWith("PUB"))
+            //    Logger.Log($"CLI: {incoming}");
             var serviceRegistered = ServiceRegistered.From(incoming);
 
             if (serviceRegistered.IsValid && _interest.InterestedIn(serviceRegistered.Name.Value))
@@ -153,6 +155,7 @@ namespace Vlingo.Directory.Client
                 var unregister = Model.Message.UnregisterService.As(serviceName);
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
+                //Logger.Log("CLI: UNREGISTERING");
                 var actual = await _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {
