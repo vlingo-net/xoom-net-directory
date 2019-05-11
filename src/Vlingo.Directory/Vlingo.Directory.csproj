@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,7 @@
 
         <!-- NuGet Metadata -->
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.1.0</PackageVersion>
+        <PackageVersion>0.1.1</PackageVersion>
         <PackageId>Vlingo.Directory</PackageId>
         <Authors>Vlingo</Authors>
         <Description>
@@ -26,6 +26,21 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+        <None Update="vlingo-actors.properties">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="vlingo-cluster.properties">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="vlingo-directory.properties">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Vlingo.Actors" Version="0.3.4" />
+      <PackageReference Include="Vlingo.Cluster" Version="0.3.1" />
+      <PackageReference Include="Vlingo.Common" Version="0.4.7" />
+      <PackageReference Include="Vlingo.Wire" Version="0.4.1" />
     </ItemGroup>
 
 </Project>
