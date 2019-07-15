@@ -90,7 +90,7 @@ namespace Vlingo.Directory.Model
             switch (data)
             {
                 case IntervalType.Processing:
-                    _publisher.ProcessChannel().Wait();
+                    _publisher.ProcessChannel();
                     break;
                 case IntervalType.Publishing:
                     _publisher.SendAvailability();
