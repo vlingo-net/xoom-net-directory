@@ -7,7 +7,6 @@
 
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using Vlingo.Actors;
 using Vlingo.Common;
 using Vlingo.Directory.Model.Message;
@@ -63,7 +62,7 @@ namespace Vlingo.Directory.Client
         public void Unregister(string serviceName)
         {
             _registerService = null;
-            UnregisterService(Name.Of(serviceName)).Wait();
+            UnregisterService(Name.Of(serviceName));
         }
         
         //====================================
@@ -103,8 +102,8 @@ namespace Vlingo.Directory.Client
 
         public void IntervalSignal(IScheduled<object> scheduled, object data)
         {
-            _subscriber.ProbeChannel().Wait();
-            RegisterService().Wait();
+            _subscriber.ProbeChannel();
+            RegisterService();
         }
         
         //====================================
@@ -144,12 +143,12 @@ namespace Vlingo.Directory.Client
             }
         }
 
-        private async Task RegisterService()
+        private void RegisterService()
         {
             if (_directoryChannel != null && _registerService != null)
             {
                 var expected = _registerService.TotalLength;
-                var actual = await _directoryChannel.Write(_registerService, _buffer);
+                var actual = _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {
                     Logger.Log($"DIRECTORY CLIENT: Did not send full service registration message:  {_registerService.AsTextMessage()}");
@@ -157,14 +156,14 @@ namespace Vlingo.Directory.Client
             }
         }
 
-        private async Task UnregisterService(Name serviceName)
+        private void UnregisterService(Name serviceName)
         {
             if (_directoryChannel != null)
             {
                 var unregister = Model.Message.UnregisterService.As(serviceName);
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
-                var actual = await _directoryChannel.Write(unregisterServiceMessage, _buffer);
+                var actual = _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {
                     Logger.Log($"DIRECTORY CLIENT: Did not send full service unregister message: {unregisterServiceMessage.AsTextMessage()}");

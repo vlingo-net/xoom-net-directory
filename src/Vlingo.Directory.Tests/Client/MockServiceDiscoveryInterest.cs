@@ -14,7 +14,7 @@ namespace Vlingo.Directory.Tests.Client
 {
     public class MockServiceDiscoveryInterest : IServiceDiscoveryInterest
     {
-        public static TestUntil InterestsSeen;
+        public static AccessSafely InterestsSeen;
 
         public MockServiceDiscoveryInterest(string name)
         {
@@ -29,7 +29,7 @@ namespace Vlingo.Directory.Tests.Client
             if (!ServicesSeen.Contains(serviceName))
             {
                 ServicesSeen.Add(serviceName);
-                InterestsSeen?.Happened();
+                InterestsSeen?.WriteUsing("interest", 1);
             }
             return true;
         }
@@ -39,7 +39,7 @@ namespace Vlingo.Directory.Tests.Client
             if (!DiscoveredServices.Contains(discoveredService))
             {
                 DiscoveredServices.Add(discoveredService);
-                InterestsSeen?.Happened();
+                InterestsSeen?.WriteUsing("interest", 1);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Vlingo.Directory.Tests.Client
             if (!UnregisteredServices.Contains(unregisteredServiceName))
             {
                 UnregisteredServices.Add(unregisteredServiceName);
-                InterestsSeen?.Happened();
+                InterestsSeen?.WriteUsing("interest", 1);
             }
         }
         

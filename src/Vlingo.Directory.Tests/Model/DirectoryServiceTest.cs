@@ -48,10 +48,14 @@ namespace Vlingo.Directory.Tests.Model
     
             var location = new Location("test-host", 1234);
             var info = new ServiceRegistrationInfo("test-service", new List<Location> {location});
-    
-            MockServiceDiscoveryInterest.InterestsSeen = TestUntil.Happenings(6);
+
+            var interestSeen = 0;
+            var accessSafely = AccessSafely.AfterCompleting(6)
+                .WritingWith<int>("interest", (value) => interestSeen += value)
+                .ReadingWith("interest", () => interestSeen);
+            MockServiceDiscoveryInterest.InterestsSeen = accessSafely;
             _client1.Actor.Register(info);
-            MockServiceDiscoveryInterest.InterestsSeen.Completes();
+            MockServiceDiscoveryInterest.InterestsSeen.ReadFromExpecting("interest", 6);
     
             Assert.NotEmpty(_interest1.ServicesSeen);
             Assert.Contains("test-service", _interest1.ServicesSeen);
