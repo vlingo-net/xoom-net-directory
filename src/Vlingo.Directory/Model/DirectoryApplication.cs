@@ -42,18 +42,18 @@ namespace Vlingo.Directory.Model
 
         public override void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading)
         {
-            Logger.Log($"DIRECTORY: Leader elected: {leaderId}");
+            Logger.Info($"DIRECTORY: Leader elected: {leaderId}");
      
             if (isLocalNodeLeading)
             {
                 _leading = true;
-                Logger.Log("DIRECTORY: Assigned leadership; starting processing.");
+                Logger.Debug("DIRECTORY: Assigned leadership; starting processing.");
                 _directoryService.AssignLeadership();
             }
             else
             {
                 _leading = false;
-                Logger.Log($"DIRECTORY: Remote node assigned leadership: {leaderId}");
+                Logger.Debug($"DIRECTORY: Remote node assigned leadership: {leaderId}");
       
                 // prevent split brain in case another leader pushes in. if this node
                 // is not currently leading this operation will have no harm.
@@ -63,7 +63,7 @@ namespace Vlingo.Directory.Model
 
         public override void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster)
         {
-            Logger.Log($"DIRECTORY: Leader lost: {lostLeaderId}");
+            Logger.Warn($"DIRECTORY: Leader lost: {lostLeaderId}");
      
             if (_localNode.Id.Equals(lostLeaderId))
             {
@@ -74,7 +74,7 @@ namespace Vlingo.Directory.Model
 
         public override void InformLocalNodeShutDown(Id nodeId)
         {
-            Logger.Log($"DIRECTORY: Local node left cluster: {nodeId}; relinquishing leadership");
+            Logger.Info($"DIRECTORY: Local node left cluster: {nodeId}; relinquishing leadership");
             _leading = false;
     
             // prevent split brain in case another leader pushes in. if this node
@@ -98,7 +98,7 @@ namespace Vlingo.Directory.Model
         {
             if (_localNode.Id.Equals(nodeId))
             {
-                Logger.Log($"DIRECTORY: Node left cluster: {nodeId}; relinquishing leadership");
+                Logger.Info($"DIRECTORY: Node left cluster: {nodeId}; relinquishing leadership");
                 _leading = false;
       
                 // prevent split brain in case another leader pushes in. if this node
@@ -108,7 +108,7 @@ namespace Vlingo.Directory.Model
             else
             {
                 var healthyMessage = isHealthyCluster ? "; cluster still healthy" : "; cluster not healthy";
-                Logger.Log($"DIRECTORY: Node left cluster: {nodeId} {healthyMessage}");
+                Logger.Info($"DIRECTORY: Node left cluster: {nodeId} {healthyMessage}");
             }
         }
 
@@ -116,18 +116,18 @@ namespace Vlingo.Directory.Model
         {
             if (_leading)
             {
-                Logger.Log("DIRECTORY: Quorum reachieved; restarting processing.");
+                Logger.Debug("DIRECTORY: Quorum reachieved; restarting processing.");
                 _directoryService.AssignLeadership();
             }
             else
             {
-                Logger.Log("DIRECTORY: Quorum achieved");
+                Logger.Info("DIRECTORY: Quorum achieved");
             }
         }
 
         public override void InformQuorumLost()
         {
-            Logger.Log("DIRECTORY: Quorum lost; pausing processing.");
+            Logger.Warn("DIRECTORY: Quorum lost; pausing processing.");
     
             if (_leading)
             {
@@ -137,7 +137,7 @@ namespace Vlingo.Directory.Model
 
         public override void InformAttributesClient(IAttributesProtocol client)
         {
-            Logger.Log("DIRECTORY: Attributes Client received.");
+            Logger.Debug("DIRECTORY: Attributes Client received.");
      
             _directoryService.Use(client);
         }

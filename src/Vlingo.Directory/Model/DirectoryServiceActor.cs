@@ -105,8 +105,8 @@ namespace Vlingo.Directory.Model
 
         public override void Start()
         {
-            Logger.Log("DIRECTORY: Starting...");
-            Logger.Log("DIRECTORY: Waiting to gain leadership...");
+            Logger.Info("DIRECTORY: Starting...");
+            Logger.Info("DIRECTORY: Waiting to gain leadership...");
             
             base.Start();
         }
@@ -117,7 +117,7 @@ namespace Vlingo.Directory.Model
 
         public override void Stop()
         {
-            Logger.Log($"DIRECTORY: stopping on node: {_localNode}");
+            Logger.Info($"DIRECTORY: stopping on node: {_localNode}");
     
             StopProcessing();
 
@@ -155,7 +155,7 @@ namespace Vlingo.Directory.Model
                 }
                 else
                 {
-                    Logger.Log($"DIRECTORY: RECEIVED UNKNOWN: {incoming}");
+                    Logger.Warn($"DIRECTORY: RECEIVED UNKNOWN: {incoming}");
                 }
             }
         }
@@ -225,7 +225,7 @@ namespace Vlingo.Directory.Model
                 catch (Exception e)
                 {
                     var message = $"DIRECTORY: Failed to create multicast publisher/reader because: {e.Message}";
-                    Logger.Log(message, e);
+                    Logger.Error(message, e);
                     throw new InvalidOperationException(message, e);
                 }
             }
