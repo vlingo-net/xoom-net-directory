@@ -151,7 +151,7 @@ namespace Vlingo.Directory.Client
                 var actual = _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {
-                    Logger.Log($"DIRECTORY CLIENT: Did not send full service registration message:  {_registerService.AsTextMessage()}");
+                    Logger.Warn($"DIRECTORY CLIENT: Did not send full service registration message:  {_registerService.AsTextMessage()}");
                 }
             }
         }
@@ -166,7 +166,7 @@ namespace Vlingo.Directory.Client
                 var actual = _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {
-                    Logger.Log($"DIRECTORY CLIENT: Did not send full service unregister message: {unregisterServiceMessage.AsTextMessage()}");
+                    Logger.Warn($"DIRECTORY CLIENT: Did not send full service unregister message: {unregisterServiceMessage.AsTextMessage()}");
                 }
             }
         }

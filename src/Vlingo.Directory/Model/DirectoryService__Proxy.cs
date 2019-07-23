@@ -6,6 +6,7 @@ namespace Vlingo.Directory.Model
 {
     public class DirectoryService__Proxy : IDirectoryService
     {
+        private const string ConcludeRepresentation0 = "Conclude()";
         private const string AssignLeadershipRepresentation1 = "AssignLeadership()";
         private const string RelinquishLeadershipRepresentation2 = "RelinquishLeadership()";
         private const string UseRepresentation3 = "Use(IAttributesProtocol)";
@@ -101,6 +102,26 @@ namespace Vlingo.Directory.Model
             else
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, StartRepresentation4));
+            }
+        }
+        
+        public void Conclude()
+        {
+            if (!actor.IsStopped)
+            {
+                Action<IStoppable> consumer = x => x.Conclude();
+                if (mailbox.IsPreallocated)
+                {
+                    mailbox.Send(actor, consumer, null, ConcludeRepresentation0);
+                }
+                else
+                {
+                    mailbox.Send(new LocalMessage<IStoppable>(actor, consumer, ConcludeRepresentation0));
+                }
+            }
+            else
+            {
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ConcludeRepresentation0));
             }
         }
 

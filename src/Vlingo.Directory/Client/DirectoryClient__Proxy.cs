@@ -5,6 +5,7 @@ namespace Vlingo.Directory.Client
 {
     public class DirectoryClient__Proxy : IDirectoryClient
     {
+        private const string ConcludeRepresentation0 = "Conclude()";
         private const string RegisterRepresentation1 = "Register(ServiceRegistrationInfo)";
         private const string UnregisterRepresentation2 = "Unregister(string)";
         private const string StopRepresentation3 = "Stop()";
@@ -57,6 +58,26 @@ namespace Vlingo.Directory.Client
             else
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, UnregisterRepresentation2));
+            }
+        }
+        
+        public void Conclude()
+        {
+            if (!actor.IsStopped)
+            {
+                Action<IStoppable> consumer = x => x.Conclude();
+                if (mailbox.IsPreallocated)
+                {
+                    mailbox.Send(actor, consumer, null, ConcludeRepresentation0);
+                }
+                else
+                {
+                    mailbox.Send(new LocalMessage<IStoppable>(actor, consumer, ConcludeRepresentation0));
+                }
+            }
+            else
+            {
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ConcludeRepresentation0));
             }
         }
 
