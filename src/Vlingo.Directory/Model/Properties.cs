@@ -6,34 +6,29 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using Vlingo.Common;
 
 namespace Vlingo.Directory.Model
 {
-    public sealed class Properties
+    public sealed class Properties : ConfigurationProperties
     {
-        private static readonly string _propertiesFile = "vlingo-cluster.properties";
+        private static readonly string _propertiesFile = "vlingo-cluster.json";
 
-        private static Func<Properties> _factory = () => Open();
+        private static Func<Properties> Factory = () =>
+        {
+           var props = new Properties();
+           props.Load(new FileInfo(_propertiesFile));
+           return props;
+        };
 
-        private static Lazy<Properties> SingleInstance => new Lazy<Properties>(_factory, true);
-        
-        private readonly IDictionary<string, string> _dictionary;
+        private static Lazy<Properties> SingleInstance => new Lazy<Properties>(Factory, true);
 
         public static Properties Instance => SingleInstance.Value;
-        
-        public static Properties Open()
-        {
-            var props = new Properties(new Dictionary<string, string>());
-            props.Load(new FileInfo(_propertiesFile));
-            return props;
-        }
-        
+
         public string DirectoryGroupAddress()
         {
-            var address = GetString( "directory.group.address", string.Empty);
+            var address = GetString("directory.group.address", string.Empty);
 
             if (string.IsNullOrWhiteSpace(address))
             {
@@ -42,7 +37,7 @@ namespace Vlingo.Directory.Model
 
             return address;
         }
-        
+
         public int DirectoryGroupPort()
         {
             var port = GetInteger("directory.group.port", -1);
@@ -54,7 +49,7 @@ namespace Vlingo.Directory.Model
 
             return port;
         }
-        
+
         public int DirectoryIncomingPort()
         {
             var port = GetInteger("directory.incoming.port", -1);
@@ -66,77 +61,39 @@ namespace Vlingo.Directory.Model
 
             return port;
         }
-        
+
         public int DirectoryMessageBufferSize() => GetInteger("directory.message.buffer.size", 32767);
-        
+
         public int DirectoryMessageProcessingInterval() => GetInteger("directory.message.processing.interval", 100);
-        
+
         public int DirectoryMessagePublishingInterval() => GetInteger("directory.message.publishing.interval", 5000);
-        
+
         public int DirectoryUnregisteredServiceNotifications() => GetInteger("directory.unregistered.service.notifications", 20);
-        
+
         public bool GetBoolean(string key, bool defaultValue)
         {
             return bool.Parse(GetString(key, defaultValue.ToString()));
         }
-        
+
         public int GetInteger(string key, int defaultValue)
         {
             return int.Parse(GetString(key, defaultValue.ToString()));
         }
-        
+
         public string GetString(string key, string defaultValue)
         {
             return GetProperty(key, defaultValue);
         }
-        
+
         public void ValidateRequired(string nodeName)
         {
             // assertions in each accessor
 
             DirectoryGroupAddress();
-    
+
             DirectoryGroupPort();
-    
+
             DirectoryIncomingPort();
-        }
-        
-        private Properties(Dictionary<string, string> properties)
-        {
-            _dictionary = properties;
-        }
-        
-        private string GetProperty(string key) => GetProperty(key, null);
-
-        private string GetProperty(string key, string defaultValue)
-        {
-            if(_dictionary.TryGetValue(key, out string value))
-            {
-                return value;
-            }
-
-            return defaultValue;
-        }
-        
-        private void SetProperty(string key, string value)
-        {
-            _dictionary[key] = value;
-        }
-        
-        private void Load(FileInfo configFile)
-        {
-            foreach(var line in File.ReadAllLines(configFile.FullName))
-            {
-                if(string.IsNullOrWhiteSpace(line) || line.Trim().StartsWith("#"))
-                {
-                    continue;
-                }
-
-                var items = line.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-                var key = items[0].Trim();
-                var val = string.Join("=", items.Skip(1)).Trim();
-                SetProperty(key, val);
-            }
         }
     }
 }

@@ -1,0 +1,31 @@
+{
+  "plugin": {
+    "name": {
+      "queueMailbox": true,
+      "consoleLogger": true
+    },
+    "queueMailbox": {
+      "classname": "Vlingo.Actors.Plugin.Mailbox.ConcurrentQueue.ConcurrentQueueMailboxPlugin",
+      "defaultMailbox": true,
+      "numberOfDispatchersFactor": 1.5,
+      "dispatcherThrottlingCount": 1
+    },
+    "consoleLogger": {
+      "classname": "Vlingo.Actors.Plugin.Logging.Console.ConsoleLoggerPlugin",
+      "name": "vlingo-net/actors",
+      "defaultLogger": true
+    }
+  },
+  "proxy": {
+    "generated": {
+      "classes": {
+        "main": "target/classes/",
+        "test": "target/test-classes/"
+      },
+      "sources": {
+        "main": "target/generated-sources/",
+        "test": "target/generated-test-sources/"
+      }
+    }
+  }
+}
