@@ -13,7 +13,7 @@ namespace Vlingo.Directory.Model
 {
     public sealed class Properties : ConfigurationProperties
     {
-        private static readonly string _propertiesFile = "vlingo-cluster.json";
+        private static readonly string _propertiesFile = "vlingo-directory.json";
 
         private static Func<Properties> Factory = () =>
         {
