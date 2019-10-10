@@ -8,7 +8,7 @@
       "classname": "Vlingo.Actors.Plugin.Mailbox.ConcurrentQueue.ConcurrentQueueMailboxPlugin",
       "defaultMailbox": true,
       "numberOfDispatchersFactor": 1.5,
-      "dispatcherThrottlingCount": 1
+      "dispatcherThrottlingCount": 10
     },
     "consoleLogger": {
       "classname": "Vlingo.Actors.Plugin.Logging.Console.ConsoleLoggerPlugin",

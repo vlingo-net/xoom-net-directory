@@ -57,7 +57,7 @@
       "timeout": 60000
     },
     "seedNodes": "directory1,directory2,directory3"
-  }
+  },
   "node": {
     "directory1": {
       "id": 1,
