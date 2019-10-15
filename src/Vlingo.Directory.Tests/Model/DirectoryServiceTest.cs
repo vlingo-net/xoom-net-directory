@@ -301,7 +301,7 @@ namespace Vlingo.Directory.Tests.Model
 
         private void Pause()
         {
-            Pause(2000);
+            Pause(1000);
         }
 
         private void Pause(int milliseconds)
