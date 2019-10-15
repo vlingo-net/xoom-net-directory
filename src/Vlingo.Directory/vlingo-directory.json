@@ -1,0 +1,27 @@
+{
+  "directory": {
+    "group": {
+      "address": "237.37.37.1",
+      "port": 37371
+    },
+    "incoming": {
+      "port": 37399
+    },
+    "message": {
+      "buffer": {
+        "size": 32767
+      },
+      "processing": {
+        "interval": 50
+      },
+      "publishing": {
+        "interval": 5000
+      }
+    },
+    "unregistered": {
+      "service": {
+        "notifications": 20
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "cluster": {
+    "ssl": false,
+    "op": {
+      "buffer": {
+        "size": 4096
+      },
+      "incoming": {
+        "probe": {
+          "interval": 100,
+          "timeout": 10
+        }
+      },
+      "outgoing": {
+        "pooled": {
+          "buffers": 20
+        }
+      }
+    },
+    "app": {
+      "buffer": {
+        "size": 4096
+      },
+      "incoming": {
+        "probe": {
+          "interval": 10,
+          "timeout": 5
+        }
+      },
+      "outgoing": {
+        "pooled": {
+          "buffers": 50
+        }
+      },
+      "class": "Vlingo.Directory.Model.DirectoryApplication",
+      "stage": "vlingo-directory"
+    },
+    "msg": {
+      "charset": "UTF-8"
+    },
+    "attributes": {
+      "redistribution": {
+        "interval": 1000
+      }
+    },
+    "health": {
+      "check": {
+        "interval": 2000
+      }
+    },
+    "live": {
+      "node": {
+        "timeout": 20000
+      }
+    },
+    "quorum": {
+      "timeout": 60000
+    },
+    "seedNodes": "directory1,directory2,directory3"
+  },
+  "node": {
+    "directory1": {
+      "id": 1,
+      "name": "directory1",
+      "host": "localhost",
+      "op": {
+        "port": 37381
+      },
+      "app": {
+        "port": 37382
+      }
+    },
+    "directory2": {
+      "id": 2,
+      "name": "directory2",
+      "host": "localhost",
+      "op": {
+        "port": 37383
+      },
+      "app": {
+        "port": 37384
+      }
+    },
+    "directory3": {
+      "id": 3,
+      "name": "directory3",
+      "host": "localhost",
+      "op": {
+        "port": 37385
+      },
+      "app": {
+        "port": 37386
+      }
+    }
+  }
+}
