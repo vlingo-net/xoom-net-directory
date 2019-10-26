@@ -32,7 +32,7 @@ namespace Vlingo.Directory.Model
         // ClusterApplication
         //====================================
         
-        public override void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder)
+        public override void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder)
         {
         }
 
@@ -142,23 +142,23 @@ namespace Vlingo.Directory.Model
             _directoryService.Use(client);
         }
 
-        public override void InformAttributeSetCreated(string attributeSetName)
+        public override void InformAttributeSetCreated(string? attributeSetName)
         {
         }
 
-        public override void InformAttributeAdded(string attributeSetName, string attributeName)
+        public override void InformAttributeAdded(string attributeSetName, string? attributeName)
         {
         }
 
-        public override void InformAttributeRemoved(string attributeSetName, string attributeName)
+        public override void InformAttributeRemoved(string attributeSetName, string? attributeName)
         {
         }
 
-        public override void InformAttributeSetRemoved(string attributeSetName)
+        public override void InformAttributeSetRemoved(string? attributeSetName)
         {
         }
 
-        public override void InformAttributeReplaced(string attributeSetName, string attributeName)
+        public override void InformAttributeReplaced(string attributeSetName, string? attributeName)
         {
         }
 

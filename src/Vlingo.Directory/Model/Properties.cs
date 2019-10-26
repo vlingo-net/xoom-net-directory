@@ -35,7 +35,7 @@ namespace Vlingo.Directory.Model
                 throw new InvalidOperationException("Must define a directory group address in properties file.");
             }
 
-            return address;
+            return address!;
         }
 
         public int DirectoryGroupPort()
@@ -80,7 +80,7 @@ namespace Vlingo.Directory.Model
             return int.Parse(GetString(key, defaultValue.ToString()));
         }
 
-        public string GetString(string key, string defaultValue)
+        public string? GetString(string key, string defaultValue)
         {
             return GetProperty(key, defaultValue);
         }
