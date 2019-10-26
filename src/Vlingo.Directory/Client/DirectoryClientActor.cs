@@ -22,12 +22,12 @@ namespace Vlingo.Directory.Client
     {
         private readonly MemoryStream _buffer;
         private readonly ICancellable _cancellable;
-        private PublisherAvailability _directory;
-        private SocketChannelWriter _directoryChannel;
+        private PublisherAvailability? _directory;
+        private SocketChannelWriter? _directoryChannel;
         private readonly IServiceDiscoveryInterest _interest;
-        private RawMessage _registerService;
+        private RawMessage? _registerService;
         private readonly MulticastSubscriber _subscriber;
-        private Address _testAddress;
+        private Address? _testAddress;
 
         public DirectoryClientActor(
             IServiceDiscoveryInterest interest,
@@ -46,7 +46,7 @@ namespace Vlingo.Directory.Client
                 Logger);
             _subscriber.OpenFor(SelfAs<IChannelReaderConsumer>());
             _cancellable = Stage.Scheduler.Schedule(
-                SelfAs<IScheduled<object>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
+                SelfAs<IScheduled<object?>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
         }
         
         //====================================
@@ -134,7 +134,7 @@ namespace Vlingo.Directory.Client
 
             if (publisherAvailability.IsValid)
             {
-                if (!publisherAvailability.Equals(_directory))
+                if (_directory != null && !publisherAvailability.Equals(_directory))
                 {
                     _directory = publisherAvailability;
                     _directoryChannel?.Close();

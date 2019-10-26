@@ -15,14 +15,14 @@ namespace Vlingo.Directory.Model
     {
         private static readonly string _propertiesFile = "vlingo-directory.json";
 
-        private static Func<Properties> _factory = () =>
+        private static readonly Func<Properties> Factory = () =>
         {
            var props = new Properties();
            props.Load(new FileInfo(_propertiesFile));
            return props;
         };
 
-        private static Lazy<Properties> SingleInstance => new Lazy<Properties>(_factory, true);
+        private static Lazy<Properties> SingleInstance => new Lazy<Properties>(Factory, true);
 
         public static Properties Instance => SingleInstance.Value;
 
@@ -35,7 +35,7 @@ namespace Vlingo.Directory.Model
                 throw new InvalidOperationException("Must define a directory group address in properties file.");
             }
 
-            return address;
+            return address!;
         }
 
         public int DirectoryGroupPort()
@@ -80,7 +80,7 @@ namespace Vlingo.Directory.Model
             return int.Parse(GetString(key, defaultValue.ToString()));
         }
 
-        public string GetString(string key, string defaultValue)
+        public string? GetString(string key, string defaultValue)
         {
             return GetProperty(key, defaultValue);
         }
