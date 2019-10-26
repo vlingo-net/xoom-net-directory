@@ -37,10 +37,10 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Vlingo.Actors" Version="0.4.7" />
-      <PackageReference Include="Vlingo.Cluster" Version="0.4.7" />
-      <PackageReference Include="Vlingo.Common" Version="0.5.5" />
-      <PackageReference Include="Vlingo.Wire" Version="0.5.7" />
+      <PackageReference Include="Vlingo.Actors" Version="0.4.8" />
+      <PackageReference Include="Vlingo.Cluster" Version="0.4.8" />
+      <PackageReference Include="Vlingo.Common" Version="0.5.6" />
+      <PackageReference Include="Vlingo.Wire" Version="0.5.8" />
     </ItemGroup>
 
 </Project>
