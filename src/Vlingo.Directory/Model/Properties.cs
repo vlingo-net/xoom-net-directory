@@ -22,7 +22,7 @@ namespace Vlingo.Directory.Model
            return props;
         };
 
-        private static Lazy<Properties> SingleInstance => new Lazy<Properties>(Factory, true);
+        private static Lazy<Properties> SingleInstance { get; } = new Lazy<Properties>(Factory, true);
 
         public static Properties Instance => SingleInstance.Value;
 
