@@ -134,7 +134,7 @@ namespace Vlingo.Directory.Client
 
             if (publisherAvailability.IsValid)
             {
-                if (_directory != null && !publisherAvailability.Equals(_directory))
+                if (!publisherAvailability.Equals(_directory!))
                 {
                     _directory = publisherAvailability;
                     _directoryChannel?.Close();
