@@ -31,7 +31,7 @@ namespace Vlingo.Directory.Client
                 return 1;
             }
 
-            var result =  String.Compare(Name, other.Name, StringComparison.InvariantCulture);
+            var result =  string.Compare(Name, other.Name, StringComparison.InvariantCulture);
             if (result != 0)
             {
                 return result;

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading;
 using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
+using Vlingo.Common;
 using Vlingo.Directory.Client;
 using Vlingo.Directory.Model;
 using Vlingo.Directory.Tests.Client;
@@ -24,6 +25,9 @@ namespace Vlingo.Directory.Tests.Model
 {
     public class DirectoryServiceTest : IDisposable
     {
+        private static readonly Random Random = new Random();
+        private static AtomicInteger _portToUse = new AtomicInteger(10_000 + Random.Next(50_000));
+        
         private readonly TestActor<IDirectoryClient> _client1;
         private readonly TestActor<IDirectoryClient> _client2;
         private readonly TestActor<IDirectoryClient> _client3;
@@ -256,13 +260,16 @@ namespace Vlingo.Directory.Tests.Model
 
             _testWorld = TestWorld.Start("test");
 
-            _node = Node.With(Id.Of(1), Name.Of("node1"), Host.Of("localhost"), 37371, 37372);
+            var operationalPort = _portToUse.GetAndIncrement();
+            var applicationPort = _portToUse.GetAndIncrement();
+            _node = Node.With(Id.Of(1), Name.Of("node1"), Host.Of("localhost"), operationalPort, applicationPort);
 
-            _group = new Group("237.37.37.1", 37371);
+            _group = new Group("237.37.37.1", operationalPort);
 
+            var incomingPort = _portToUse.GetAndIncrement();
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(_node, new Network(_group, 37399), 1024, new Timing(100, 100), 20)));
+                    Definition.Parameters(_node, new Network(_group, incomingPort), 1024, new Timing(100, 100), 20)));
 
             _interest1 = new MockServiceDiscoveryInterest("interest1");
 
@@ -282,7 +289,7 @@ namespace Vlingo.Directory.Tests.Model
                 Definition.Has<DirectoryClientActor>(
                     Definition.Parameters(_interest3, _group, 1024, 50, 10)));
 
-            var testAddress = Address.From(Host.Of("localhost"), 37399, AddressType.Main);
+            var testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
             ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(testAddress);
             ((DirectoryClientActor)_client2.ActorInside).TestSetDirectoryAddress(testAddress);
             ((DirectoryClientActor)_client3.ActorInside).TestSetDirectoryAddress(testAddress);
