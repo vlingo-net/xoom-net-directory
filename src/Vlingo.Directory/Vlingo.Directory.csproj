@@ -16,7 +16,7 @@
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/vlingo-net/vlingo-net-directory</PackageProjectUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/vlingo-net/vlingo-net-directory/master/vlingo-64x64.png</PackageIconUrl>
+        <PackageIcon>vlingo-64x64.png</PackageIcon>
         <RepositoryUrl>https://github.com/vlingo-net/vlingo-net-directory</RepositoryUrl>
         <PackageTags>vlingo-net-directory;vlingo-net-actors;.net;c#;f#;reactive;actors;actor-model;service-discovery</PackageTags>
     </PropertyGroup>
@@ -27,6 +27,7 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+        <None Include="..\..\vlingo-64x64.png" Pack="true" PackagePath="\" />
         <None Update="vlingo-actors.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
