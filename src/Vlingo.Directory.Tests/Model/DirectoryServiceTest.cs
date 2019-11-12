@@ -44,7 +44,7 @@ namespace Vlingo.Directory.Tests.Model
         [Fact]
         public void TestShouldInformInterest()
         {
-            _directory.Actor.Start();
+            //_directory.Actor.Start();
             _directory.Actor.Use(new TestAttributesClient());
 
             // directory assigned leadership
@@ -70,7 +70,7 @@ namespace Vlingo.Directory.Tests.Model
         [Fact]
         public void TestShouldUnregister()
         {
-            _directory.Actor.Start();
+            //_directory.Actor.Start();
             _directory.Actor.Use(new TestAttributesClient());
 
             // directory assigned leadership
@@ -112,7 +112,7 @@ namespace Vlingo.Directory.Tests.Model
         [Fact]
         public void TestShouldNotInformInterest()
         {
-            _directory.Actor.Start();
+            //_directory.Actor.Start();
             _directory.Actor.Use(new TestAttributesClient());
 
             // directory NOT assigned leadership
@@ -133,7 +133,7 @@ namespace Vlingo.Directory.Tests.Model
         [Fact]
         public void TestAlteredLeadership()
         {
-            _directory.Actor.Start();
+            //_directory.Actor.Start();
             _directory.Actor.Use(new TestAttributesClient());
 
             // START directory assigned leadership
@@ -218,7 +218,7 @@ namespace Vlingo.Directory.Tests.Model
         [Fact]
         public void TestRegisterDiscoverMutiple()
         {
-            _directory.Actor.Start();
+            //_directory.Actor.Start();
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();
 
@@ -308,7 +308,7 @@ namespace Vlingo.Directory.Tests.Model
 
         private void Pause()
         {
-            Pause(5000);
+            Pause(1000);
         }
 
         private void Pause(int milliseconds)

@@ -56,8 +56,8 @@ namespace Vlingo.Directory.Tests.Client
         
         public List<ServiceRegistrationInfo> DiscoveredServices { get; }
         
-        public List<String> ServicesSeen { get; }
+        public List<string> ServicesSeen { get; }
         
-        public List<String> UnregisteredServices { get; }
+        public List<string> UnregisteredServices { get; }
     }
 }
