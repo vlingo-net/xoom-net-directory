@@ -242,9 +242,9 @@ namespace Vlingo.Directory.Tests.Model
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();
             
-            var accessSafely1 = _interest1.AfterCompleting(6);
-            var accessSafely2 = _interest2.AfterCompleting(6);
-            var accessSafely3 = _interest3.AfterCompleting(6);
+            var accessSafely1 = _interest1.AfterCompleting(3);
+            var accessSafely2 = _interest2.AfterCompleting(3);
+            var accessSafely3 = _interest3.AfterCompleting(3);
 
             var location1 = new Location("test-host1", 1234);
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
@@ -259,14 +259,14 @@ namespace Vlingo.Directory.Tests.Model
             _client3.Actor.Register(info3);
             
             Pause();
-
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 10));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 10));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 10));
             
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3, 10));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3, 10));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3, 10));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+            
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
 
             foreach (var interest in _interests)
             {
