@@ -37,13 +37,17 @@ namespace Vlingo.Directory.Client
                 return result;
             }
 
-            if (!Locations.SequenceEqual(other.Locations))
+            if (!Locations.SequenceEqual(other.Locations, new LocationComparer()))
             {
                 return 1;
             }
 
             return 0;
         }
+
+        public override bool Equals(object obj) => CompareTo((ServiceRegistrationInfo)obj) == 0;
+
+        public override int GetHashCode() => 31 * Name.GetHashCode() + Locations.GetHashCode();
 
         public override string ToString() => $"ServiceRegistrationInfo[name={Name}, locations={Locations}]";
     }
@@ -93,7 +97,7 @@ namespace Vlingo.Directory.Client
                 return 1;
             }
 
-            var result =  String.Compare(Address, other.Address, StringComparison.InvariantCulture);
+            var result =  string.Compare(Address, other.Address, StringComparison.InvariantCulture);
             if (result != 0)
             {
                 return result;
@@ -107,7 +111,7 @@ namespace Vlingo.Directory.Client
 
             return 0;
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null || obj.GetType() != typeof(Location))
@@ -122,5 +126,12 @@ namespace Vlingo.Directory.Client
         public override int GetHashCode() => 31 * (Address.GetHashCode() + Port.GetHashCode());
 
         public override string ToString() => $"Location[address={Address}, port={Port}]";
+    }
+    
+    public class LocationComparer : IEqualityComparer<Location>
+    {
+        public bool Equals(Location x, Location y) => x.Equals(y);
+
+        public int GetHashCode(Location obj) => obj.GetHashCode();
     }
 }
