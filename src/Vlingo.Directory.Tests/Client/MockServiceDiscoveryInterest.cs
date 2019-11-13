@@ -8,13 +8,18 @@
 using System;
 using System.Collections.Generic;
 using Vlingo.Actors.TestKit;
+using Vlingo.Common;
 using Vlingo.Directory.Client;
 
 namespace Vlingo.Directory.Tests.Client
 {
     public class MockServiceDiscoveryInterest : IServiceDiscoveryInterest
     {
-        public static AccessSafely InterestsSeen;
+        private AccessSafely _access;
+        
+        public AtomicInteger _interestedIn = new AtomicInteger(0);
+        public AtomicInteger _informDiscovered = new AtomicInteger(0);
+        public AtomicInteger _informUnregistered = new AtomicInteger(0);
 
         public MockServiceDiscoveryInterest(string name)
         {
@@ -29,7 +34,7 @@ namespace Vlingo.Directory.Tests.Client
             if (!ServicesSeen.Contains(serviceName))
             {
                 ServicesSeen.Add(serviceName);
-                InterestsSeen?.WriteUsing("interest", 1);
+                _access?.WriteUsing("interestedIn", 1);
             }
             return true;
         }
@@ -39,7 +44,7 @@ namespace Vlingo.Directory.Tests.Client
             if (!DiscoveredServices.Contains(discoveredService))
             {
                 DiscoveredServices.Add(discoveredService);
-                InterestsSeen?.WriteUsing("interest", 1);
+                _access?.WriteUsing("informDiscovered", 1);
             }
         }
 
@@ -48,8 +53,21 @@ namespace Vlingo.Directory.Tests.Client
             if (!UnregisteredServices.Contains(unregisteredServiceName))
             {
                 UnregisteredServices.Add(unregisteredServiceName);
-                InterestsSeen?.WriteUsing("interest", 1);
+                _access?.WriteUsing("informUnregistered", 1);
             }
+        }
+
+        public AccessSafely AfterCompleting(int times)
+        {
+            _access = AccessSafely.AfterCompleting(times)
+                .WritingWith<int>("interestedIn", value => _interestedIn.AddAndGet(value))
+                .ReadingWith("interestedIn", () => _interestedIn.Get())
+                .WritingWith<int>("informDiscovered", value => _informDiscovered.AddAndGet(value))
+                .ReadingWith("informDiscovered", () => _informDiscovered.Get())
+                .WritingWith<int>("informUnregistered", value => _informUnregistered.AddAndGet(value))
+                .ReadingWith("informUnregistered", () => _informUnregistered.Get());
+
+            return _access;
         }
         
         public string Name { get; }
