@@ -228,6 +228,8 @@ namespace Vlingo.Directory.Tests.Model
             accessSafely2 = _interest2.AfterCompleting(6);
             accessSafely3 = _interest3.AfterCompleting(6);
             
+            Pause();
+            
             Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
             Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
             Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
