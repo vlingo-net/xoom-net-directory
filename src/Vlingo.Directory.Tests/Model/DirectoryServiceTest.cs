@@ -26,7 +26,7 @@ namespace Vlingo.Directory.Tests.Model
     public class DirectoryServiceTest : IDisposable
     {
         private static readonly Random Random = new Random();
-        private static AtomicInteger _portToUse = new AtomicInteger(30_000 + Random.Next(40_000));
+        private static AtomicInteger _portToUse = new AtomicInteger(Random.Next(30_000, 40_000));
         
         private readonly TestActor<IDirectoryClient> _client1;
         private readonly TestActor<IDirectoryClient> _client2;
