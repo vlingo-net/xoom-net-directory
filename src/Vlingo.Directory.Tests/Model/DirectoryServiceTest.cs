@@ -72,9 +72,9 @@ namespace Vlingo.Directory.Tests.Model
             // directory assigned leadership
             _directory.Actor.AssignLeadership();
 
-            var accessSafely1 = _interest1.AfterCompleting(2);
-            var accessSafely2 = _interest2.AfterCompleting(2);
-            var accessSafely3 = _interest3.AfterCompleting(2);
+            var accessSafely1 = _interest1.AfterCompleting(6);
+            var accessSafely2 = _interest2.AfterCompleting(6);
+            var accessSafely3 = _interest3.AfterCompleting(6);
 
             var location1 = new Location("test-host1", 1234);
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
@@ -88,9 +88,9 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
 
-            Assert.Equal(1, accessSafely1.ReadFromExpecting("interestedIn", 1));
-            Assert.Equal(1, accessSafely2.ReadFromExpecting("interestedIn", 1));
-            Assert.Equal(1, accessSafely3.ReadFromExpecting("interestedIn", 1));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
             
             _client1.Actor.Unregister(info1.Name);
             
@@ -145,9 +145,9 @@ namespace Vlingo.Directory.Tests.Model
             // START directory assigned leadership
             _directory.Actor.AssignLeadership();
 
-            var accessSafely1 = _interest1.AfterCompleting(3);
-            var accessSafely2 = _interest2.AfterCompleting(3);
-            var accessSafely3 = _interest3.AfterCompleting(3);
+            var accessSafely1 = _interest1.AfterCompleting(6);
+            var accessSafely2 = _interest2.AfterCompleting(6);
+            var accessSafely3 = _interest3.AfterCompleting(6);
             
             var location1 = new Location("test-host1", 1234);
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
@@ -211,7 +211,7 @@ namespace Vlingo.Directory.Tests.Model
 
             // ALTER directory assigned leadership
             _directory.Actor.AssignLeadership();
-            
+
             Pause();
 
             foreach (var interest in _interests)
@@ -220,7 +220,17 @@ namespace Vlingo.Directory.Tests.Model
                 interest.DiscoveredServices.Clear();
             }
 
-            Pause();
+            accessSafely1 = _interest1.AfterCompleting(6);
+            accessSafely2 = _interest2.AfterCompleting(6);
+            accessSafely3 = _interest3.AfterCompleting(6);
+            
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
 
             foreach (var interest in _interests)
             {

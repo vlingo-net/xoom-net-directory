@@ -5,7 +5,6 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System;
 using System.Collections.Generic;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
@@ -16,10 +15,10 @@ namespace Vlingo.Directory.Tests.Client
     public class MockServiceDiscoveryInterest : IServiceDiscoveryInterest
     {
         private AccessSafely _access;
-        
-        public AtomicInteger _interestedIn = new AtomicInteger(0);
-        public AtomicInteger _informDiscovered = new AtomicInteger(0);
-        public AtomicInteger _informUnregistered = new AtomicInteger(0);
+
+        private AtomicInteger _interestedIn;
+        private AtomicInteger _informDiscovered;
+        private AtomicInteger _informUnregistered;
 
         public MockServiceDiscoveryInterest(string name)
         {
@@ -59,6 +58,9 @@ namespace Vlingo.Directory.Tests.Client
 
         public AccessSafely AfterCompleting(int times)
         {
+            _interestedIn = new AtomicInteger(0);
+            _informDiscovered = new AtomicInteger(0);
+            _informUnregistered = new AtomicInteger(0);
             _access = AccessSafely.AfterCompleting(times)
                 .WritingWith<int>("interestedIn", value => _interestedIn.AddAndGet(value))
                 .ReadingWith("interestedIn", () => _interestedIn.Get())
