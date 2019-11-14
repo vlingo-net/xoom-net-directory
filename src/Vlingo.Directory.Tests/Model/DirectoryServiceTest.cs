@@ -26,7 +26,7 @@ namespace Vlingo.Directory.Tests.Model
     public class DirectoryServiceTest : IDisposable
     {
         private static readonly Random Random = new Random();
-        private static AtomicInteger _portToUse = new AtomicInteger(10_000 + Random.Next(50_000));
+        private static AtomicInteger _portToUse = new AtomicInteger(30_000 + Random.Next(40_000));
         
         private readonly TestActor<IDirectoryClient> _client1;
         private readonly TestActor<IDirectoryClient> _client2;
@@ -55,6 +55,9 @@ namespace Vlingo.Directory.Tests.Model
 
             var accessSafely = _interest1.AfterCompleting(1);
             _client1.Actor.Register(info);
+            
+            Pause();
+            
             accessSafely.ReadFromExpecting("interestedIn", 1);
 
             Assert.NotEmpty(_interest1.ServicesSeen);
