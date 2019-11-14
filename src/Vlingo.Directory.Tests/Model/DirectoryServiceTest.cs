@@ -90,17 +90,17 @@ namespace Vlingo.Directory.Tests.Model
 
             Pause();
             
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 10));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 10));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 10));
             
             _client1.Actor.Unregister(info1.Name);
             
             Pause();
             
-            Assert.Equal(1, accessSafely1.ReadFromExpecting("informUnregistered", 1));
-            Assert.Equal(1, accessSafely2.ReadFromExpecting("informUnregistered", 1));
-            Assert.Equal(1, accessSafely3.ReadFromExpecting("informUnregistered", 1));
+            Assert.Equal(1, accessSafely1.ReadFromExpecting("informUnregistered", 1, 10));
+            Assert.Equal(1, accessSafely2.ReadFromExpecting("informUnregistered", 1, 10));
+            Assert.Equal(1, accessSafely3.ReadFromExpecting("informUnregistered", 1, 10));
 
             foreach (var interest in new List<MockServiceDiscoveryInterest> { _interest2, _interest3 })
             {
@@ -167,13 +167,13 @@ namespace Vlingo.Directory.Tests.Model
             
             Pause();
 
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 10));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 10));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 10));
             
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3, 10));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3, 10));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3, 10));
 
             foreach (var interest in _interests)
             {
