@@ -136,7 +136,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.DoesNotContain(info1, _interest1.DiscoveredServices);
         }
 
-        [Fact(Skip = "Freezes")]
+        [Fact]
         public void TestAlteredLeadership()
         {
             _directory.Actor.Start();
