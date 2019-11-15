@@ -41,7 +41,7 @@ namespace Vlingo.Directory.Tests.Model
         private readonly TestWorld _testWorld;
         private readonly ITestOutputHelper _output;
 
-        [Fact(Timeout = 60000)]
+        [Fact]
         public void TestShouldInformInterest()
         {
             _directory.Actor.Start();
@@ -66,7 +66,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.Contains(info, _interest1.DiscoveredServices);
         }
 
-        [Fact(Timeout = 60000)]
+        [Fact]
         public void TestShouldUnregister()
         {
             _directory.Actor.Start();
@@ -122,7 +122,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Timeout = 60000)]
+        [Fact]
         public void TestShouldNotInformInterest()
         {
             _directory.Actor.Start();
@@ -143,7 +143,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.DoesNotContain(info1, _interest1.DiscoveredServices);
         }
 
-        [Fact(Timeout = 60000)]
+        [Fact]
         public void TestAlteredLeadership()
         {
             _directory.Actor.Start();
@@ -254,7 +254,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Timeout = 60000)]
+        [Fact]
         public void TestRegisterDiscoverMutiple()
         {
             _directory.Actor.Start();
