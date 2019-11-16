@@ -168,7 +168,7 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
             
-            Pause();
+            Pause(5000);
 
             Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
             Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
@@ -202,7 +202,7 @@ namespace Vlingo.Directory.Tests.Model
                 interest.DiscoveredServices.Clear();
             }
 
-            Pause();
+            Pause(5000);
 
             foreach (var interest in _interests)
             {
@@ -231,7 +231,7 @@ namespace Vlingo.Directory.Tests.Model
             accessSafely2 = _interest2.AfterCompleting(6);
             accessSafely3 = _interest3.AfterCompleting(6);
             
-            Pause();
+            Pause(5000);
             
             Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
             Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
@@ -277,7 +277,7 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
             
-            Pause();
+            Pause(5000);
             
             Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
             Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
