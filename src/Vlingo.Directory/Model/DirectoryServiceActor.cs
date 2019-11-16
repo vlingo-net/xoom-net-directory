@@ -239,7 +239,7 @@ namespace Vlingo.Directory.Model
                 _cancellableMessageProcessing = Stage.Scheduler.Schedule(
                     SelfAs<IScheduled<IntervalType>>(),
                     IntervalType.Processing,
-                    TimeSpan.FromMilliseconds(10), 
+                    TimeSpan.FromMilliseconds(2), 
                     TimeSpan.FromMilliseconds(_timing.ProcessingInterval));
             }
 
@@ -248,7 +248,7 @@ namespace Vlingo.Directory.Model
                 _cancellablePublishing = Stage.Scheduler.Schedule(
                     SelfAs<IScheduled<IntervalType>>(),
                     IntervalType.Publishing,
-                    TimeSpan.FromMilliseconds(10),
+                    TimeSpan.FromMilliseconds(2),
                     TimeSpan.FromMilliseconds(_timing.ProcessingInterval));
             }
         }
