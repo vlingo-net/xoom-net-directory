@@ -352,6 +352,7 @@ namespace Vlingo.Directory.Tests.Model
             _client2.Actor.Stop();
             _client3.Actor.Stop();
             _testWorld.Terminate();
+            Pause(60000);
         }
 
         private void Pause(int milliseconds = 1000)
