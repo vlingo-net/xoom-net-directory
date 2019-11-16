@@ -217,7 +217,7 @@ namespace Vlingo.Directory.Tests.Model
             }
 
             // ALTER directory assigned leadership
-            _directory.Actor.AssignLeadership();
+            /*_directory.Actor.AssignLeadership();
 
             Pause();
 
@@ -251,7 +251,7 @@ namespace Vlingo.Directory.Tests.Model
                 Assert.Contains(info1, interest.DiscoveredServices);
                 Assert.Contains(info2, interest.DiscoveredServices);
                 Assert.Contains(info3, interest.DiscoveredServices);
-            }
+            }*/
         }
 
         [Fact]
