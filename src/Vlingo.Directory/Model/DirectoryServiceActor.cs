@@ -133,6 +133,7 @@ namespace Vlingo.Directory.Model
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
+            Logger.Info($"Service Actor: Receiving message: {incoming}");
 
             var registerService = RegisterService.From(incoming);
             if (registerService.IsValid)
@@ -172,10 +173,12 @@ namespace Vlingo.Directory.Model
             {
                 if (set.Name!.StartsWith(_serviceNamePrefix))
                 {
+                    Logger.Info($"Service Actor: Publish service: {set.Name}");
                     PublishService(set.Name);
                 }
                 else if (set.Name.StartsWith(_unregisteredServiceNamePrefix))
                 {
+                    Logger.Info($"Service Actor: Unpublish service: {set.Name}");
                     UnpublishService(set.Name);
                 }
             }
@@ -188,6 +191,7 @@ namespace Vlingo.Directory.Model
             {
                 addresses.Add(Vlingo.Wire.Node.Address.From(attribute.ToStringValue(), AddressType.Main));
             }
+            Logger.Info($"Service Actor: Publish service send: {name}");
             _publisher?.Send(RawMessage.From(0, 0, ServiceRegistered.As(Named(_serviceNamePrefix, name), addresses).ToString()));
         }
 
@@ -252,7 +256,7 @@ namespace Vlingo.Directory.Model
         private void StopProcessing()
         {
             _stopped = true;
-            
+            Logger.Info("Service Actor: Stopped processing");
             if (_publisher != null)
             {
                 try

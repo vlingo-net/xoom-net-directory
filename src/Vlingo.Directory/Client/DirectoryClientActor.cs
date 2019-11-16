@@ -72,6 +72,7 @@ namespace Vlingo.Directory.Client
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
+            Logger.Info($"Client Actor: Consume: {incoming}");
 
             var serviceRegistered = ServiceRegistered.From(incoming);
 
@@ -139,6 +140,7 @@ namespace Vlingo.Directory.Client
                     _directory = publisherAvailability;
                     _directoryChannel?.Close();
                     _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
+                    Logger.Info($"Client Actor: Creating directory channel for {_directoryChannel}");
                 }
             }
         }
@@ -148,6 +150,7 @@ namespace Vlingo.Directory.Client
             if (_directoryChannel != null && _registerService != null)
             {
                 var expected = _registerService.TotalLength;
+                Logger.Info($"Client Actor: Register service {_directoryChannel}");
                 var actual = _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {
@@ -163,6 +166,7 @@ namespace Vlingo.Directory.Client
                 var unregister = Model.Message.UnregisterService.As(serviceName);
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
+                Logger.Info($"Client Actor: Unregister service {_directoryChannel}");
                 var actual = _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {
