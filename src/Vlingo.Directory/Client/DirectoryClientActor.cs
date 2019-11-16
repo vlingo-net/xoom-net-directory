@@ -139,7 +139,7 @@ namespace Vlingo.Directory.Client
                 {
                     _directory = publisherAvailability;
                     _directoryChannel?.Close();
-                    _directoryChannel = new SocketChannelWriter(/*_testAddress ?? */_directory.ToAddress(), Logger);
+                    _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
                     Logger.Info($"Client Actor: Creating directory channel for {_directoryChannel}");
                 }
             }

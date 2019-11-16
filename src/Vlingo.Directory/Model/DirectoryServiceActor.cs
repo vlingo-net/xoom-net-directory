@@ -86,7 +86,7 @@ namespace Vlingo.Directory.Model
             {
                 return;
             }
-    
+            Logger.Info($"DirectoryServiceActor: IntervalSignal : {data}");
             switch (data)
             {
                 case IntervalType.Processing:
