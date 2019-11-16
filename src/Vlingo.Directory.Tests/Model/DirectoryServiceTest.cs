@@ -170,13 +170,13 @@ namespace Vlingo.Directory.Tests.Model
             
             Pause();
 
-//            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
-//            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
-//            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
-//            
-//            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
-//            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
-//            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 100));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 100));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 100));
+            
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3, 100));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3, 100));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3, 100));
 
             foreach (var interest in _interests)
             {
@@ -322,19 +322,19 @@ namespace Vlingo.Directory.Tests.Model
                 Definition.Has<DirectoryServiceActor>(
                     Definition.Parameters(_node, new Network(_group, incomingPort), 1024, new Timing(100, 1000), 20)));
 
-            _interest1 = new MockServiceDiscoveryInterest("interest1");
+            _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
                     Definition.Parameters(_interest1, _group, 1024, 100, 10)));
 
-            _interest2 = new MockServiceDiscoveryInterest("interest2");
+            _interest2 = new MockServiceDiscoveryInterest("interest2", output);
 
             _client2 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
                     Definition.Parameters(_interest2, _group, 1024, 100, 10)));
 
-            _interest3 = new MockServiceDiscoveryInterest("interest3");
+            _interest3 = new MockServiceDiscoveryInterest("interest3", output);
 
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
