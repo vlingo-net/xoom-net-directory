@@ -50,7 +50,7 @@ namespace Vlingo.Directory.Tests.Model
             // directory assigned leadership
             _directory.Actor.AssignLeadership();
 
-            var location = new Location("test-host", _portToUse.IncrementAndGet());
+            var location = new Location("test-host", _portToUse.GetAndIncrement());
             var info = new ServiceRegistrationInfo("test-service", new List<Location> { location });
 
             var accessSafely = _interest1.AfterCompleting(1);
@@ -79,15 +79,15 @@ namespace Vlingo.Directory.Tests.Model
             var accessSafely2 = _interest2.AfterCompleting(6);
             var accessSafely3 = _interest3.AfterCompleting(6);
 
-            var location1 = new Location("test-host1", _portToUse.IncrementAndGet());
+            var location1 = new Location("test-host1", _portToUse.GetAndIncrement());
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
             _client1.Actor.Register(info1);
 
-            var location2 = new Location("test-host2", _portToUse.IncrementAndGet());
+            var location2 = new Location("test-host2", _portToUse.GetAndIncrement());
             var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
             _client2.Actor.Register(info2);
 
-            var location3 = new Location("test-host3", _portToUse.IncrementAndGet());
+            var location3 = new Location("test-host3", _portToUse.GetAndIncrement());
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
 
@@ -131,7 +131,7 @@ namespace Vlingo.Directory.Tests.Model
             // directory NOT assigned leadership
             _directory.Actor.RelinquishLeadership(); // actually never had leadership, but be explicit and prove no harm
             
-            var location1 = new Location("test-host1", _portToUse.IncrementAndGet());
+            var location1 = new Location("test-host1", _portToUse.GetAndIncrement());
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
             _client1.Actor.Register(info1);
 
@@ -156,15 +156,15 @@ namespace Vlingo.Directory.Tests.Model
             var accessSafely2 = _interest2.AfterCompleting(6);
             var accessSafely3 = _interest3.AfterCompleting(6);
             
-            var location1 = new Location("test-host1", _portToUse.IncrementAndGet());
+            var location1 = new Location("test-host1", _portToUse.GetAndIncrement());
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
             _client1.Actor.Register(info1);
 
-            var location2 = new Location("test-host2", _portToUse.IncrementAndGet());
+            var location2 = new Location("test-host2", _portToUse.GetAndIncrement());
             var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
             _client2.Actor.Register(info2);
 
-            var location3 = new Location("test-host3", _portToUse.IncrementAndGet());
+            var location3 = new Location("test-host3", _portToUse.GetAndIncrement());
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
             
@@ -227,9 +227,9 @@ namespace Vlingo.Directory.Tests.Model
                 interest.DiscoveredServices.Clear();
             }
 
-            accessSafely1 = _interest1.AfterCompleting(6);
-            accessSafely2 = _interest2.AfterCompleting(6);
-            accessSafely3 = _interest3.AfterCompleting(6);
+//            accessSafely1 = _interest1.AfterCompleting(6);
+//            accessSafely2 = _interest2.AfterCompleting(6);
+//            accessSafely3 = _interest3.AfterCompleting(6);
             
             Pause();
             
@@ -254,7 +254,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        /*[Fact]
+        [Fact]
         public void TestRegisterDiscoverMultiple()
         {
             // _directory.Actor.Start();
@@ -265,15 +265,15 @@ namespace Vlingo.Directory.Tests.Model
             var accessSafely2 = _interest2.AfterCompleting(3);
             var accessSafely3 = _interest3.AfterCompleting(3);
 
-            var location1 = new Location("test-host1", _portToUse.IncrementAndGet());
+            var location1 = new Location("test-host1", _portToUse.GetAndIncrement());
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
             _client1.Actor.Register(info1);
 
-            var location2 = new Location("test-host2", _portToUse.IncrementAndGet());
+            var location2 = new Location("test-host2", _portToUse.GetAndIncrement());
             var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
             _client2.Actor.Register(info2);
 
-            var location3 = new Location("test-host3", _portToUse.IncrementAndGet());
+            var location3 = new Location("test-host3", _portToUse.GetAndIncrement());
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
             
@@ -298,7 +298,7 @@ namespace Vlingo.Directory.Tests.Model
                 Assert.Contains(info2, interest.DiscoveredServices);
                 Assert.Contains(info3, interest.DiscoveredServices);
             }
-        }*/
+        }
 
         public DirectoryServiceTest(ITestOutputHelper output)
         {
