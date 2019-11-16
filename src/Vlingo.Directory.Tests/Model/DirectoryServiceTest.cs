@@ -170,13 +170,13 @@ namespace Vlingo.Directory.Tests.Model
             
             Pause();
 
-//            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
-//            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
-//            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
-//            
-//            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
-//            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
-//            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+            
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
 
             foreach (var interest in _interests)
             {
@@ -192,7 +192,7 @@ namespace Vlingo.Directory.Tests.Model
             }
 
             // ALTER directory relinquished leadership
-            _directory.Actor.RelinquishLeadership();
+            /*_directory.Actor.RelinquishLeadership();
             
             Pause();
 
@@ -251,7 +251,7 @@ namespace Vlingo.Directory.Tests.Model
                 Assert.Contains(info1, interest.DiscoveredServices);
                 Assert.Contains(info2, interest.DiscoveredServices);
                 Assert.Contains(info3, interest.DiscoveredServices);
-            }
+            }*/
         }
 
         [Fact]
@@ -357,7 +357,7 @@ namespace Vlingo.Directory.Tests.Model
             _testWorld.Terminate();
         }
 
-        private void Pause(int milliseconds = 10000)
+        private void Pause(int milliseconds = 1000)
         {
             Thread.Sleep(milliseconds);
         }
