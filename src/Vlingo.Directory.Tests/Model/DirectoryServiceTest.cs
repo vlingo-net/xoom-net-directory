@@ -41,7 +41,7 @@ namespace Vlingo.Directory.Tests.Model
         private readonly TestWorld _testWorld;
         private readonly ITestOutputHelper _output;
 
-        /*[Fact]
+        [Fact]
         public void TestShouldInformInterest()
         {
             // _directory.Actor.Start();
@@ -141,7 +141,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.DoesNotContain("test-service", _interest1.ServicesSeen);
             Assert.Empty(_interest1.DiscoveredServices);
             Assert.DoesNotContain(info1, _interest1.DiscoveredServices);
-        }*/
+        }
 
         [Fact]
         public void TestAlteredLeadership()
@@ -320,7 +320,7 @@ namespace Vlingo.Directory.Tests.Model
             var incomingPort = _portToUse.GetAndIncrement();
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(_node, new Network(_group, incomingPort), 1024, new Timing(100, 100), 20)));
+                    Definition.Parameters(_node, new Network(_group, incomingPort), 1024, new Timing(1000, 1000), 20)));
 
             _interest1 = new MockServiceDiscoveryInterest("interest1");
 
