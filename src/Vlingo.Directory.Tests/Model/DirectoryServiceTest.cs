@@ -160,35 +160,35 @@ namespace Vlingo.Directory.Tests.Model
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
             _client1.Actor.Register(info1);
 
-//            var location2 = new Location("test-host2", _portToUse.GetAndIncrement());
-//            var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
-//            _client2.Actor.Register(info2);
-//
-//            var location3 = new Location("test-host3", _portToUse.GetAndIncrement());
-//            var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
-//            _client3.Actor.Register(info3);
+            var location2 = new Location("test-host2", _portToUse.GetAndIncrement());
+            var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
+            _client2.Actor.Register(info2);
+
+            var location3 = new Location("test-host3", _portToUse.GetAndIncrement());
+            var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
+            _client3.Actor.Register(info3);
             
             Pause();
 
-//            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 100));
-//            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 100));
-//            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 100));
-//            
-//            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3, 100));
-//            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3, 100));
-//            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3, 100));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 100));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 100));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 100));
+            
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3, 100));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3, 100));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3, 100));
 
             foreach (var interest in _interests)
             {
                 var discoveredServices = interest.DiscoveredServices.ToList();
                 Assert.NotEmpty(interest.ServicesSeen);
                 Assert.Contains("test-service1", interest.ServicesSeen);
-                /*Assert.Contains("test-service2", interest.ServicesSeen);
-                Assert.Contains("test-service3", interest.ServicesSeen);*/
+                Assert.Contains("test-service2", interest.ServicesSeen);
+                Assert.Contains("test-service3", interest.ServicesSeen);
                 Assert.NotEmpty(discoveredServices);
                 Assert.Contains(info1, discoveredServices);
-//                Assert.Contains(info2, discoveredServices);
-//                Assert.Contains(info3, discoveredServices);
+                Assert.Contains(info2, discoveredServices);
+                Assert.Contains(info3, discoveredServices);
             }
 
             // ALTER directory relinquished leadership
