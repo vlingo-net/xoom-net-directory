@@ -47,7 +47,7 @@ namespace Vlingo.Directory.Client
 
         public override bool Equals(object obj) => CompareTo((ServiceRegistrationInfo)obj) == 0;
 
-        public override int GetHashCode() => 31 * Name.GetHashCode() + Locations.GetHashCode();
+        public override int GetHashCode() => 31 * Name.GetHashCode() + Locations.Sum(l => l.GetHashCode());
 
         public override string ToString() => $"ServiceRegistrationInfo[name={Name}, locations={Locations}]";
     }
