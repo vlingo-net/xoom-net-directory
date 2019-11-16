@@ -168,13 +168,13 @@ namespace Vlingo.Directory.Tests.Model
             
             Pause();
 
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 100));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 100));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 100));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 10));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 10));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 10));
             
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3, 100));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3, 100));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3, 100));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3, 10));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3, 10));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3, 10));
 
             foreach (var interest in _interests)
             {
