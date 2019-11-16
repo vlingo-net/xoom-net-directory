@@ -357,7 +357,7 @@ namespace Vlingo.Directory.Tests.Model
             _testWorld.Terminate();
         }
 
-        private void Pause(int milliseconds = 20000)
+        private void Pause(int milliseconds = 10000)
         {
             Thread.Sleep(milliseconds);
         }
