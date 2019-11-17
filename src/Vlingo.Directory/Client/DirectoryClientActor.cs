@@ -46,7 +46,7 @@ namespace Vlingo.Directory.Client
                 Logger);
             _subscriber.OpenFor(SelfAs<IChannelReaderConsumer>());
             _cancellable = Stage.Scheduler.Schedule(
-                SelfAs<IScheduled<object?>>(), null, TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(processingInterval));
+                SelfAs<IScheduled<object?>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
         }
         
         //====================================
@@ -149,11 +149,12 @@ namespace Vlingo.Directory.Client
 
         private void RegisterService()
         {
+            Logger.Debug($"RegisterService {_directoryChannel} | {_registerService}");
             if (_directoryChannel != null && _registerService != null)
             {
                 var expected = _registerService.TotalLength;
                 Logger.Info($"Client Actor: Register service {_directoryChannel}");
-                Logger.Debug($"DirectoryChannel state IsClosed {_directoryChannel?.IsClosed}");
+                Logger.Debug($"DirectoryChannel state IsClosed {_directoryChannel.IsClosed}");
                 var actual = _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {
@@ -170,7 +171,7 @@ namespace Vlingo.Directory.Client
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
                 Logger.Info($"Client Actor: Unregister service {_directoryChannel}");
-                Logger.Debug($"DirectoryChannel state IsClosed {_directoryChannel?.IsClosed}");
+                Logger.Debug($"DirectoryChannel state IsClosed {_directoryChannel.IsClosed}");
                 var actual = _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {

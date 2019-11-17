@@ -190,7 +190,7 @@ namespace Vlingo.Directory.Tests.Model
             }
 
             // ALTER directory relinquished leadership
-            /*_directory.Actor.RelinquishLeadership();
+            _directory.Actor.RelinquishLeadership();
             
             Pause();
 
@@ -249,7 +249,7 @@ namespace Vlingo.Directory.Tests.Model
                 Assert.Contains(info1, interest.DiscoveredServices);
                 Assert.Contains(info2, interest.DiscoveredServices);
                 Assert.Contains(info3, interest.DiscoveredServices);
-            }*/
+            }
         }
 
         [Fact]
