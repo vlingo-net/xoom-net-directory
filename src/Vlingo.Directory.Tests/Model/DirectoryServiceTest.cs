@@ -273,8 +273,12 @@ namespace Vlingo.Directory.Tests.Model
             var location3 = new Location("test-host3", _portToUse.GetAndIncrement());
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
-            
-            Pause();
+
+            while (accessSafely1.ReadFrom<int>("interestedIn") < 3)
+            {
+                Pause(10);
+
+            }
             
             Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
             Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
@@ -352,7 +356,6 @@ namespace Vlingo.Directory.Tests.Model
             _client2.Actor.Stop();
             _client3.Actor.Stop();
             _testWorld.Terminate();
-            Pause(60000);
         }
 
         private void Pause(int milliseconds = 1000)
