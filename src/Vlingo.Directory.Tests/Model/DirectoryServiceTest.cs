@@ -165,16 +165,16 @@ namespace Vlingo.Directory.Tests.Model
             var location3 = new Location("test-host3", _portToUse.GetAndIncrement());
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
+
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+            
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
             
             Pause();
-
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3, 10));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3, 10));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3, 10));
-            
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3, 10));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3, 10));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3, 10));
 
             foreach (var interest in _interests)
             {
