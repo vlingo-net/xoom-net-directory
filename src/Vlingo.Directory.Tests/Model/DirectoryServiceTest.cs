@@ -323,19 +323,19 @@ namespace Vlingo.Directory.Tests.Model
 
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest1, _group, 1024, 100, 10)));
+                    Definition.Parameters(_interest1, _group, 1024, 100, 50)));
 
             _interest2 = new MockServiceDiscoveryInterest("interest2", output);
 
             _client2 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest2, _group, 1024, 100, 10)));
+                    Definition.Parameters(_interest2, _group, 1024, 100, 50)));
 
             _interest3 = new MockServiceDiscoveryInterest("interest3", output);
 
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest3, _group, 1024, 100, 10)));
+                    Definition.Parameters(_interest3, _group, 1024, 100, 50)));
 
             var testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
             ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(testAddress);
