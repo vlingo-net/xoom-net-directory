@@ -5,7 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Linq;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
 using Vlingo.Directory.Client;
@@ -26,9 +27,9 @@ namespace Vlingo.Directory.Tests.Client
         {
             _output = output;
             Name = name;
-            DiscoveredServices = new List<ServiceRegistrationInfo>();
-            ServicesSeen = new List<string>();
-            UnregisteredServices = new List<string>();
+            DiscoveredServices = new ConcurrentBag<ServiceRegistrationInfo>();
+            ServicesSeen = new ConcurrentBag<string>();
+            UnregisteredServices = new ConcurrentBag<string>();
         }
         
         public bool InterestedIn(string serviceName)
@@ -83,10 +84,10 @@ namespace Vlingo.Directory.Tests.Client
         
         public string Name { get; }
         
-        public List<ServiceRegistrationInfo> DiscoveredServices { get; }
+        public ConcurrentBag<ServiceRegistrationInfo> DiscoveredServices { get; }
         
-        public List<string> ServicesSeen { get; }
+        public ConcurrentBag<string> ServicesSeen { get; }
         
-        public List<string> UnregisteredServices { get; }
+        public ConcurrentBag<string> UnregisteredServices { get; }
     }
 }
