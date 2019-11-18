@@ -239,9 +239,9 @@ namespace Vlingo.Directory.Tests.Model
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();
 
-            var accessSafely1 = _interest1.AfterCompleting(3);
-            var accessSafely2 = _interest2.AfterCompleting(3);
-            var accessSafely3 = _interest3.AfterCompleting(3);
+            var accessSafely1 = _interest1.AfterCompleting(6);
+            var accessSafely2 = _interest2.AfterCompleting(6);
+            var accessSafely3 = _interest3.AfterCompleting(6);
 
             var locationPort = PortToUse.GetAndIncrement();
             var location1 = new Location("test-host1", locationPort);
@@ -256,13 +256,9 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
 
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 1));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 1));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 1));
-            
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 1));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 1));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 1));
+            accessSafely1.ReadFromExpecting("interestedIn", 3);
+            accessSafely2.ReadFromExpecting("interestedIn", 3);
+            accessSafely3.ReadFromExpecting("interestedIn", 3);
 
             foreach (var interest in _interests)
             {
@@ -298,7 +294,9 @@ namespace Vlingo.Directory.Tests.Model
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
                     Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 10)));
-
+            
+            Pause();
+            
             _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
