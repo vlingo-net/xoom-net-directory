@@ -330,6 +330,7 @@ namespace Vlingo.Directory.Tests.Model
         public void Dispose(object obj)
         {
             Dispose();
+            throw new TimeoutException("The test is too slow");
         }
 
         public void Dispose()
