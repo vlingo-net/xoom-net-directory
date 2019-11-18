@@ -141,9 +141,9 @@ namespace Vlingo.Directory.Tests.Model
             // START directory assigned leadership
             _directory.Actor.AssignLeadership();
 
-            var accessSafely1 = _interest1.AfterCompleting(6);
-            var accessSafely2 = _interest2.AfterCompleting(6);
-            var accessSafely3 = _interest3.AfterCompleting(6);
+            var accessSafely1 = _interest1.AfterCompleting(3);
+            var accessSafely2 = _interest2.AfterCompleting(3);
+            var accessSafely3 = _interest3.AfterCompleting(3);
             
             var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
@@ -208,9 +208,9 @@ namespace Vlingo.Directory.Tests.Model
                 interest.DiscoveredServices.Clear();
             }
             
-            accessSafely1 = _interest1.AfterCompleting(6);
-            accessSafely2 = _interest2.AfterCompleting(6);
-            accessSafely3 = _interest3.AfterCompleting(6);
+            accessSafely1 = _interest1.AfterCompleting(3);
+            accessSafely2 = _interest2.AfterCompleting(3);
+            accessSafely3 = _interest3.AfterCompleting(3);
             
             Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
             Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
@@ -233,15 +233,15 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip = "Freezes")]
+        [Fact]
         public void TestRegisterDiscoverMultiple()
         {
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();
 
-            var accessSafely1 = _interest1.AfterCompleting(6);
-            var accessSafely2 = _interest2.AfterCompleting(6);
-            var accessSafely3 = _interest3.AfterCompleting(6);
+            var accessSafely1 = _interest1.AfterCompleting(3);
+            var accessSafely2 = _interest2.AfterCompleting(3);
+            var accessSafely3 = _interest3.AfterCompleting(3);
 
             var locationPort = PortToUse.GetAndIncrement();
             var location1 = new Location("test-host1", locationPort);
