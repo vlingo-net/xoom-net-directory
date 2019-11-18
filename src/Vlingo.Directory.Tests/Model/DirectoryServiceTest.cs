@@ -32,10 +32,10 @@ namespace Vlingo.Directory.Tests.Model
         private readonly TestActor<IDirectoryClient> _client2;
         private readonly TestActor<IDirectoryClient> _client3;
         private readonly TestActor<IDirectoryService> _directory;
-        private readonly MockServiceDiscoveryInterest _interest1;
-        private readonly MockServiceDiscoveryInterest _interest2;
-        private readonly MockServiceDiscoveryInterest _interest3;
-        private readonly List<MockServiceDiscoveryInterest> _interests;
+        private MockServiceDiscoveryInterest _interest1;
+        private MockServiceDiscoveryInterest _interest2;
+        private MockServiceDiscoveryInterest _interest3;
+        private List<MockServiceDiscoveryInterest> _interests;
         private readonly TestWorld _testWorld;
         private readonly ITestOutputHelper _output;
 
@@ -327,11 +327,16 @@ namespace Vlingo.Directory.Tests.Model
 
         public void Dispose()
         {
+            _interest1 = null;
+            _interest2 = null;
+            _interest3 = null;
+            _interests = null;
             _directory.Actor.Stop();
             _client1.Actor.Stop();
             _client2.Actor.Stop();
             _client3.Actor.Stop();
             _testWorld.Terminate();
+            Pause();
         }
 
         private void Pause(int milliseconds = 1000)

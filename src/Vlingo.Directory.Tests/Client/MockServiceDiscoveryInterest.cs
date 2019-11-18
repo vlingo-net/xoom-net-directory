@@ -19,10 +19,6 @@ namespace Vlingo.Directory.Tests.Client
         private readonly ITestOutputHelper _output;
         private AccessSafely _access;
 
-        private AtomicInteger _interestedIn;
-        private AtomicInteger _informDiscovered;
-        private AtomicInteger _informUnregistered;
-
         public MockServiceDiscoveryInterest(string name, ITestOutputHelper output)
         {
             _output = output;
@@ -68,16 +64,16 @@ namespace Vlingo.Directory.Tests.Client
 
         public AccessSafely AfterCompleting(int times)
         {
-            _interestedIn = new AtomicInteger(0);
-            _informDiscovered = new AtomicInteger(0);
-            _informUnregistered = new AtomicInteger(0);
+            var interestedIn = new AtomicInteger(0);
+            var informDiscovered = new AtomicInteger(0);
+            var informUnregistered = new AtomicInteger(0);
             _access = AccessSafely.AfterCompleting(times)
-                .WritingWith<int>("interestedIn", value => _interestedIn.AddAndGet(value))
-                .ReadingWith("interestedIn", () => _interestedIn.Get())
-                .WritingWith<int>("informDiscovered", value => _informDiscovered.AddAndGet(value))
-                .ReadingWith("informDiscovered", () => _informDiscovered.Get())
-                .WritingWith<int>("informUnregistered", value => _informUnregistered.AddAndGet(value))
-                .ReadingWith("informUnregistered", () => _informUnregistered.Get());
+                .WritingWith<int>("interestedIn", _ => interestedIn.IncrementAndGet())
+                .ReadingWith("interestedIn", () => interestedIn.Get())
+                .WritingWith<int>("informDiscovered", _ => informDiscovered.IncrementAndGet())
+                .ReadingWith("informDiscovered", () => informDiscovered.Get())
+                .WritingWith<int>("informUnregistered", _ => informUnregistered.IncrementAndGet())
+                .ReadingWith("informUnregistered", () => informUnregistered.Get());
 
             return _access;
         }
