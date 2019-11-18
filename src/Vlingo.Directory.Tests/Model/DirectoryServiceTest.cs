@@ -259,6 +259,10 @@ namespace Vlingo.Directory.Tests.Model
             accessSafely1.ReadFromExpecting("interestedIn", 3);
             accessSafely2.ReadFromExpecting("interestedIn", 3);
             accessSafely3.ReadFromExpecting("interestedIn", 3);
+            
+            accessSafely1.ReadFromExpecting("informDiscovered", 3);
+            accessSafely2.ReadFromExpecting("informDiscovered", 3);
+            accessSafely3.ReadFromExpecting("informDiscovered", 3);
 
             foreach (var interest in _interests)
             {
@@ -294,8 +298,6 @@ namespace Vlingo.Directory.Tests.Model
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
                     Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 10)));
-            
-            Pause();
             
             _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 

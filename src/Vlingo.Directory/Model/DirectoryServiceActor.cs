@@ -168,7 +168,7 @@ namespace Vlingo.Directory.Model
 
         private void PublishAllServices()
         {
-            foreach (var set in _attributesClient!.All.ToList())
+            foreach (var set in _attributesClient?.All.ToList())
             {
                 if (set.Name!.StartsWith(_serviceNamePrefix))
                 {
@@ -184,7 +184,7 @@ namespace Vlingo.Directory.Model
         private void PublishService(string name)
         {
             var addresses = new List<Address>();
-            foreach (var attribute in _attributesClient!.AllOf(name))
+            foreach (var attribute in _attributesClient?.AllOf(name))
             {
                 addresses.Add(Vlingo.Wire.Node.Address.From(attribute.ToStringValue(), AddressType.Main));
             }
@@ -195,7 +195,7 @@ namespace Vlingo.Directory.Model
         {
             _publisher?.Send(RawMessage.From(0, 0, ServiceUnregistered.As(Named(_unregisteredServiceNamePrefix, name)).ToString()));
     
-            var unregisteredNotificationsCount = _attributesClient!.Attribute<int>(name, _unregisteredCount);
+            var unregisteredNotificationsCount = _attributesClient?.Attribute<int>(name, _unregisteredCount);
             var count = unregisteredNotificationsCount.Value - 1;
             if (count - 1 <= 0)
             {
