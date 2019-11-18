@@ -32,10 +32,10 @@ namespace Vlingo.Directory.Tests.Model
         private readonly TestActor<IDirectoryClient> _client2;
         private readonly TestActor<IDirectoryClient> _client3;
         private readonly TestActor<IDirectoryService> _directory;
-        private MockServiceDiscoveryInterest _interest1;
-        private MockServiceDiscoveryInterest _interest2;
-        private MockServiceDiscoveryInterest _interest3;
-        private List<MockServiceDiscoveryInterest> _interests;
+        private readonly MockServiceDiscoveryInterest _interest1;
+        private readonly MockServiceDiscoveryInterest _interest2;
+        private readonly MockServiceDiscoveryInterest _interest3;
+        private readonly List<MockServiceDiscoveryInterest> _interests;
         private readonly TestWorld _testWorld;
         private readonly ITestOutputHelper _output;
 
@@ -256,13 +256,13 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
 
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 1));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 1));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 1));
             
-            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
-            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
-            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 1));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 1));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 1));
 
             foreach (var interest in _interests)
             {
@@ -327,19 +327,11 @@ namespace Vlingo.Directory.Tests.Model
 
         public void Dispose()
         {
-            _interest1 = null;
-            _interest2 = null;
-            _interest3 = null;
-            _interests = null;
             _directory.Actor.Stop();
-            ((DirectoryClientActor)_client1.ActorInside).Stop();
-            ((DirectoryClientActor)_client2.ActorInside).Stop();
-            ((DirectoryClientActor)_client3.ActorInside).Stop();
             _client1.Actor.Stop();
             _client2.Actor.Stop();
             _client3.Actor.Stop();
             _testWorld.Terminate();
-            Pause();
         }
 
         private void Pause(int milliseconds = 1000)
