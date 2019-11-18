@@ -130,7 +130,7 @@ namespace Vlingo.Directory.Client
     
     public class LocationComparer : IEqualityComparer<Location>
     {
-        public bool Equals(Location x, Location y) => x.Equals(y);
+        public bool Equals(Location x, Location y) => x != null && x.Equals(y);
 
         public int GetHashCode(Location obj) => obj.GetHashCode();
     }
