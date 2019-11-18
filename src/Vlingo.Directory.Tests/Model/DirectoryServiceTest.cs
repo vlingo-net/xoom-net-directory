@@ -180,14 +180,12 @@ namespace Vlingo.Directory.Tests.Model
 
             // ALTER directory relinquished leadership
             _directory.Actor.RelinquishLeadership();
-            
+
             foreach (var interest in _interests)
             {
                 interest.ServicesSeen.Clear();
                 interest.DiscoveredServices.Clear();
             }
-            
-            Pause();
 
             foreach (var interest in _interests)
             {
@@ -210,8 +208,6 @@ namespace Vlingo.Directory.Tests.Model
                 interest.DiscoveredServices.Clear();
             }
             
-            Pause();
-
             accessSafely1 = _interest1.AfterCompleting(6);
             accessSafely2 = _interest2.AfterCompleting(6);
             accessSafely3 = _interest3.AfterCompleting(6);
@@ -306,19 +302,19 @@ namespace Vlingo.Directory.Tests.Model
 
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest1, @group, 1024, 100, 10)));
+                    Definition.Parameters(_interest1, @group, 1024, 50, 10)));
 
             _interest2 = new MockServiceDiscoveryInterest("interest2", output);
 
             _client2 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest2, @group, 1024, 100, 10)));
+                    Definition.Parameters(_interest2, @group, 1024, 50, 10)));
 
             _interest3 = new MockServiceDiscoveryInterest("interest3", output);
 
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest3, @group, 1024, 100, 10)));
+                    Definition.Parameters(_interest3, @group, 1024, 50, 10)));
 
             var testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
             ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(testAddress);
