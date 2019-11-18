@@ -5,6 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Attribute;
 
@@ -12,11 +13,11 @@ namespace Vlingo.Directory.Tests.Model
 {
     public class TestAttributesClient : IAttributesProtocol
     {
-        private readonly Dictionary<string, AttributeSet> _attributeSets;
+        private readonly ConcurrentDictionary<string, AttributeSet> _attributeSets;
 
         public TestAttributesClient()
         {
-            _attributeSets = new Dictionary<string, AttributeSet>();
+            _attributeSets = new ConcurrentDictionary<string, AttributeSet>();
         }
         
         public void Add<T>(string attributeSetName, string attributeName, T value)
@@ -24,7 +25,7 @@ namespace Vlingo.Directory.Tests.Model
             if (!_attributeSets.TryGetValue(attributeSetName, out var set))
             {
                 set = AttributeSet.Named(attributeSetName);
-                _attributeSets.Add(attributeSetName, set);
+                _attributeSets.AddOrUpdate(attributeSetName, set, (key, existingValue) => set);
             }
             set.AddIfAbsent(Cluster.Model.Attribute.Attribute<T>.From(attributeName, value));
         }
@@ -65,7 +66,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        public void RemoveAll(string attributeSetName) => _attributeSets.Remove(attributeSetName);
+        public void RemoveAll(string attributeSetName) => _attributeSets.Remove(attributeSetName, out _);
 
         public IEnumerable<Attribute> AllOf(string attributeSetName)
         {
