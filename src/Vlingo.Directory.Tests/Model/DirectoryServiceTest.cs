@@ -332,6 +332,9 @@ namespace Vlingo.Directory.Tests.Model
             _interest3 = null;
             _interests = null;
             _directory.Actor.Stop();
+            ((DirectoryClientActor)_client1.ActorInside).Stop();
+            ((DirectoryClientActor)_client2.ActorInside).Stop();
+            ((DirectoryClientActor)_client3.ActorInside).Stop();
             _client1.Actor.Stop();
             _client2.Actor.Stop();
             _client3.Actor.Stop();
