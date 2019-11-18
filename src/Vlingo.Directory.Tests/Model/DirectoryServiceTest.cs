@@ -300,7 +300,7 @@ namespace Vlingo.Directory.Tests.Model
             var incomingPort = PortToUse.GetAndIncrement();
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 20)));
+                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(10, 10), 20)));
 
             _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 
