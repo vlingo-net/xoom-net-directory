@@ -40,7 +40,7 @@ namespace Vlingo.Directory.Model
             var unpublishedNotifications = Properties.Instance.DirectoryUnregisteredServiceNotifications();
             
             var directoryService =
-                DirectoryServiceFactory.Instance(
+                Instance(
                     stage,
                     localNode,
                     network,

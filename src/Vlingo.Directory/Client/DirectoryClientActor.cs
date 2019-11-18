@@ -113,6 +113,9 @@ namespace Vlingo.Directory.Client
         public override void Stop()
         {
             _cancellable.Cancel();
+            _subscriber.Close();
+            _directoryChannel.Close();
+            _buffer.Dispose();
             base.Stop();
         }
         
