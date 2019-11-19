@@ -166,25 +166,25 @@ namespace Vlingo.Directory.Model
         
         protected override void BeforeRestart(Exception reason)
         {
-            Logger.Debug($"Before restart: {reason.Message}", reason);
+            Logger.Debug($"SERVICE - Before restart: {reason.Message}", reason);
             base.BeforeRestart(reason);
         }
 
         protected override void AfterRestart(Exception reason)
         {
             base.AfterRestart(reason);
-            Logger.Debug($"After restart: {reason.Message}", reason);
+            Logger.Debug($"SERVICE - After restart: {reason.Message}", reason);
         }
         
         protected override void BeforeStart()
         {
-            Logger.Debug("Before start");
+            Logger.Debug("SERVICE - Before start");
             base.BeforeStart();
         }
 
         protected override void AfterStop()
         {
-            Logger.Debug("After stop");
+            Logger.Debug("SERVICE - After stop");
             base.AfterStop();
         }
 

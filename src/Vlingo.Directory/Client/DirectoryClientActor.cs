@@ -126,6 +126,30 @@ namespace Vlingo.Directory.Client
             _testAddress = testAddress;
         }
         
+        protected override void BeforeRestart(Exception reason)
+        {
+            Logger.Debug($"CLIENT - Before restart: {reason.Message}", reason);
+            base.BeforeRestart(reason);
+        }
+
+        protected override void AfterRestart(Exception reason)
+        {
+            base.AfterRestart(reason);
+            Logger.Debug($"CLIENT - After restart: {reason.Message}", reason);
+        }
+        
+        protected override void BeforeStart()
+        {
+            Logger.Debug("CLIENT - Before start");
+            base.BeforeStart();
+        }
+
+        protected override void AfterStop()
+        {
+            Logger.Debug("CLIENT - After stop");
+            base.AfterStop();
+        }
+        
         //====================================
         // internal implementation
         //====================================
