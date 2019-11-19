@@ -20,11 +20,11 @@ namespace Vlingo.Directory.Tests.Model
 
         public ISupervisionStrategy SupervisionStrategy { get; } = new RestartSupervisionStrategy();
 
-        public ISupervisor Supervisor { get; }
+        public ISupervisor Supervisor => Stage.World.DefaultSupervisor;
         
         private class RestartSupervisionStrategy : ISupervisionStrategy
         {
-            public int Intensity => 2;
+            public int Intensity => SupervisionStrategyConstants.DefaultIntensity;
 
             public long Period => SupervisionStrategyConstants.ForeverPeriod;
 
