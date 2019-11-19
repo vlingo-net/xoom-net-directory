@@ -102,6 +102,7 @@ namespace Vlingo.Directory.Client
 
         public void IntervalSignal(IScheduled<object> scheduled, object data)
         {
+            Logger.Debug("CLIENT - Probing channel...");
             _subscriber.ProbeChannel();
             RegisterService();
         }
@@ -174,6 +175,7 @@ namespace Vlingo.Directory.Client
             if (_directoryChannel != null && _registerService != null)
             {
                 var expected = _registerService.TotalLength;
+                Logger.Debug($"CLIENT - Writing service registration {_registerService.AsTextMessage()}...");
                 var actual = _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {

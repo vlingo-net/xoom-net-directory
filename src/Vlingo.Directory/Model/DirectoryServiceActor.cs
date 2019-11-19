@@ -96,6 +96,7 @@ namespace Vlingo.Directory.Model
             switch (data)
             {
                 case IntervalType.Processing:
+                    Logger.Debug($"SERVICE - Processing channel {_publisher.Name}...");
                     _publisher?.ProcessChannel();
                     break;
                 case IntervalType.Publishing:
@@ -137,6 +138,7 @@ namespace Vlingo.Directory.Model
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
+            Logger.Debug($"SERVICE - Consuming {incoming}...");
 
             var registerService = RegisterService.From(incoming);
             if (registerService.IsValid)
