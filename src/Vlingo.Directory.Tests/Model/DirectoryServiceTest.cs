@@ -26,7 +26,7 @@ namespace Vlingo.Directory.Tests.Model
     public class DirectoryServiceTest : IDisposable
     {
         private static readonly Random Random = new Random();
-        private static readonly AtomicInteger PortToUse = new AtomicInteger(Random.Next(37_000, 38_000));
+        private static readonly AtomicInteger PortToUse = new AtomicInteger(Random.Next(10_000, 50_000));
         
         private readonly TestActor<IDirectoryClient> _client1;
         private readonly TestActor<IDirectoryClient> _client2;
@@ -42,7 +42,6 @@ namespace Vlingo.Directory.Tests.Model
         [Fact]
         public void TestShouldInformInterest()
         {
-            // _directory.Actor.Start();
             _directory.Actor.Use(new TestAttributesClient());
 
             // directory assigned leadership
@@ -65,7 +64,6 @@ namespace Vlingo.Directory.Tests.Model
         [Fact]
         public void TestShouldUnregister()
         {
-            // _directory.Actor.Start();
             _directory.Actor.Use(new TestAttributesClient());
 
             // directory assigned leadership
@@ -117,7 +115,6 @@ namespace Vlingo.Directory.Tests.Model
         [Fact]
         public void TestShouldNotInformInterest()
         {
-            // _directory.Actor.Start();
             _directory.Actor.Use(new TestAttributesClient());
 
             // directory NOT assigned leadership
@@ -304,25 +301,25 @@ namespace Vlingo.Directory.Tests.Model
             
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(10, 100), 10)));
+                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 10)));
             
             _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest1, @group, 1024, 100, 10)));
+                    Definition.Parameters(_interest1, @group, 1024, 50, 10)));
 
             _interest2 = new MockServiceDiscoveryInterest("interest2", output);
 
             _client2 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest2, @group, 1024, 100, 10)));
+                    Definition.Parameters(_interest2, @group, 1024, 50, 10)));
 
             _interest3 = new MockServiceDiscoveryInterest("interest3", output);
 
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest3, @group, 1024, 100, 10)));
+                    Definition.Parameters(_interest3, @group, 1024, 50, 10)));
 
             var testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
             ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(testAddress);
@@ -339,7 +336,6 @@ namespace Vlingo.Directory.Tests.Model
             _client2.Actor.Stop();
             _client3.Actor.Stop();
             _testWorld.Terminate();
-            Pause();
         }
 
         private void Pause(int milliseconds = 1000)
