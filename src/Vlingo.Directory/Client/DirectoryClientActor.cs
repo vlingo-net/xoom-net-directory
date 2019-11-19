@@ -165,7 +165,8 @@ namespace Vlingo.Directory.Client
                 {
                     _directory = publisherAvailability;
                     //_directoryChannel?.Close();
-                    _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
+                    if (_directoryChannel == null)
+                        _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
                 }
             }
         }
