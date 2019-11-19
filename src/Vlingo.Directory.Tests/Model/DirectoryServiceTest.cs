@@ -233,7 +233,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip = "Freezes")]
+        [Fact]
         public void TestRegisterDiscoverMultiple()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -295,9 +295,12 @@ namespace Vlingo.Directory.Tests.Model
             var @group = new Group("237.37.37.1", operationalPort);
 
             var incomingPort = PortToUse.GetAndIncrement();
+            
+            var supervisor = _testWorld.ActorFor<ISupervisor>(typeof(DirectoryServiceSupervisorTestActor));
+            
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 10)));
+                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 10), supervisor.ActorInside, "service-directory-actor"));
             
             _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 
