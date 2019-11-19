@@ -37,6 +37,7 @@ namespace Vlingo.Directory.Model
         private readonly Timing _timing;
         private readonly int _unpublishedNotifications;
         private bool _stopped;
+        private AtomicInteger _invocationCount = new AtomicInteger(1);
 
         public DirectoryServiceActor(
             Node localNode,
@@ -85,6 +86,11 @@ namespace Vlingo.Directory.Model
             if (!_leader)
             {
                 return;
+            }
+            
+            if (_invocationCount.IncrementAndGet() == 2)
+            {
+                throw new Exception("test supervision");
             }
             
             switch (data)
@@ -158,6 +164,30 @@ namespace Vlingo.Directory.Model
             }
         }
         
+        protected override void BeforeRestart(Exception reason)
+        {
+            Logger.Debug($"Before restart: {reason.Message}", reason);
+            base.BeforeRestart(reason);
+        }
+
+        protected override void AfterRestart(Exception reason)
+        {
+            base.AfterRestart(reason);
+            Logger.Debug($"After restart: {reason.Message}", reason);
+        }
+        
+        protected override void BeforeStart()
+        {
+            Logger.Debug("Before start");
+            base.BeforeStart();
+        }
+
+        protected override void AfterStop()
+        {
+            Logger.Debug("After stop");
+            base.AfterStop();
+        }
+
         //====================================
         // internal implementation
         //====================================
