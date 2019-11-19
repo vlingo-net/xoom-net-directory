@@ -114,7 +114,6 @@ namespace Vlingo.Directory.Client
         {
             _cancellable.Cancel();
             _subscriber.Close();
-            _directoryChannel.Close();
             _buffer.Dispose();
             base.Stop();
         }
