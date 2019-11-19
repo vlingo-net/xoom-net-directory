@@ -96,7 +96,7 @@ namespace Vlingo.Directory.Model
             switch (data)
             {
                 case IntervalType.Processing:
-                    Logger.Debug($"SERVICE - Processing channel {_publisher.Name}...");
+                    Logger.Debug($"SERVICE - Processing channel {_publisher?.Name}...");
                     _publisher?.ProcessChannel();
                     break;
                 case IntervalType.Publishing:
