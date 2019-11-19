@@ -275,7 +275,7 @@ namespace Vlingo.Directory.Model
                     SelfAs<IScheduled<IntervalType>>(),
                     IntervalType.Publishing,
                     TimeSpan.Zero,
-                    TimeSpan.FromMilliseconds(_timing.ProcessingInterval));
+                    TimeSpan.FromMilliseconds(_timing.PublishingInterval));
             }
         }
 
