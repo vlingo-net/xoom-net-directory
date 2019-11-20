@@ -37,7 +37,7 @@ namespace Vlingo.Directory.Model
         private readonly Timing _timing;
         private readonly int _unpublishedNotifications;
         private bool _stopped;
-        private AtomicInteger _invocationCount = new AtomicInteger(1);
+        public AtomicReference<List<string>> Consumed = new AtomicReference<List<string>>(new List<string>());
 
         public DirectoryServiceActor(
             Node localNode,
@@ -139,6 +139,7 @@ namespace Vlingo.Directory.Model
         {
             var incoming = message.AsTextMessage();
             Logger.Debug($"SERVICE - Consuming {incoming}...");
+            Consumed.Get().Add(incoming);
 
             var registerService = RegisterService.From(incoming);
             if (registerService.IsValid)
