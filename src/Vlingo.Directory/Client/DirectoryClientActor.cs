@@ -45,8 +45,8 @@ namespace Vlingo.Directory.Client
                 processingTimeout,
                 Logger);
             _subscriber.OpenFor(SelfAs<IChannelReaderConsumer>());
-            _cancellable = Stage.Scheduler.Schedule(
-                SelfAs<IScheduled<object?>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
+//            _cancellable = Stage.Scheduler.Schedule(
+//                SelfAs<IScheduled<object?>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
         }
         
         //====================================

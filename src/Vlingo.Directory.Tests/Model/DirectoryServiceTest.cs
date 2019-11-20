@@ -253,6 +253,13 @@ namespace Vlingo.Directory.Tests.Model
                 var location1 = new Location("test-host1", locationPort);
                 var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> {location1});
                 _client1.Actor.Register(info1);
+                var i = 0;
+                while (i < 100)
+                {
+                    ((IScheduled<object>) _client1.ActorInside).IntervalSignal(null, null);
+                    Pause(10);
+                    i++;
+                }
             });
             t1.Start();
 
@@ -261,6 +268,13 @@ namespace Vlingo.Directory.Tests.Model
                 var location2 = new Location("test-host2", locationPort);
                 var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> {location2});
                 _client2.Actor.Register(info2);
+                var i = 0;
+                while (i < 100)
+                {
+                    ((IScheduled<object>) _client2.ActorInside).IntervalSignal(null, null);
+                    Pause(10);
+                    i++;
+                }
             });
             t2.Start();
 
@@ -269,6 +283,13 @@ namespace Vlingo.Directory.Tests.Model
                 var location3 = new Location("test-host3", locationPort);
                 var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
                 _client3.Actor.Register(info3);
+                var i = 0;
+                while (i < 100)
+                {
+                    ((IScheduled<object>) _client3.ActorInside).IntervalSignal(null, null);
+                    Pause(10);
+                    i++;
+                }
             });
             t3.Start();
 
