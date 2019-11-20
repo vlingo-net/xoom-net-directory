@@ -236,9 +236,9 @@ namespace Vlingo.Directory.Tests.Model
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();
 
-            var accessSafely1 = _interest1.AfterCompleting(1);
-            var accessSafely2 = _interest2.AfterCompleting(1);
-            var accessSafely3 = _interest3.AfterCompleting(1);
+            var accessSafely1 = _interest1.AfterCompleting(6);
+            var accessSafely2 = _interest2.AfterCompleting(6);
+            var accessSafely3 = _interest3.AfterCompleting(6);
 
             var locationPort = PortToUse.GetAndIncrement();
             var location1 = new Location("test-host1", locationPort);
@@ -255,11 +255,13 @@ namespace Vlingo.Directory.Tests.Model
 
 //            accessSafely1.ReadFromExpecting("interestedIn", 3);
 //            accessSafely2.ReadFromExpecting("interestedIn", 3);
-            accessSafely3.ReadFromExpecting("interestedIn", 3);
-            
+//            accessSafely3.ReadFromExpecting("interestedIn", 3);
+//            
 //            accessSafely1.ReadFromExpecting("informDiscovered", 3);
 //            accessSafely2.ReadFromExpecting("informDiscovered", 3);
-            accessSafely3.ReadFromExpecting("informDiscovered", 3);
+//            accessSafely3.ReadFromExpecting("informDiscovered", 3);
+
+            Pause(60000);
 
             foreach (var interest in _interests)
             {
