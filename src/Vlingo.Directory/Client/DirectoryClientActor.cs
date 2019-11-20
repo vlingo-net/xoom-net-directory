@@ -7,6 +7,7 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using Vlingo.Actors;
 using Vlingo.Common;
 using Vlingo.Directory.Model.Message;
@@ -28,6 +29,7 @@ namespace Vlingo.Directory.Client
         private RawMessage? _registerService;
         private readonly MulticastSubscriber _subscriber;
         private Address? _testAddress;
+        private volatile object _syncRead = new object();
 
         public DirectoryClientActor(
             IServiceDiscoveryInterest interest,
@@ -45,8 +47,8 @@ namespace Vlingo.Directory.Client
                 processingTimeout,
                 Logger);
             _subscriber.OpenFor(SelfAs<IChannelReaderConsumer>());
-//            _cancellable = Stage.Scheduler.Schedule(
-//                SelfAs<IScheduled<object?>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
+            _cancellable = Stage.Scheduler.Schedule(
+                SelfAs<IScheduled<object>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
         }
         
         //====================================
@@ -102,9 +104,12 @@ namespace Vlingo.Directory.Client
 
         public void IntervalSignal(IScheduled<object> scheduled, object data)
         {
-            Logger.Debug("CLIENT - Probing channel...");
-            _subscriber.ProbeChannel();
-            RegisterService();
+            lock (_syncRead)
+            {
+                Logger.Debug("CLIENT - Probing channel...");
+                _subscriber.ProbeChannel();
+                RegisterService();   
+            }
         }
         
         //====================================
