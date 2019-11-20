@@ -22,10 +22,11 @@ namespace Vlingo.Directory.Client
     public sealed class DirectoryClientActor : Actor, IDirectoryClient, IChannelReaderConsumer, IScheduled<object>
     {
         private readonly MemoryStream _buffer;
-        private readonly ICancellable _cancellable;
+        private ICancellable _cancellable;
         private PublisherAvailability? _directory;
         private SocketChannelWriter? _directoryChannel;
         private readonly IServiceDiscoveryInterest _interest;
+        private readonly long _processingInterval;
         private RawMessage? _registerService;
         private readonly MulticastSubscriber _subscriber;
         private Address? _testAddress;
@@ -39,6 +40,7 @@ namespace Vlingo.Directory.Client
             int processingTimeout)
         {
             _interest = interest;
+            _processingInterval = processingInterval;
             _buffer = new MemoryStream(maxMessageSize);
             _subscriber = new MulticastSubscriber(
                 DirectoryClientFactory.ClientName,
@@ -47,8 +49,6 @@ namespace Vlingo.Directory.Client
                 processingTimeout,
                 Logger);
             _subscriber.OpenFor(SelfAs<IChannelReaderConsumer>());
-            _cancellable = Stage.Scheduler.Schedule(
-                SelfAs<IScheduled<object>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
         }
         
         //====================================
@@ -59,6 +59,8 @@ namespace Vlingo.Directory.Client
         {
             var converted = Model.Message.RegisterService.As(Name.Of(info.Name), Location.ToAddresses(info.Locations));
             _registerService = RawMessage.From(0, 0, converted.ToString());
+            _cancellable = Stage.Scheduler.Schedule(
+                SelfAs<IScheduled<object>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(_processingInterval));
         }
 
         public void Unregister(string serviceName)
@@ -104,12 +106,9 @@ namespace Vlingo.Directory.Client
 
         public void IntervalSignal(IScheduled<object> scheduled, object data)
         {
-            lock (_syncRead)
-            {
-                Logger.Debug("CLIENT - Probing channel...");
-                _subscriber.ProbeChannel();
-                RegisterService();   
-            }
+            Logger.Debug("CLIENT - Probing channel...");
+            _subscriber.ProbeChannel();
+            RegisterService();   
         }
         
         //====================================
