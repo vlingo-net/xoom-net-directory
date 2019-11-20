@@ -46,7 +46,7 @@ namespace Vlingo.Directory.Client
                 Logger);
             _subscriber.OpenFor(SelfAs<IChannelReaderConsumer>());
             _cancellable = Stage.Scheduler.Schedule(
-                SelfAs<IScheduled<object?>>(), null, TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(processingInterval));
+                SelfAs<IScheduled<object?>>(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(processingInterval));
         }
         
         //====================================
@@ -72,7 +72,7 @@ namespace Vlingo.Directory.Client
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
-
+            Logger.Debug($"CLIENT - Consuming message {incoming}");
             var serviceRegistered = ServiceRegistered.From(incoming);
 
             if (serviceRegistered.IsValid && _interest.InterestedIn(serviceRegistered.Name.Value))
@@ -192,6 +192,7 @@ namespace Vlingo.Directory.Client
                 var unregister = Model.Message.UnregisterService.As(serviceName);
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
+                Logger.Debug($"CLIENT - Writing service unregistration {_registerService.AsTextMessage()}...");
                 var actual = _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {
