@@ -285,9 +285,10 @@ namespace Vlingo.Directory.Tests.Model
         {
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();
+         
+            var locationPort = PortToUse.GetAndIncrement();
             
             var writer1 = new SocketChannelWriter(_testAddress, ConsoleLogger.TestInstance());
-            var locationPort = PortToUse.GetAndIncrement();
             var location1 = new Location("test-host1", locationPort);
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
             var converted1 = RegisterService.As(Name.Of(info1.Name), Location.ToAddresses(info1.Locations));
@@ -296,19 +297,22 @@ namespace Vlingo.Directory.Tests.Model
 
             var t = new Thread(() =>
             {
-                writer1.Write(registerService1, buffer1);
+                for (var i = 0; i < 100; i++)
+                {
+                    Pause(50);
+                    writer1.Write(registerService1, buffer1);   
+                }
             });
             t.Start();
-            //writer1.Write(registerService1, buffer1);
 
             var i = 0;
-            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 1 && i < 1000)
+            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 100 && i < 1000)
             {
                 Pause(10);
                 i++;
             }
             
-            Assert.Equal(1, ((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count);
+            Assert.Equal(100, ((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count);
         }
         
         public DirectoryServiceTest(ITestOutputHelper output)

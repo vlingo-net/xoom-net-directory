@@ -87,12 +87,7 @@ namespace Vlingo.Directory.Model
             {
                 return;
             }
-            
-            /*if (_invocationCount.IncrementAndGet() == 2)
-            {
-                throw new Exception("test supervision");
-            }*/
-            
+
             switch (data)
             {
                 case IntervalType.Processing:
