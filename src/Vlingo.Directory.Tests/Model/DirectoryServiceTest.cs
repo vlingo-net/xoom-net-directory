@@ -236,9 +236,9 @@ namespace Vlingo.Directory.Tests.Model
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();
 
-            var accessSafely1 = _interest1.AfterCompleting(6);
-            var accessSafely2 = _interest2.AfterCompleting(6);
-            var accessSafely3 = _interest3.AfterCompleting(6);
+            var accessSafely1 = _interest1.AfterCompleting(1);
+            var accessSafely2 = _interest2.AfterCompleting(1);
+            var accessSafely3 = _interest3.AfterCompleting(1);
 
             var locationPort = PortToUse.GetAndIncrement();
             var location1 = new Location("test-host1", locationPort);
