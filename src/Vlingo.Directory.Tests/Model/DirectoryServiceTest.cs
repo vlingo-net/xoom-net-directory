@@ -262,7 +262,8 @@ namespace Vlingo.Directory.Tests.Model
 //            accessSafely3.ReadFromExpecting("informDiscovered", 3);
 
 
-            Pause(10000);
+            for (var i = 100; i < 100; i++)
+                Pause(100);
 
             foreach (var interest in _interests)
             {
