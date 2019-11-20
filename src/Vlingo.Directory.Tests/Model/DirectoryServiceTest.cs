@@ -311,7 +311,7 @@ namespace Vlingo.Directory.Tests.Model
 
             var t1 = new Thread(() =>
             {
-                for (var i = 0; i < 110; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     Pause(50);
                     writer1.Write(registerService1, buffer1);   
@@ -321,7 +321,7 @@ namespace Vlingo.Directory.Tests.Model
             
             var t2 = new Thread(() =>
             {
-                for (var i = 0; i < 110; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     Pause(50);
                     writer2.Write(registerService2, buffer2);   
@@ -331,7 +331,7 @@ namespace Vlingo.Directory.Tests.Model
             
             var t3 = new Thread(() =>
             {
-                for (var i = 0; i < 110; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     Pause(50);
                     writer3.Write(registerService3, buffer3);   
@@ -339,12 +339,12 @@ namespace Vlingo.Directory.Tests.Model
             });
             t3.Start();
 
-            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 300)
+            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 200)
             {
                 Pause(10);
             }
             
-            Assert.Equal(300, ((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count);
+            Assert.Equal(200, ((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count);
         }
         
         public DirectoryServiceTest(ITestOutputHelper output)
