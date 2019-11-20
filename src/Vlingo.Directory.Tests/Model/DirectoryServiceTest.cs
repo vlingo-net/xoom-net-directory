@@ -294,8 +294,22 @@ namespace Vlingo.Directory.Tests.Model
             var converted1 = RegisterService.As(Name.Of(info1.Name), Location.ToAddresses(info1.Locations));
             var registerService1 = RawMessage.From(0, 0, converted1.ToString());
             var buffer1 = new MemoryStream(1024);
+            
+            var writer2 = new SocketChannelWriter(_testAddress, ConsoleLogger.TestInstance());
+            var location2 = new Location("test-host2", locationPort);
+            var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
+            var converted2 = RegisterService.As(Name.Of(info2.Name), Location.ToAddresses(info2.Locations));
+            var registerService2 = RawMessage.From(0, 0, converted2.ToString());
+            var buffer2 = new MemoryStream(1024);
+            
+            var writer3 = new SocketChannelWriter(_testAddress, ConsoleLogger.TestInstance());
+            var location3 = new Location("test-host3", locationPort);
+            var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
+            var converted3 = RegisterService.As(Name.Of(info3.Name), Location.ToAddresses(info3.Locations));
+            var registerService3 = RawMessage.From(0, 0, converted3.ToString());
+            var buffer3 = new MemoryStream(1024);
 
-            var t = new Thread(() =>
+            var t1 = new Thread(() =>
             {
                 for (var i = 0; i < 100; i++)
                 {
@@ -303,16 +317,36 @@ namespace Vlingo.Directory.Tests.Model
                     writer1.Write(registerService1, buffer1);   
                 }
             });
-            t.Start();
+            t1.Start();
+            
+            var t2 = new Thread(() =>
+            {
+                for (var i = 0; i < 100; i++)
+                {
+                    Pause(50);
+                    writer2.Write(registerService2, buffer2);   
+                }
+            });
+            t2.Start();
+            
+            var t3 = new Thread(() =>
+            {
+                for (var i = 0; i < 100; i++)
+                {
+                    Pause(50);
+                    writer3.Write(registerService3, buffer3);   
+                }
+            });
+            t3.Start();
 
             var i = 0;
-            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 100 && i < 1000)
+            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 300 && i < 1000)
             {
                 Pause(10);
                 i++;
             }
             
-            Assert.Equal(100, ((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count);
+            Assert.Equal(300, ((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count);
         }
         
         public DirectoryServiceTest(ITestOutputHelper output)
