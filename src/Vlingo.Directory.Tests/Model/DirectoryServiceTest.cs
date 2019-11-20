@@ -339,12 +339,12 @@ namespace Vlingo.Directory.Tests.Model
             });
             t3.Start();
 
-            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 200)
+            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 250)
             {
                 Pause(10);
             }
             
-            Assert.Equal(200, ((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count);
+            Assert.InRange(((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count, 240, 260);
         }
         
         public DirectoryServiceTest(ITestOutputHelper output)
@@ -368,7 +368,7 @@ namespace Vlingo.Directory.Tests.Model
 
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(10, 100), 10)));
+                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 10)));
             
             _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 
