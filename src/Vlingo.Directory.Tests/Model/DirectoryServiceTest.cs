@@ -294,13 +294,7 @@ namespace Vlingo.Directory.Tests.Model
             var @group = new Group("237.37.37.1", operationalPort);
 
             var incomingPort = PortToUse.GetAndIncrement();
-            
-            var supervisor = _testWorld.ActorFor<ISupervisor>(typeof(DirectoryServiceSupervisorTestActor));
-            
-            /*_directory = _testWorld.ActorFor<IDirectoryService>(
-                Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 10), supervisor.ActorInside, "directory-service-actor"));*/
-            
+
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
                     Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 100), 10)));
