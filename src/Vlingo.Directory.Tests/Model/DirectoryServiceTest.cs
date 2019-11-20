@@ -386,7 +386,7 @@ namespace Vlingo.Directory.Tests.Model
 
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(100, 1000), 10)));
+                    Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(50, 100), 10)));
             
             _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 
