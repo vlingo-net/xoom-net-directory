@@ -248,10 +248,10 @@ namespace Vlingo.Directory.Tests.Model
 
             var locationPort = PortToUse.GetAndIncrement();
             
+            var location1 = new Location("test-host1", locationPort);
+            var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> {location1});
             var t1 = new Thread(() =>
             {
-                var location1 = new Location("test-host1", locationPort);
-                var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> {location1});
                 _client1.Actor.Register(info1);
                 var i = 0;
                 while (i < 100)
@@ -263,10 +263,10 @@ namespace Vlingo.Directory.Tests.Model
             });
             t1.Start();
 
+            var location2 = new Location("test-host2", locationPort);
+            var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> {location2});
             var t2 = new Thread(() =>
             {
-                var location2 = new Location("test-host2", locationPort);
-                var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> {location2});
                 _client2.Actor.Register(info2);
                 var i = 0;
                 while (i < 100)
@@ -278,10 +278,10 @@ namespace Vlingo.Directory.Tests.Model
             });
             t2.Start();
 
+            var location3 = new Location("test-host3", locationPort);
+            var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
             var t3 = new Thread(() =>
             {
-                var location3 = new Location("test-host3", locationPort);
-                var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
                 _client3.Actor.Register(info3);
                 var i = 0;
                 while (i < 100)
@@ -293,19 +293,14 @@ namespace Vlingo.Directory.Tests.Model
             });
             t3.Start();
 
-//            accessSafely1.ReadFromExpecting("interestedIn", 3);
-//            accessSafely2.ReadFromExpecting("interestedIn", 3);
-//            accessSafely3.ReadFromExpecting("interestedIn", 3);
-//            
-//            accessSafely1.ReadFromExpecting("informDiscovered", 3);
-//            accessSafely2.ReadFromExpecting("informDiscovered", 3);
-//            accessSafely3.ReadFromExpecting("informDiscovered", 3);
-
-            for (var i = 0; i < 100; i++)
-            {
-                Pause(100);   
-            }
-
+            accessSafely1.ReadFromExpecting("interestedIn", 3);
+            accessSafely2.ReadFromExpecting("interestedIn", 3);
+            accessSafely3.ReadFromExpecting("interestedIn", 3);
+            
+            accessSafely1.ReadFromExpecting("informDiscovered", 3);
+            accessSafely2.ReadFromExpecting("informDiscovered", 3);
+            accessSafely3.ReadFromExpecting("informDiscovered", 3);
+            
             foreach (var interest in _interests)
             {
                 Assert.NotNull(interest.ServicesSeen);
@@ -313,9 +308,9 @@ namespace Vlingo.Directory.Tests.Model
                 Assert.Contains("test-service2", interest.ServicesSeen);
                 Assert.Contains("test-service3", interest.ServicesSeen);
                 Assert.NotEmpty(interest.DiscoveredServices);
-//                Assert.Contains(info1, interest.DiscoveredServices);
-//                Assert.Contains(info2, interest.DiscoveredServices);
-//                Assert.Contains(info3, interest.DiscoveredServices);
+                Assert.Contains(info1, interest.DiscoveredServices);
+                Assert.Contains(info2, interest.DiscoveredServices);
+                Assert.Contains(info3, interest.DiscoveredServices);
             }
         }
 
