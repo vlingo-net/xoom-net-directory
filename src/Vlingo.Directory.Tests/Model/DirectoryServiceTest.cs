@@ -342,7 +342,7 @@ namespace Vlingo.Directory.Tests.Model
             var i = 0;
             while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 300 && i < 1000)
             {
-                Pause(10);
+                Pause(100);
                 i++;
             }
             
