@@ -339,11 +339,9 @@ namespace Vlingo.Directory.Tests.Model
             });
             t3.Start();
 
-            var i = 0;
-            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 300 && i < 1000)
+            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 300)
             {
-                Pause(100);
-                i++;
+                Pause(10);
             }
             
             Assert.Equal(300, ((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count);
