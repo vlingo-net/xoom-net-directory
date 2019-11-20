@@ -164,7 +164,7 @@ namespace Vlingo.Directory.Client
                 if (!publisherAvailability.Equals(_directory!))
                 {
                     _directory = publisherAvailability;
-                    Logger.Debug($"Closing directory channel {_directoryChannel}");
+                    Logger.Debug($"Closing directory channel {_directoryChannel} because received {maybePublisherAvailability}");
                     _directoryChannel?.Close();
                     _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
                 }

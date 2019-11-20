@@ -236,7 +236,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip = "Freezes")]
+        [Fact]
         public void TestRegisterDiscoverMultiple()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -280,7 +280,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact]
+        [Fact(Skip="Smokes")]
         public void SmokeTestForCi()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -372,7 +372,7 @@ namespace Vlingo.Directory.Tests.Model
             
             _interest1 = new MockServiceDiscoveryInterest("interest1", output);
 
-            /*_client1 = _testWorld.ActorFor<IDirectoryClient>(
+            _client1 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
                     Definition.Parameters(_interest1, @group, 1024, 50, 10)));
 
@@ -386,12 +386,12 @@ namespace Vlingo.Directory.Tests.Model
 
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
-                    Definition.Parameters(_interest3, @group, 1024, 50, 10)));*/
+                    Definition.Parameters(_interest3, @group, 1024, 50, 10)));
 
             _testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
-//            ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(_testAddress);
-//            ((DirectoryClientActor)_client2.ActorInside).TestSetDirectoryAddress(_testAddress);
-//            ((DirectoryClientActor)_client3.ActorInside).TestSetDirectoryAddress(_testAddress);
+            ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(_testAddress);
+            ((DirectoryClientActor)_client2.ActorInside).TestSetDirectoryAddress(_testAddress);
+            ((DirectoryClientActor)_client3.ActorInside).TestSetDirectoryAddress(_testAddress);
 
             _interests = new List<MockServiceDiscoveryInterest> { _interest1, _interest2, _interest3 };
         }
@@ -399,9 +399,9 @@ namespace Vlingo.Directory.Tests.Model
         public void Dispose()
         {
             _directory.Actor.Stop();
-//            _client1.Actor.Stop();
-//            _client2.Actor.Stop();
-//            _client3.Actor.Stop();
+            _client1.Actor.Stop();
+            _client2.Actor.Stop();
+            _client3.Actor.Stop();
             _testWorld.Terminate();
         }
 
