@@ -253,12 +253,12 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
 
-            accessSafely1.ReadFromExpecting("interestedIn", 3);
-            accessSafely2.ReadFromExpecting("interestedIn", 3);
+//            accessSafely1.ReadFromExpecting("interestedIn", 3);
+//            accessSafely2.ReadFromExpecting("interestedIn", 3);
             accessSafely3.ReadFromExpecting("interestedIn", 3);
             
-            accessSafely1.ReadFromExpecting("informDiscovered", 3);
-            accessSafely2.ReadFromExpecting("informDiscovered", 3);
+//            accessSafely1.ReadFromExpecting("informDiscovered", 3);
+//            accessSafely2.ReadFromExpecting("informDiscovered", 3);
             accessSafely3.ReadFromExpecting("informDiscovered", 3);
 
             foreach (var interest in _interests)
