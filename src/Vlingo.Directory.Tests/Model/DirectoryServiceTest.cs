@@ -45,7 +45,7 @@ namespace Vlingo.Directory.Tests.Model
         private readonly ITestOutputHelper _output;
         private Address _testAddress;
 
-        [Fact(Skip = "Testing")]
+        [Fact]
         public void TestShouldInformInterest()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -67,7 +67,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.Contains(info, _interest1.DiscoveredServices);
         }
 
-        [Fact(Skip = "Freezes")]
+        [Fact(Skip = "Failing")]
         public void TestShouldUnregister()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -118,7 +118,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip = "Testing")]
+        [Fact]
         public void TestShouldNotInformInterest()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -136,7 +136,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.DoesNotContain(info1, _interest1.DiscoveredServices);
         }
 
-        [Fact(Skip = "Freezes")]
+        [Fact]
         public void TestAlteredLeadership()
         {
             _directory.Actor.Use(new TestAttributesClient());
