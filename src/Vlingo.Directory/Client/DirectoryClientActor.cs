@@ -177,7 +177,7 @@ namespace Vlingo.Directory.Client
             if (_directoryChannel != null && _registerService != null)
             {
                 var expected = _registerService.TotalLength;
-                Logger.Debug($"CLIENT - Writing service registration {_registerService.AsTextMessage()}...");
+                Logger.Debug($"CLIENT - Writing service registration {_registerService?.AsTextMessage()}...");
                 var actual = _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {
@@ -193,7 +193,7 @@ namespace Vlingo.Directory.Client
                 var unregister = Model.Message.UnregisterService.As(serviceName);
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
-                Logger.Debug($"CLIENT - Writing service unregistration {_registerService.AsTextMessage()}...");
+                Logger.Debug($"CLIENT - Writing service unregistration {_registerService?.AsTextMessage()}...");
                 var actual = _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {
