@@ -10,18 +10,15 @@ using System.Linq;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
 using Vlingo.Directory.Client;
-using Xunit.Abstractions;
 
 namespace Vlingo.Directory.Tests.Client
 {
     public class MockServiceDiscoveryInterest : IServiceDiscoveryInterest
     {
-        private readonly ITestOutputHelper _output;
         private AccessSafely _access;
 
-        public MockServiceDiscoveryInterest(string name, ITestOutputHelper output)
+        public MockServiceDiscoveryInterest(string name)
         {
-            _output = output;
             Name = name;
             DiscoveredServices = new ConcurrentBag<ServiceRegistrationInfo>();
             ServicesSeen = new ConcurrentBag<string>();
@@ -30,10 +27,8 @@ namespace Vlingo.Directory.Tests.Client
         
         public bool InterestedIn(string serviceName)
         {
-            _output.WriteLine($"MockServiceDiscoveryInterest: InterestedIn {Name} comes in: {serviceName}");
             if (!ServicesSeen.Contains(serviceName))
             {
-                _output.WriteLine($"MockServiceDiscoveryInterest: InterestedIn {Name} registering: {serviceName}");
                 ServicesSeen.Add(serviceName);
                 _access?.WriteUsing("interestedIn", 1);
             }
@@ -42,10 +37,8 @@ namespace Vlingo.Directory.Tests.Client
 
         public void InformDiscovered(ServiceRegistrationInfo discoveredService)
         {
-            _output.WriteLine($"MockServiceDiscoveryInterest: InformDiscovered {Name} comes in: {discoveredService.Name}");
             if (!DiscoveredServices.Contains(discoveredService))
             {
-                _output.WriteLine($"MockServiceDiscoveryInterest: InformDiscovered {Name} registering: {discoveredService.Name}");
                 DiscoveredServices.Add(discoveredService);
                 _access?.WriteUsing("informDiscovered", 1);
             }
@@ -53,10 +46,8 @@ namespace Vlingo.Directory.Tests.Client
 
         public void InformUnregistered(string unregisteredServiceName)
         {
-            _output.WriteLine($"MockServiceDiscoveryInterest: InformUnregistered {Name} comes in: {unregisteredServiceName}");
             if (!UnregisteredServices.Contains(unregisteredServiceName))
             {
-                _output.WriteLine($"MockServiceDiscoveryInterest: InformUnregistered {Name} unregistering: {unregisteredServiceName}");
                 UnregisteredServices.Add(unregisteredServiceName);
                 _access?.WriteUsing("informUnregistered", 1);
             }

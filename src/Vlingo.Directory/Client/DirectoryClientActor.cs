@@ -7,7 +7,6 @@
 
 using System;
 using System.IO;
-using System.Threading;
 using Vlingo.Actors;
 using Vlingo.Common;
 using Vlingo.Directory.Model.Message;
@@ -47,7 +46,7 @@ namespace Vlingo.Directory.Client
                 Logger);
             _subscriber.OpenFor(SelfAs<IChannelReaderConsumer>());
             _cancellable = Stage.Scheduler.Schedule(
-                SelfAs<IScheduled<object>>(), null, TimeSpan.FromMilliseconds(1000L), TimeSpan.FromMilliseconds(processingInterval));
+                SelfAs<IScheduled<object?>>(), null, TimeSpan.FromMilliseconds(1000L), TimeSpan.FromMilliseconds(processingInterval));
         }
         
         //====================================
@@ -73,7 +72,6 @@ namespace Vlingo.Directory.Client
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
-            Logger.Debug($"CLIENT - Consuming message {incoming}");
             var serviceRegistered = ServiceRegistered.From(incoming);
 
             if (serviceRegistered.IsValid && _interest.InterestedIn(serviceRegistered.Name.Value))
@@ -103,7 +101,6 @@ namespace Vlingo.Directory.Client
 
         public void IntervalSignal(IScheduled<object> scheduled, object data)
         {
-            Logger.Debug("CLIENT - Probing channel...");
             _subscriber.ProbeChannel();
             RegisterService();   
         }
@@ -127,31 +124,7 @@ namespace Vlingo.Directory.Client
         {
             _testAddress = testAddress;
         }
-        
-        protected override void BeforeRestart(Exception reason)
-        {
-            Logger.Debug($"CLIENT - Before restart: {reason.Message}", reason);
-            base.BeforeRestart(reason);
-        }
 
-        protected override void AfterRestart(Exception reason)
-        {
-            base.AfterRestart(reason);
-            Logger.Debug($"CLIENT - After restart: {reason.Message}", reason);
-        }
-        
-        protected override void BeforeStart()
-        {
-            Logger.Debug("CLIENT - Before start");
-            base.BeforeStart();
-        }
-
-        protected override void AfterStop()
-        {
-            Logger.Debug("CLIENT - After stop");
-            base.AfterStop();
-        }
-        
         //====================================
         // internal implementation
         //====================================
@@ -165,7 +138,6 @@ namespace Vlingo.Directory.Client
                 if (!publisherAvailability.Equals(_directory!))
                 {
                     _directory = publisherAvailability;
-                    Logger.Debug($"Closing directory channel {_directoryChannel} because received {maybePublisherAvailability}");
                     _directoryChannel?.Close();
                     _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
                 }
@@ -177,7 +149,6 @@ namespace Vlingo.Directory.Client
             if (_directoryChannel != null && _registerService != null)
             {
                 var expected = _registerService.TotalLength;
-                Logger.Debug($"CLIENT - Writing service registration {_registerService?.AsTextMessage()}...");
                 var actual = _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {
@@ -193,7 +164,6 @@ namespace Vlingo.Directory.Client
                 var unregister = Model.Message.UnregisterService.As(serviceName);
                 var unregisterServiceMessage = RawMessage.From(0, 0, unregister.ToString());
                 var expected = unregisterServiceMessage.TotalLength;
-                Logger.Debug($"CLIENT - Writing service unregistration {_registerService?.AsTextMessage()}...");
                 var actual = _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {

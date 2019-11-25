@@ -8,19 +8,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using Vlingo.Actors;
-using Vlingo.Actors.Plugin.Logging.Console;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
 using Vlingo.Directory.Client;
 using Vlingo.Directory.Model;
-using Vlingo.Directory.Model.Message;
 using Vlingo.Directory.Tests.Client;
-using Vlingo.Wire.Channel;
-using Vlingo.Wire.Message;
 using Vlingo.Wire.Multicast;
 using Vlingo.Wire.Node;
 using Xunit;
@@ -43,7 +37,6 @@ namespace Vlingo.Directory.Tests.Model
         private readonly List<MockServiceDiscoveryInterest> _interests;
         private readonly TestWorld _testWorld;
         private readonly ITestOutputHelper _output;
-        private Address _testAddress;
 
         [Fact]
         public void TestShouldInformInterest()
@@ -260,52 +253,6 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
             _client3.Actor.Register(info3);
 
-
-//            var location1 = new Location("test-host1", locationPort);
-//            var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> {location1});
-//            var t1 = new Thread(() =>
-//            {
-//                _client1.Actor.Register(info1);
-//                var i = 0;
-//                while (i < 100)
-//                {
-//                    ((IScheduled<object>) _client1.ActorInside).IntervalSignal(null, null);
-//                    Pause(10);
-//                    i++;
-//                }
-//            });
-//            t1.Start();
-//
-//            var location2 = new Location("test-host2", locationPort);
-//            var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> {location2});
-//            var t2 = new Thread(() =>
-//            {
-//                _client2.Actor.Register(info2);
-//                var i = 0;
-//                while (i < 100)
-//                {
-//                    ((IScheduled<object>) _client2.ActorInside).IntervalSignal(null, null);
-//                    Pause(10);
-//                    i++;
-//                }
-//            });
-//            t2.Start();
-//
-//            var location3 = new Location("test-host3", locationPort);
-//            var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
-//            var t3 = new Thread(() =>
-//            {
-//                _client3.Actor.Register(info3);
-//                var i = 0;
-//                while (i < 100)
-//                {
-//                    ((IScheduled<object>) _client3.ActorInside).IntervalSignal(null, null);
-//                    Pause(10);
-//                    i++;
-//                }
-//            });
-//            t3.Start();
-
             accessSafely1.ReadFromExpecting("interestedIn", 3);
             accessSafely2.ReadFromExpecting("interestedIn", 3);
             accessSafely3.ReadFromExpecting("interestedIn", 3);
@@ -327,73 +274,6 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip="Smokes")]
-        public void SmokeTestForCi()
-        {
-            _directory.Actor.Use(new TestAttributesClient());
-            _directory.Actor.AssignLeadership();
-         
-            var locationPort = PortToUse.GetAndIncrement();
-            
-            var writer1 = new SocketChannelWriter(_testAddress, ConsoleLogger.TestInstance());
-            var location1 = new Location("test-host1", locationPort);
-            var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
-            var converted1 = RegisterService.As(Name.Of(info1.Name), Location.ToAddresses(info1.Locations));
-            var registerService1 = RawMessage.From(0, 0, converted1.ToString());
-            var buffer1 = new MemoryStream(1024);
-            
-            var writer2 = new SocketChannelWriter(_testAddress, ConsoleLogger.TestInstance());
-            var location2 = new Location("test-host2", locationPort);
-            var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
-            var converted2 = RegisterService.As(Name.Of(info2.Name), Location.ToAddresses(info2.Locations));
-            var registerService2 = RawMessage.From(0, 0, converted2.ToString());
-            var buffer2 = new MemoryStream(1024);
-            
-            var writer3 = new SocketChannelWriter(_testAddress, ConsoleLogger.TestInstance());
-            var location3 = new Location("test-host3", locationPort);
-            var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
-            var converted3 = RegisterService.As(Name.Of(info3.Name), Location.ToAddresses(info3.Locations));
-            var registerService3 = RawMessage.From(0, 0, converted3.ToString());
-            var buffer3 = new MemoryStream(1024);
-
-            var t1 = new Thread(() =>
-            {
-                for (var i = 0; i < 100; i++)
-                {
-                    Pause(50);
-                    writer1.Write(registerService1, buffer1);   
-                }
-            });
-            t1.Start();
-            
-            var t2 = new Thread(() =>
-            {
-                for (var i = 0; i < 100; i++)
-                {
-                    Pause(50);
-                    writer2.Write(registerService2, buffer2);   
-                }
-            });
-            t2.Start();
-            
-            var t3 = new Thread(() =>
-            {
-                for (var i = 0; i < 100; i++)
-                {
-                    Pause(50);
-                    writer3.Write(registerService3, buffer3);   
-                }
-            });
-            t3.Start();
-
-            while (((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count < 250)
-            {
-                Pause(10);
-            }
-            
-            Assert.InRange(((DirectoryServiceActor)_directory.ActorInside).Consumed.Get().Count, 240, 260);
-        }
-        
         public DirectoryServiceTest(ITestOutputHelper output)
         {
             _output = output;
@@ -417,28 +297,28 @@ namespace Vlingo.Directory.Tests.Model
                 Definition.Has<DirectoryServiceActor>(
                     Definition.Parameters(node, new Network(@group, incomingPort), 1024, new Timing(50, 100), 10)));
             
-            _interest1 = new MockServiceDiscoveryInterest("interest1", output);
+            _interest1 = new MockServiceDiscoveryInterest("interest1");
 
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
                     Definition.Parameters(_interest1, @group, 1024, 50, 10)));
 
-            _interest2 = new MockServiceDiscoveryInterest("interest2", output);
+            _interest2 = new MockServiceDiscoveryInterest("interest2");
 
             _client2 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
                     Definition.Parameters(_interest2, @group, 1024, 50, 10)));
 
-            _interest3 = new MockServiceDiscoveryInterest("interest3", output);
+            _interest3 = new MockServiceDiscoveryInterest("interest3");
 
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
                 Definition.Has<DirectoryClientActor>(
                     Definition.Parameters(_interest3, @group, 1024, 50, 10)));
 
-            _testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
-            ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(_testAddress);
-            ((DirectoryClientActor)_client2.ActorInside).TestSetDirectoryAddress(_testAddress);
-            ((DirectoryClientActor)_client3.ActorInside).TestSetDirectoryAddress(_testAddress);
+            var testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
+            ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(testAddress);
+            ((DirectoryClientActor)_client2.ActorInside).TestSetDirectoryAddress(testAddress);
+            ((DirectoryClientActor)_client3.ActorInside).TestSetDirectoryAddress(testAddress);
 
             _interests = new List<MockServiceDiscoveryInterest> { _interest1, _interest2, _interest3 };
         }
@@ -450,11 +330,6 @@ namespace Vlingo.Directory.Tests.Model
             _client2.Actor.Stop();
             _client3.Actor.Stop();
             _testWorld.Terminate();
-        }
-
-        private void Pause(int milliseconds = 1000)
-        {
-            Thread.Sleep(milliseconds);
         }
     }
 }

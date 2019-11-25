@@ -91,7 +91,6 @@ namespace Vlingo.Directory.Model
             switch (data)
             {
                 case IntervalType.Processing:
-                    Logger.Debug($"SERVICE - Processing channel {_publisher?.Name}...");
                     _publisher?.ProcessChannel();
                     break;
                 case IntervalType.Publishing:
@@ -133,8 +132,7 @@ namespace Vlingo.Directory.Model
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
-            Logger.Debug($"SERVICE - Consuming {incoming}...");
-            Consumed.Get().Add(incoming);
+            Consumed.Get()?.Add(incoming);
 
             var registerService = RegisterService.From(incoming);
             if (registerService.IsValid)
@@ -160,30 +158,6 @@ namespace Vlingo.Directory.Model
                     Logger.Warn($"DIRECTORY: RECEIVED UNKNOWN: {incoming}");
                 }
             }
-        }
-        
-        protected override void BeforeRestart(Exception reason)
-        {
-            Logger.Debug($"SERVICE - Before restart: {reason.Message}", reason);
-            base.BeforeRestart(reason);
-        }
-
-        protected override void AfterRestart(Exception reason)
-        {
-            base.AfterRestart(reason);
-            Logger.Debug($"SERVICE - After restart: {reason.Message}", reason);
-        }
-        
-        protected override void BeforeStart()
-        {
-            Logger.Debug("SERVICE - Before start");
-            base.BeforeStart();
-        }
-
-        protected override void AfterStop()
-        {
-            Logger.Debug("SERVICE - After stop");
-            base.AfterStop();
         }
 
         //====================================
