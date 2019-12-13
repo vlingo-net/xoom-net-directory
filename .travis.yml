@@ -2,7 +2,6 @@ language: csharp
 jobs:
   include:
     - os: linux
-      dist: bionic
       dotnet: 3.0.100
       mono: none
     - os: osx
