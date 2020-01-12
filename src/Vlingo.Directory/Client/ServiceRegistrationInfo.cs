@@ -31,7 +31,7 @@ namespace Vlingo.Directory.Client
                 return 1;
             }
 
-            var result =  string.Compare(Name, other.Name, StringComparison.InvariantCulture);
+            var result =  string.Compare(Name, other.Name, StringComparison.Ordinal);
             if (result != 0)
             {
                 return result;
@@ -97,7 +97,7 @@ namespace Vlingo.Directory.Client
                 return 1;
             }
 
-            var result =  string.Compare(Address, other.Address, StringComparison.InvariantCulture);
+            var result =  string.Compare(Address, other.Address, StringComparison.Ordinal);
             if (result != 0)
             {
                 return result;
