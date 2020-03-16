@@ -57,15 +57,9 @@ namespace Vlingo.Directory.Model
             Network network,
             int maxMessageSize,
             Timing timing,
-            int unpublishedNotifications)
-        {
-            var definition =
-                Definition.Has<DirectoryServiceActor>(
-                    Definition.Parameters(localNode, network, maxMessageSize, timing, unpublishedNotifications),
-            "vlingo-directory-service");
-    
-            return stage.ActorFor<IDirectoryService>(definition);
-        }
+            int unpublishedNotifications) =>
+            stage.ActorFor<IDirectoryService>(
+                () => new DirectoryServiceActor(localNode, network, maxMessageSize, timing, unpublishedNotifications), "vlingo-directory-service");
     }
 
     public class Timing

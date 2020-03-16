@@ -28,16 +28,14 @@ namespace Vlingo.Directory.Client
         
         public static int DefaultProcessingTimeout = 10;
 
-        public static IDirectoryClient Instance(Stage stage, IServiceDiscoveryInterest interest, Group directoryPublisherGroup)
-        {
-            return Instance(
+        public static IDirectoryClient Instance(Stage stage, IServiceDiscoveryInterest interest, Group directoryPublisherGroup) =>
+            Instance(
                 stage,
                 interest,
                 directoryPublisherGroup,
                 DefaultMaxMessageSize,
                 DefaultProcessingInterval,
                 DefaultProcessingTimeout);
-        }
 
         public static IDirectoryClient Instance(
             Stage stage,
@@ -45,14 +43,8 @@ namespace Vlingo.Directory.Client
             Group directoryPublisherGroup,
             int maxMessageSize,
             long processingInterval,
-            int processingTimeout)
-        {
-            var definition =
-                    Definition.Has<DirectoryClientActor>(
-                Definition.Parameters(interest, directoryPublisherGroup, maxMessageSize, processingInterval, processingTimeout),
-            ClientName);
-
-            return stage.ActorFor<IDirectoryClient>(definition);
-        }
+            int processingTimeout) =>
+            stage.ActorFor<IDirectoryClient>(
+                () => new DirectoryClientActor(interest, directoryPublisherGroup, maxMessageSize, processingInterval, processingTimeout), ClientName);
     }
 }
