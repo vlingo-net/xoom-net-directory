@@ -14,7 +14,8 @@ build:
   verbosity: minimal
   publish_nuget: true
 for:
-  - matrix:
+  -
+    matrix:
       only:
         - image: Ubuntu
     before_test:
