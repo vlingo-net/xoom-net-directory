@@ -137,9 +137,9 @@ namespace Vlingo.Directory.Tests.Model
             // START directory assigned leadership
             _directory.Actor.AssignLeadership();
 
-            var accessSafely1 = _interest1.AfterCompleting(3);
-            var accessSafely2 = _interest2.AfterCompleting(3);
-            var accessSafely3 = _interest3.AfterCompleting(3);
+            var accessSafely1 = _interest1.AfterCompleting(6);
+            var accessSafely2 = _interest2.AfterCompleting(6);
+            var accessSafely3 = _interest3.AfterCompleting(6);
             
             var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
@@ -294,22 +294,22 @@ namespace Vlingo.Directory.Tests.Model
             var incomingPort = PortToUse.GetAndIncrement();
 
             _directory = _testWorld.ActorFor<IDirectoryService>(
-                () => new DirectoryServiceActor(node, new Network(group, incomingPort), 1024, new Timing(50, 100), 10));
+                () => new DirectoryServiceActor(node, new Network(group, incomingPort), 1024, new Timing(10, 100), 10));
 
             _interest1 = new MockServiceDiscoveryInterest("interest1");
 
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
-                () => new DirectoryClientActor(_interest1, group, 1024, 50, 10));
+                () => new DirectoryClientActor(_interest1, group, 1024, 10, 10));
 
             _interest2 = new MockServiceDiscoveryInterest("interest2");
 
             _client2 = _testWorld.ActorFor<IDirectoryClient>(
-                () => new DirectoryClientActor(_interest2, group, 1024, 50, 10));
+                () => new DirectoryClientActor(_interest2, group, 1024, 10, 10));
 
             _interest3 = new MockServiceDiscoveryInterest("interest3");
 
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
-                () => new DirectoryClientActor(_interest3, group, 1024, 50, 10));
+                () => new DirectoryClientActor(_interest3, group, 1024, 10, 10));
 
             var testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
             ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(testAddress);
