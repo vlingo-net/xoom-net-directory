@@ -24,7 +24,7 @@ namespace Vlingo.Directory.Client
         
         public IEnumerable<Location> Locations { get; }
         
-        public int CompareTo(ServiceRegistrationInfo other)
+        public int CompareTo(ServiceRegistrationInfo? other)
         {
             if (other == null || other.GetType() != typeof(ServiceRegistrationInfo))
             {
@@ -45,7 +45,7 @@ namespace Vlingo.Directory.Client
             return 0;
         }
 
-        public override bool Equals(object obj) => CompareTo((ServiceRegistrationInfo)obj) == 0;
+        public override bool Equals(object? obj) => CompareTo(obj as ServiceRegistrationInfo) == 0;
 
         public override int GetHashCode() => 31 * Name.GetHashCode() + Locations.Sum(l => l.GetHashCode());
 
@@ -90,7 +90,7 @@ namespace Vlingo.Directory.Client
         
         public int Port { get; }
             
-        public int CompareTo(Location other)
+        public int CompareTo(Location? other)
         {
             if (other == null || other.GetType() != typeof(Location))
             {
@@ -112,7 +112,7 @@ namespace Vlingo.Directory.Client
             return 0;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != typeof(Location))
             {
@@ -130,7 +130,7 @@ namespace Vlingo.Directory.Client
     
     public class LocationComparer : IEqualityComparer<Location>
     {
-        public bool Equals(Location x, Location y) => x != null && x.Equals(y);
+        public bool Equals(Location? x, Location? y) => x != null && x.Equals(y);
 
         public int GetHashCode(Location obj) => obj.GetHashCode();
     }
