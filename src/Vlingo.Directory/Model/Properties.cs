@@ -72,12 +72,24 @@ namespace Vlingo.Directory.Model
 
         public bool GetBoolean(string key, bool defaultValue)
         {
-            return bool.Parse(GetString(key, defaultValue.ToString()));
+            var parsed = GetString(key, defaultValue.ToString());
+            if (!string.IsNullOrEmpty(parsed))
+            {
+                return bool.Parse(parsed);   
+            }
+
+            return defaultValue;
         }
 
         public int GetInteger(string key, int defaultValue)
         {
-            return int.Parse(GetString(key, defaultValue.ToString()));
+            var parsed = GetString(key, defaultValue.ToString());
+            if (!string.IsNullOrEmpty(parsed))
+            {
+                return int.Parse(parsed);   
+            }
+
+            return defaultValue;
         }
 
         public string? GetString(string key, string defaultValue)
