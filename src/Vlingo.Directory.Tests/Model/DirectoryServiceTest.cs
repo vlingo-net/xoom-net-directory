@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
 using Vlingo.Directory.Client;
