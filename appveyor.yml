@@ -20,6 +20,8 @@ for:
         - image: Ubuntu
     before_test:
       - sudo ufw disable
+      - sudo ufw reload
+      - sudo ufw status verbose
     after_test:
       - sudo ufw enable
   -
