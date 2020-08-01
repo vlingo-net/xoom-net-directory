@@ -14,11 +14,8 @@ namespace Vlingo.Directory.Tests.Model
     {
         private readonly Dictionary<string, AttributeSet> _attributeSets;
 
-        public TestAttributesClient()
-        {
-            _attributeSets = new Dictionary<string, AttributeSet>();
-        }
-        
+        public TestAttributesClient() => _attributeSets = new Dictionary<string, AttributeSet>();
+
         public void Add<T>(string attributeSetName, string attributeName, T value)
         {
             if (!_attributeSets.TryGetValue(attributeSetName, out var set))
