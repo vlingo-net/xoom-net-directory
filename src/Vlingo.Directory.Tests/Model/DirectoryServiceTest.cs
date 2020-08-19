@@ -59,7 +59,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.Contains(info, _interest1.DiscoveredServices);
         }
 
-        [Fact(Skip = "CI fail")]
+        [Fact]
         public void TestShouldUnregister()
         {
             _directory.Actor.Use(new TestAttributesClient());
