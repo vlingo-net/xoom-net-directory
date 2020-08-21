@@ -110,7 +110,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip = "CI fail")]
+        [Fact]
         public void TestShouldNotInformInterest()
         {
             _directory.Actor.Use(new TestAttributesClient());
