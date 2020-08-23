@@ -228,7 +228,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip = "CI fail")]
+        [Fact]
         public void TestRegisterDiscoverMultiple()
         {
             _directory.Actor.Use(new TestAttributesClient());
