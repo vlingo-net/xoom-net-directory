@@ -1,7 +1,7 @@
 version: 0.0.{build}
 image:
   - Visual Studio 2019
-  - Previous Ubuntu1604
+  - Previous Ubuntu1804
   - macOS
   - macOS-Mojave
 configuration: Release
@@ -17,7 +17,7 @@ for:
   -
     matrix:
       only:
-        - image: Previous Ubuntu1604
+        - image: Previous Ubuntu1804
     before_test:
       - sudo ufw disable
       - sudo ufw reload

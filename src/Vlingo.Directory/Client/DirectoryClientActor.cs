@@ -120,10 +120,7 @@ namespace Vlingo.Directory.Client
         //====================================
         // Unit testing
         //====================================
-        public void TestSetDirectoryAddress(Address testAddress)
-        {
-            _testAddress = testAddress;
-        }
+        public void TestSetDirectoryAddress(Address testAddress) => _testAddress = testAddress;
 
         //====================================
         // internal implementation

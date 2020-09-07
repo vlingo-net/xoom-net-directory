@@ -22,10 +22,10 @@ namespace Vlingo.Directory.Model
 {
     public class DirectoryServiceActor : Actor, IDirectoryService, IChannelReaderConsumer, IScheduled<IntervalType>
     {
-        private static string _serviceNamePrefix = "RegisteredService:";
-        private static string _unregisteredServiceNamePrefix = "UnregisteredService:";
-        private static string _unregisteredCount = "COUNT";
-  
+        private const string ServiceNamePrefix = "RegisteredService:";
+        private const string UnregisteredServiceNamePrefix = "UnregisteredService:";
+        private const string UnregisteredCount = "COUNT";
+
         private ICancellable? _cancellableMessageProcessing;
         private ICancellable? _cancellablePublishing;
         private IAttributesProtocol? _attributesClient;
@@ -37,7 +37,7 @@ namespace Vlingo.Directory.Model
         private readonly Timing _timing;
         private readonly int _unpublishedNotifications;
         private bool _stopped;
-        public AtomicReference<List<string>> Consumed = new AtomicReference<List<string>>(new List<string>());
+        private readonly AtomicReference<List<string>> _consumed = new AtomicReference<List<string>>(new List<string>());
 
         public DirectoryServiceActor(
             Node localNode,
@@ -132,12 +132,12 @@ namespace Vlingo.Directory.Model
         public void Consume(RawMessage message)
         {
             var incoming = message.AsTextMessage();
-            Consumed.Get()?.Add(incoming);
+            _consumed.Get()?.Add(incoming);
 
             var registerService = RegisterService.From(incoming);
             if (registerService.IsValid)
             {
-                var attributeSetName = _serviceNamePrefix + registerService.Name.Value;
+                var attributeSetName = ServiceNamePrefix + registerService.Name.Value;
                 foreach (var address in registerService.Addresses)
                 {
                     var fullAddress = address.Full;
@@ -149,9 +149,9 @@ namespace Vlingo.Directory.Model
                 var unregisterService = UnregisterService.From(incoming);
                 if (unregisterService.IsValid)
                 {
-                    var attributeSetName = _serviceNamePrefix + unregisterService.Name.Value;
+                    var attributeSetName = ServiceNamePrefix + unregisterService.Name.Value;
                     _attributesClient?.RemoveAll(attributeSetName);
-                    _attributesClient?.Add(_unregisteredServiceNamePrefix + unregisterService.Name.Value, _unregisteredCount, _unpublishedNotifications);
+                    _attributesClient?.Add(UnregisteredServiceNamePrefix + unregisterService.Name.Value, UnregisteredCount, _unpublishedNotifications);
                 }
                 else
                 {
@@ -170,11 +170,11 @@ namespace Vlingo.Directory.Model
         {
             foreach (var set in _attributesClient!.All.ToList())
             {
-                if (set.Name!.StartsWith(_serviceNamePrefix))
+                if (set.Name!.StartsWith(ServiceNamePrefix))
                 {
                     PublishService(set.Name);
                 }
-                else if (set.Name.StartsWith(_unregisteredServiceNamePrefix))
+                else if (set.Name.StartsWith(UnregisteredServiceNamePrefix))
                 {
                     UnpublishService(set.Name);
                 }
@@ -188,14 +188,14 @@ namespace Vlingo.Directory.Model
             {
                 addresses.Add(Vlingo.Wire.Node.Address.From(attribute.ToStringValue(), AddressType.Main));
             }
-            _publisher?.Send(RawMessage.From(0, 0, ServiceRegistered.As(Named(_serviceNamePrefix, name), addresses).ToString()));
+            _publisher?.Send(RawMessage.From(0, 0, ServiceRegistered.As(Named(ServiceNamePrefix, name), addresses).ToString()));
         }
 
         private void UnpublishService(string name)
         {
-            _publisher?.Send(RawMessage.From(0, 0, ServiceUnregistered.As(Named(_unregisteredServiceNamePrefix, name)).ToString()));
+            _publisher?.Send(RawMessage.From(0, 0, ServiceUnregistered.As(Named(UnregisteredServiceNamePrefix, name)).ToString()));
     
-            var unregisteredNotificationsCount = _attributesClient!.Attribute<int>(name, _unregisteredCount);
+            var unregisteredNotificationsCount = _attributesClient!.Attribute<int>(name, UnregisteredCount);
             var count = unregisteredNotificationsCount.Value - 1;
             if (count - 1 <= 0)
             {
@@ -203,7 +203,7 @@ namespace Vlingo.Directory.Model
             }
             else
             {
-                _attributesClient.Replace(name, _unregisteredCount, count);
+                _attributesClient.Replace(name, UnregisteredCount, count);
             }
         }
 
