@@ -87,27 +87,27 @@ namespace Vlingo.Directory.Tests.Model
             accessSafely2.ReadFromExpecting("interestedIn", 3);
             accessSafely3.ReadFromExpecting("interestedIn", 3);
             
-            // _client1.Actor.Unregister(info1.Name);
-            //
-            // accessSafely1.ReadFromExpecting("informUnregistered", 1);
-            // accessSafely2.ReadFromExpecting("informUnregistered", 1);
-            // accessSafely3.ReadFromExpecting("informUnregistered", 1);
-            //
-            // foreach (var interest in new List<MockServiceDiscoveryInterest> { _interest2, _interest3 })
-            // {
-            //     _output.WriteLine($"COUNT: {interest.ServicesSeen.Count + interest.DiscoveredServices.Count + interest.UnregisteredServices.Count}");
-            //     var discoveredServices = interest.DiscoveredServices.ToList();
-            //     Assert.NotEmpty(interest.ServicesSeen);
-            //     Assert.Contains(info1.Name, interest.ServicesSeen);
-            //     Assert.NotEmpty(discoveredServices);
-            //     Assert.Contains(info1, discoveredServices);
-            //     Assert.NotEmpty(interest.UnregisteredServices);
-            //     foreach (var unregisteredService in interest.UnregisteredServices)
-            //     {
-            //         _output.WriteLine(unregisteredService);
-            //     }
-            //     Assert.Contains(info1.Name, interest.UnregisteredServices);
-            // }
+            _client1.Actor.Unregister(info1.Name);
+            
+            accessSafely1.ReadFromExpecting("informUnregistered", 1);
+            accessSafely2.ReadFromExpecting("informUnregistered", 1);
+            accessSafely3.ReadFromExpecting("informUnregistered", 1);
+
+            foreach (var interest in new List<MockServiceDiscoveryInterest> { _interest2, _interest3 })
+            {
+                _output.WriteLine($"COUNT: {interest.ServicesSeen.Count + interest.DiscoveredServices.Count + interest.UnregisteredServices.Count}");
+                var discoveredServices = interest.DiscoveredServices.ToList();
+                Assert.NotEmpty(interest.ServicesSeen);
+                Assert.Contains(info1.Name, interest.ServicesSeen);
+                Assert.NotEmpty(discoveredServices);
+                Assert.Contains(info1, discoveredServices);
+                Assert.NotEmpty(interest.UnregisteredServices);
+                foreach (var unregisteredService in interest.UnregisteredServices)
+                {
+                    _output.WriteLine(unregisteredService);
+                }
+                Assert.Contains(info1.Name, interest.UnregisteredServices);
+            }
         }
 
         [Fact]
@@ -228,7 +228,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip = "CI fail")]
+        [Fact]
         public void TestRegisterDiscoverMultiple()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -238,17 +238,15 @@ namespace Vlingo.Directory.Tests.Model
             var accessSafely2 = _interest2.AfterCompleting(3);
             var accessSafely3 = _interest3.AfterCompleting(3);
 
-            var locationPort = PortToUse.GetAndIncrement();
-            
-            var location1 = new Location("test-host1", locationPort);
+            var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
             var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> {location1});
             _client1.Actor.Register(info1);
 
-            var location2 = new Location("test-host2", locationPort);
+            var location2 = new Location("test-host2", PortToUse.GetAndIncrement());
             var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> {location2});
             _client2.Actor.Register(info2);
 
-            var location3 = new Location("test-host3", locationPort);
+            var location3 = new Location("test-host3", PortToUse.GetAndIncrement());
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
             _client3.Actor.Register(info3);
 
