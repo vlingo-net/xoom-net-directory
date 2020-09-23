@@ -22,6 +22,8 @@ for:
       - sudo ufw disable
       - sudo ufw reload
       - sudo ufw status verbose
+      - sudo sysctl net.ipv4.ip_local_port_range
+      - sudo sysctl net.ipv4.tcp_fin_timeout
     after_test:
       - sudo ufw enable
   -
