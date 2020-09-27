@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
 using Vlingo.Directory.Client;
@@ -229,7 +231,7 @@ namespace Vlingo.Directory.Tests.Model
         }
 
         [Fact]
-        public void TestRegisterDiscoverMultiple()
+        public async Task TestRegisterDiscoverMultiple()
         {
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();
@@ -250,10 +252,17 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
             _client3.Actor.Register(info3);
 
-            accessSafely1.ReadFromExpecting("interestedIn", 3);
-            accessSafely2.ReadFromExpecting("interestedIn", 3);
-            accessSafely3.ReadFromExpecting("interestedIn", 3);
-            
+            var result = 0;
+            do
+            {
+                result = accessSafely1.ReadFromNow<int>("interestedIn");
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            } while (result != 3);
+
+            // accessSafely1.ReadFromExpecting("interestedIn", 3);
+            // accessSafely2.ReadFromExpecting("interestedIn", 3);
+            // accessSafely3.ReadFromExpecting("interestedIn", 3);
+
             // accessSafely1.ReadFromExpecting("informDiscovered", 3);
             // accessSafely2.ReadFromExpecting("informDiscovered", 3);
             // accessSafely3.ReadFromExpecting("informDiscovered", 3);
