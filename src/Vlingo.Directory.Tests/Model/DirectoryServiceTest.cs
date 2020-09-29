@@ -257,7 +257,7 @@ namespace Vlingo.Directory.Tests.Model
             {
                 result = accessSafely1.ReadFromNow<int>("interestedIn");
                 await Task.Delay(TimeSpan.FromSeconds(1));
-            } while (result != 3);
+            } while (result < 3);
 
             // accessSafely1.ReadFromExpecting("interestedIn", 3);
             // accessSafely2.ReadFromExpecting("interestedIn", 3);
