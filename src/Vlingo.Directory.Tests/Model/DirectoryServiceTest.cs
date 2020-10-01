@@ -252,12 +252,16 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
             _client3.Actor.Register(info3);
 
+            var sw = new Stopwatch();
+            sw.Start();
             var result = 0;
+            var elapsedTime = TimeSpan.Zero;
             do
             {
                 result = accessSafely1.ReadFromNow<int>("interestedIn");
                 await Task.Delay(TimeSpan.FromSeconds(1));
-            } while (result < 3);
+                elapsedTime = sw.Elapsed;
+            } while (result < 3 || elapsedTime.Seconds > 60);
 
             // accessSafely1.ReadFromExpecting("interestedIn", 3);
             // accessSafely2.ReadFromExpecting("interestedIn", 3);
