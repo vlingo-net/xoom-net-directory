@@ -61,7 +61,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.Contains(info, _interest1.DiscoveredServices);
         }
 
-        [Fact(Skip = "CI fail")]
+        [Fact]
         public void TestShouldUnregister()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -262,6 +262,8 @@ namespace Vlingo.Directory.Tests.Model
                 await Task.Delay(TimeSpan.FromSeconds(1));
                 elapsedTime = sw.Elapsed;
             } while (result < 3 && elapsedTime.TotalSeconds < 60);
+            
+            _output.WriteLine($"Interested In: {result}");
 
             // accessSafely1.ReadFromExpecting("interestedIn", 3);
             // accessSafely2.ReadFromExpecting("interestedIn", 3);
