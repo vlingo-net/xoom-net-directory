@@ -261,7 +261,7 @@ namespace Vlingo.Directory.Tests.Model
                 result = accessSafely1.ReadFromNow<int>("interestedIn");
                 await Task.Delay(TimeSpan.FromSeconds(1));
                 elapsedTime = sw.Elapsed;
-            } while (result < 3 && elapsedTime.TotalSeconds < 60);
+            } while (result < 3 && elapsedTime.TotalSeconds < 120);
             
             _output.WriteLine($"Interested In: {result}");
 

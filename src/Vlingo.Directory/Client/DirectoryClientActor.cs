@@ -154,6 +154,7 @@ namespace Vlingo.Directory.Client
                 if (actual != expected)
                 {
                     Logger.Warn($"DIRECTORY CLIENT: Did not send full service registration message:  {_registerService.AsTextMessage()}. Actual - {actual}, Expected - {expected}");
+                    Logger.Warn($"DIRECTORY CLIENT: Channel state: {_directoryChannel}");
                 }
 
                 if (_directoryChannel.IsBroken)
@@ -175,6 +176,7 @@ namespace Vlingo.Directory.Client
                 if (actual != expected)
                 {
                     Logger.Warn($"DIRECTORY CLIENT: Did not send full service unregister message: {unregisterServiceMessage.AsTextMessage()}. Actual - {actual}, Expected - {expected}");
+                    Logger.Warn($"DIRECTORY CLIENT: Channel state: {_directoryChannel}");
                 }
                 
                 if (_directoryChannel.IsBroken)
