@@ -28,6 +28,7 @@ namespace Vlingo.Directory.Client
         private RawMessage? _registerService;
         private readonly MulticastSubscriber _subscriber;
         private Address? _testAddress;
+        private readonly int _id;
 
         public DirectoryClientActor(
             IServiceDiscoveryInterest interest,
@@ -36,6 +37,7 @@ namespace Vlingo.Directory.Client
             long processingInterval,
             int processingTimeout)
         {
+            _id = new Random().Next(1, 1000);
             _interest = interest;
             _buffer = new MemoryStream(maxMessageSize);
             _subscriber = new MulticastSubscriber(
@@ -139,6 +141,7 @@ namespace Vlingo.Directory.Client
             {
                 if (!publisherAvailability.Equals(_directory!))
                 {
+                    Logger.Debug($"DIRECTORY CLIENT [{_id}]: Initializing socket...");
                     _directory = publisherAvailability;
                     PrepareDirectoryChannel();
                 }
@@ -153,13 +156,13 @@ namespace Vlingo.Directory.Client
                 var actual = _directoryChannel.Write(_registerService, _buffer);
                 if (actual != expected)
                 {
-                    Logger.Warn($"DIRECTORY CLIENT: Did not send full service registration message:  {_registerService.AsTextMessage()}. Actual - {actual}, Expected - {expected}");
-                    Logger.Warn($"DIRECTORY CLIENT: Channel state: {_directoryChannel}");
+                    Logger.Warn($"DIRECTORY CLIENT [{_id}]: Did not send full service registration message:  {_registerService.AsTextMessage()}. Actual - {actual}, Expected - {expected}");
+                    Logger.Warn($"DIRECTORY CLIENT [{_id}]: Channel state: {_directoryChannel}");
                 }
 
                 if (_directoryChannel.IsBroken)
                 {
-                    Logger.Warn("DIRECTORY CLIENT: Channel is broken. Preparing a new one.");
+                    Logger.Warn($"DIRECTORY CLIENT [{_id}]: Channel is broken. Preparing a new one");
                     PrepareDirectoryChannel();
                 }
             }
@@ -175,13 +178,13 @@ namespace Vlingo.Directory.Client
                 var actual = _directoryChannel.Write(unregisterServiceMessage, _buffer);
                 if (actual != expected)
                 {
-                    Logger.Warn($"DIRECTORY CLIENT: Did not send full service unregister message: {unregisterServiceMessage.AsTextMessage()}. Actual - {actual}, Expected - {expected}");
-                    Logger.Warn($"DIRECTORY CLIENT: Channel state: {_directoryChannel}");
+                    Logger.Warn($"DIRECTORY CLIENT [{_id}]: Did not send full service unregister message: {unregisterServiceMessage.AsTextMessage()}. Actual - {actual}, Expected - {expected}");
+                    Logger.Warn($"DIRECTORY CLIENT [{_id}]: Channel state: {_directoryChannel}");
                 }
                 
                 if (_directoryChannel.IsBroken)
                 {
-                    Logger.Warn("DIRECTORY CLIENT: Channel is broken. Preparing a new one.");
+                    Logger.Warn($"DIRECTORY CLIENT [{_id}]: Channel is broken. Preparing a new one");
                     PrepareDirectoryChannel();
                 }
             }
