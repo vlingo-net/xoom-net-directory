@@ -231,7 +231,7 @@ namespace Vlingo.Directory.Tests.Model
         }
 
         [Fact]
-        public async Task AAA()
+        public async Task TestRegisterDiscoverMultiple()
         {
             _directory.Actor.Use(new TestAttributesClient());
             _directory.Actor.AssignLeadership();

@@ -125,7 +125,12 @@ namespace Vlingo.Directory.Client
         //====================================
         // internal implementation
         //====================================
-
+        private void PrepareDirectoryChannel()
+        {
+            _directoryChannel?.Close();
+            _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
+        }
+        
         private void ManageDirectoryChannel(string maybePublisherAvailability)
         {
             var publisherAvailability = PublisherAvailability.From(maybePublisherAvailability);
@@ -135,8 +140,7 @@ namespace Vlingo.Directory.Client
                 if (!publisherAvailability.Equals(_directory!))
                 {
                     _directory = publisherAvailability;
-                    _directoryChannel?.Close();
-                    _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
+                    PrepareDirectoryChannel();
                 }
             }
         }
@@ -150,6 +154,12 @@ namespace Vlingo.Directory.Client
                 if (actual != expected)
                 {
                     Logger.Warn($"DIRECTORY CLIENT: Did not send full service registration message:  {_registerService.AsTextMessage()}. Actual - {actual}, Expected - {expected}");
+                }
+
+                if (_directoryChannel.IsBroken)
+                {
+                    Logger.Warn("DIRECTORY CLIENT: Channel is broken. Preparing a new one.");
+                    PrepareDirectoryChannel();
                 }
             }
         }
@@ -165,6 +175,12 @@ namespace Vlingo.Directory.Client
                 if (actual != expected)
                 {
                     Logger.Warn($"DIRECTORY CLIENT: Did not send full service unregister message: {unregisterServiceMessage.AsTextMessage()}. Actual - {actual}, Expected - {expected}");
+                }
+                
+                if (_directoryChannel.IsBroken)
+                {
+                    Logger.Warn("DIRECTORY CLIENT: Channel is broken. Preparing a new one.");
+                    PrepareDirectoryChannel();
                 }
             }
         }
