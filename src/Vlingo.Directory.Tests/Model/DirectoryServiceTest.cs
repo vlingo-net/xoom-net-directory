@@ -110,123 +110,123 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
         
-        // [Fact(Skip = "CI fail")]
-        // public void TestShouldNotInformInterest()
-        // {
-        //     _directory.Actor.Use(new TestAttributesClient());
-        //
-        //     // directory NOT assigned leadership
-        //     _directory.Actor.RelinquishLeadership(); // actually never had leadership, but be explicit and prove no harm
-        //     
-        //     var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
-        //     var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
-        //     _client1.Actor.Register(info1);
-        //
-        //     Assert.Empty(_interest1.ServicesSeen);
-        //     Assert.DoesNotContain("test-service", _interest1.ServicesSeen);
-        //     Assert.Empty(_interest1.DiscoveredServices);
-        //     Assert.DoesNotContain(info1, _interest1.DiscoveredServices);
-        // }
-        //
-        // [Fact(Skip = "CI fail")]
-        // public void TestAlteredLeadership()
-        // {
-        //     _directory.Actor.Use(new TestAttributesClient());
-        //     
-        //     // START directory assigned leadership
-        //     _directory.Actor.AssignLeadership();
-        //
-        //     var accessSafely1 = _interest1.AfterCompleting(6);
-        //     var accessSafely2 = _interest2.AfterCompleting(6);
-        //     var accessSafely3 = _interest3.AfterCompleting(6);
-        //     
-        //     var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
-        //     var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
-        //     _client1.Actor.Register(info1);
-        //
-        //     var location2 = new Location("test-host2", PortToUse.GetAndIncrement());
-        //     var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
-        //     _client2.Actor.Register(info2);
-        //
-        //     var location3 = new Location("test-host3", PortToUse.GetAndIncrement());
-        //     var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
-        //     _client3.Actor.Register(info3);
-        //
-        //     Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
-        //     Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
-        //     Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
-        //     
-        //     Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
-        //     Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
-        //     Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
-        //     
-        //     foreach (var interest in _interests)
-        //     {
-        //         var discoveredServices = interest.DiscoveredServices.ToList();
-        //         Assert.NotEmpty(interest.ServicesSeen);
-        //         Assert.Contains("test-service1", interest.ServicesSeen);
-        //         Assert.Contains("test-service2", interest.ServicesSeen);
-        //         Assert.Contains("test-service3", interest.ServicesSeen);
-        //         Assert.NotEmpty(discoveredServices);
-        //         Assert.Contains(info1, discoveredServices);
-        //         Assert.Contains(info2, discoveredServices);
-        //         Assert.Contains(info3, discoveredServices);
-        //     }
-        //
-        //     // ALTER directory relinquished leadership
-        //     _directory.Actor.RelinquishLeadership();
-        //
-        //     foreach (var interest in _interests)
-        //     {
-        //         interest.ServicesSeen.Clear();
-        //         interest.DiscoveredServices.Clear();
-        //     }
-        //
-        //     foreach (var interest in _interests)
-        //     {
-        //         Assert.Empty(interest.ServicesSeen);
-        //         Assert.DoesNotContain("test-service1", interest.ServicesSeen);
-        //         Assert.DoesNotContain("test-service2", interest.ServicesSeen);
-        //         Assert.DoesNotContain("test-service3", interest.ServicesSeen);
-        //         Assert.Empty(interest.DiscoveredServices);
-        //         Assert.DoesNotContain(info1, interest.DiscoveredServices);
-        //         Assert.DoesNotContain(info2, interest.DiscoveredServices);
-        //         Assert.DoesNotContain(info3, interest.DiscoveredServices);
-        //     }
-        //
-        //     // ALTER directory assigned leadership
-        //     _directory.Actor.AssignLeadership();
-        //
-        //     foreach (var interest in _interests)
-        //     {
-        //         interest.ServicesSeen.Clear();
-        //         interest.DiscoveredServices.Clear();
-        //     }
-        //     
-        //     accessSafely1 = _interest1.AfterCompleting(3);
-        //     accessSafely2 = _interest2.AfterCompleting(3);
-        //     accessSafely3 = _interest3.AfterCompleting(3);
-        //     
-        //     Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
-        //     Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
-        //     Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
-        //
-        //     Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
-        //     Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
-        //     Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
-        //
-        //     foreach (var interest in _interests)
-        //     {
-        //         Assert.NotEmpty(interest.ServicesSeen);
-        //         Assert.Contains("test-service1", interest.ServicesSeen);
-        //         Assert.Contains("test-service2", interest.ServicesSeen);
-        //         Assert.Contains("test-service3", interest.ServicesSeen);
-        //         Assert.NotEmpty(interest.DiscoveredServices);
-        //         Assert.Contains(info1, interest.DiscoveredServices);
-        //         Assert.Contains(info2, interest.DiscoveredServices);
-        //         Assert.Contains(info3, interest.DiscoveredServices);
-        //     }
-        // }
+        [Fact]
+        public void TestShouldNotInformInterest()
+        {
+            _directory.Actor.Use(new TestAttributesClient());
+        
+            // directory NOT assigned leadership
+            _directory.Actor.RelinquishLeadership(); // actually never had leadership, but be explicit and prove no harm
+            
+            var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
+            var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
+            _client1.Actor.Register(info1);
+        
+            Assert.Empty(_interest1.ServicesSeen);
+            Assert.DoesNotContain("test-service", _interest1.ServicesSeen);
+            Assert.Empty(_interest1.DiscoveredServices);
+            Assert.DoesNotContain(info1, _interest1.DiscoveredServices);
+        }
+        
+        [Fact]
+        public void TestAlteredLeadership()
+        {
+            _directory.Actor.Use(new TestAttributesClient());
+            
+            // START directory assigned leadership
+            _directory.Actor.AssignLeadership();
+        
+            var accessSafely1 = _interest1.AfterCompleting(6);
+            var accessSafely2 = _interest2.AfterCompleting(6);
+            var accessSafely3 = _interest3.AfterCompleting(6);
+            
+            var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
+            var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> { location1 });
+            _client1.Actor.Register(info1);
+        
+            var location2 = new Location("test-host2", PortToUse.GetAndIncrement());
+            var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> { location2 });
+            _client2.Actor.Register(info2);
+        
+            var location3 = new Location("test-host3", PortToUse.GetAndIncrement());
+            var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
+            _client3.Actor.Register(info3);
+        
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+            
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
+            
+            foreach (var interest in _interests)
+            {
+                var discoveredServices = interest.DiscoveredServices.ToList();
+                Assert.NotEmpty(interest.ServicesSeen);
+                Assert.Contains("test-service1", interest.ServicesSeen);
+                Assert.Contains("test-service2", interest.ServicesSeen);
+                Assert.Contains("test-service3", interest.ServicesSeen);
+                Assert.NotEmpty(discoveredServices);
+                Assert.Contains(info1, discoveredServices);
+                Assert.Contains(info2, discoveredServices);
+                Assert.Contains(info3, discoveredServices);
+            }
+        
+            // ALTER directory relinquished leadership
+            _directory.Actor.RelinquishLeadership();
+        
+            foreach (var interest in _interests)
+            {
+                interest.ServicesSeen.Clear();
+                interest.DiscoveredServices.Clear();
+            }
+        
+            foreach (var interest in _interests)
+            {
+                Assert.Empty(interest.ServicesSeen);
+                Assert.DoesNotContain("test-service1", interest.ServicesSeen);
+                Assert.DoesNotContain("test-service2", interest.ServicesSeen);
+                Assert.DoesNotContain("test-service3", interest.ServicesSeen);
+                Assert.Empty(interest.DiscoveredServices);
+                Assert.DoesNotContain(info1, interest.DiscoveredServices);
+                Assert.DoesNotContain(info2, interest.DiscoveredServices);
+                Assert.DoesNotContain(info3, interest.DiscoveredServices);
+            }
+        
+            // ALTER directory assigned leadership
+            _directory.Actor.AssignLeadership();
+        
+            foreach (var interest in _interests)
+            {
+                interest.ServicesSeen.Clear();
+                interest.DiscoveredServices.Clear();
+            }
+            
+            accessSafely1 = _interest1.AfterCompleting(3);
+            accessSafely2 = _interest2.AfterCompleting(3);
+            accessSafely3 = _interest3.AfterCompleting(3);
+            
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("interestedIn", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("interestedIn", 3));
+        
+            Assert.Equal(3, accessSafely1.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely2.ReadFromExpecting("informDiscovered", 3));
+            Assert.Equal(3, accessSafely3.ReadFromExpecting("informDiscovered", 3));
+        
+            foreach (var interest in _interests)
+            {
+                Assert.NotEmpty(interest.ServicesSeen);
+                Assert.Contains("test-service1", interest.ServicesSeen);
+                Assert.Contains("test-service2", interest.ServicesSeen);
+                Assert.Contains("test-service3", interest.ServicesSeen);
+                Assert.NotEmpty(interest.DiscoveredServices);
+                Assert.Contains(info1, interest.DiscoveredServices);
+                Assert.Contains(info2, interest.DiscoveredServices);
+                Assert.Contains(info3, interest.DiscoveredServices);
+            }
+        }
 
         [Fact]
         public void TestRegisterDiscoverMultiple()
