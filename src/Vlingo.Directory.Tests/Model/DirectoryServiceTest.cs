@@ -305,22 +305,22 @@ namespace Vlingo.Directory.Tests.Model
             var incomingPort = PortToUse.GetAndIncrement();
 
             _directory = _testWorld.ActorFor<IDirectoryService>(
-                () => new DirectoryServiceActor(node, new Network(group, incomingPort), 1024, new Timing(10, 100), 10));
+                () => new DirectoryServiceActor(node, new Network(group, incomingPort), 1024, new Timing(30, 100), 10));
 
             _interest1 = new MockServiceDiscoveryInterest("interest1");
 
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
-                () => new DirectoryClientActor(_interest1, group, 1024, 10, 10));
+                () => new DirectoryClientActor(_interest1, group, 1024, 50, 10));
 
             _interest2 = new MockServiceDiscoveryInterest("interest2");
 
             _client2 = _testWorld.ActorFor<IDirectoryClient>(
-                () => new DirectoryClientActor(_interest2, group, 1024, 10, 10));
+                () => new DirectoryClientActor(_interest2, group, 1024, 50, 10));
             
             _interest3 = new MockServiceDiscoveryInterest("interest3");
             
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
-                () => new DirectoryClientActor(_interest3, group, 1024, 10, 10));
+                () => new DirectoryClientActor(_interest3, group, 1024, 50, 10));
 
             var testAddress = Address.From(Host.Of("localhost"), incomingPort, AddressType.Main);
             ((DirectoryClientActor)_client1.ActorInside).TestSetDirectoryAddress(testAddress);
