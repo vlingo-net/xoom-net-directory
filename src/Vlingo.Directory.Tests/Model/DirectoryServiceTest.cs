@@ -228,61 +228,48 @@ namespace Vlingo.Directory.Tests.Model
         //     }
         // }
 
-        // [Fact]
-        // public async Task TestRegisterDiscoverMultiple()
-        // {
-            // _directory.Actor.Use(new TestAttributesClient());
-            // _directory.Actor.AssignLeadership();
-            //
-            // var accessSafely1 = _interest1.AfterCompleting(3);
-            // var accessSafely2 = _interest2.AfterCompleting(3);
-            // var accessSafely3 = _interest3.AfterCompleting(3);
-            //
-            // var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
-            // var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> {location1});
-            // _client1.Actor.Register(info1);
-            //
-            // var location2 = new Location("test-host2", PortToUse.GetAndIncrement());
-            // var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> {location2});
-            // _client2.Actor.Register(info2);
-            //
-            // var location3 = new Location("test-host3", PortToUse.GetAndIncrement());
-            // var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
-            // _client3.Actor.Register(info3);
-            //
-            // var sw = new Stopwatch();
-            // sw.Start();
-            // var result = 0;
-            // var elapsedTime = TimeSpan.Zero;
-            // do
-            // {
-            //     result = accessSafely1.ReadFromNow<int>("interestedIn");
-            //     await Task.Delay(TimeSpan.FromSeconds(1));
-            //     elapsedTime = sw.Elapsed;
-            // } while (result < 3 && elapsedTime.TotalSeconds < 120);
-            //
-            // _output.WriteLine($"Interested In: {result}");
+        [Fact]
+        public void TestRegisterDiscoverMultiple()
+        {
+            _directory.Actor.Use(new TestAttributesClient());
+            _directory.Actor.AssignLeadership();
+            
+            var accessSafely1 = _interest1.AfterCompleting(6);
+            var accessSafely2 = _interest2.AfterCompleting(6);
+            var accessSafely3 = _interest3.AfterCompleting(6);
+            
+            var location1 = new Location("test-host1", PortToUse.GetAndIncrement());
+            var info1 = new ServiceRegistrationInfo("test-service1", new List<Location> {location1});
+            _client1.Actor.Register(info1);
+            
+            var location2 = new Location("test-host2", PortToUse.GetAndIncrement());
+            var info2 = new ServiceRegistrationInfo("test-service2", new List<Location> {location2});
+            _client2.Actor.Register(info2);
+            
+            var location3 = new Location("test-host3", PortToUse.GetAndIncrement());
+            var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> {location3});
+            _client3.Actor.Register(info3);
 
-            // accessSafely1.ReadFromExpecting("interestedIn", 3);
-            // accessSafely2.ReadFromExpecting("interestedIn", 3);
-            // accessSafely3.ReadFromExpecting("interestedIn", 3);
+            accessSafely1.ReadFromExpecting("interestedIn", 3);
+            accessSafely2.ReadFromExpecting("interestedIn", 3);
+            accessSafely3.ReadFromExpecting("interestedIn", 3);
 
-            // accessSafely1.ReadFromExpecting("informDiscovered", 3);
-            // accessSafely2.ReadFromExpecting("informDiscovered", 3);
-            // accessSafely3.ReadFromExpecting("informDiscovered", 3);
-            //
-            // foreach (var interest in _interests)
-            // {
-            //     Assert.NotNull(interest.ServicesSeen);
-            //     Assert.Contains("test-service1", interest.ServicesSeen);
-            //     Assert.Contains("test-service2", interest.ServicesSeen);
-            //     Assert.Contains("test-service3", interest.ServicesSeen);
-            //     Assert.NotEmpty(interest.DiscoveredServices);
-            //     Assert.Contains(info1, interest.DiscoveredServices);
-            //     Assert.Contains(info2, interest.DiscoveredServices);
-            //     Assert.Contains(info3, interest.DiscoveredServices);
-            // }
-        // }
+            accessSafely1.ReadFromExpecting("informDiscovered", 3);
+            accessSafely2.ReadFromExpecting("informDiscovered", 3);
+            accessSafely3.ReadFromExpecting("informDiscovered", 3);
+            
+            foreach (var interest in _interests)
+            {
+                Assert.NotNull(interest.ServicesSeen);
+                Assert.Contains("test-service1", interest.ServicesSeen);
+                Assert.Contains("test-service2", interest.ServicesSeen);
+                Assert.Contains("test-service3", interest.ServicesSeen);
+                Assert.NotEmpty(interest.DiscoveredServices);
+                Assert.Contains(info1, interest.DiscoveredServices);
+                Assert.Contains(info2, interest.DiscoveredServices);
+                Assert.Contains(info3, interest.DiscoveredServices);
+            }
+        }
 
         public DirectoryServiceTest(ITestOutputHelper output)
         {
