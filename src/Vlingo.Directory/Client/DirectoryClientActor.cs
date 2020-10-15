@@ -129,8 +129,15 @@ namespace Vlingo.Directory.Client
         //====================================
         private void PrepareDirectoryChannel()
         {
-            _directoryChannel?.Close();
-            _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);
+            if (_directory != null)
+            {
+                _directoryChannel?.Close();
+                _directoryChannel = new SocketChannelWriter(_testAddress ?? _directory.ToAddress(), Logger);   
+            }
+            else
+            {
+                Logger.Debug($"DIRECTORY CLIENT [{_id}]: Cannot initialize the socket because directory is null.");
+            }
         }
         
         private void ManageDirectoryChannel(string maybePublisherAvailability)
