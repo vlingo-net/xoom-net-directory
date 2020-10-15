@@ -50,7 +50,7 @@
           <PackageReference Include="Vlingo.Actors" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Cluster" Version="$(VlingoVersion)" />
           <PackageReference Include="Vlingo.Common" Version="$(VlingoVersion)" />
-          <PackageReference Include="Vlingo.Wire" Version="0.8.2.1-preview.10" />
+          <PackageReference Include="Vlingo.Wire" Version="0.8.2.1-preview.9" />
         </ItemGroup>
       </Otherwise>
     </Choose>
