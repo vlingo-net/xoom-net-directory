@@ -21,8 +21,4 @@
         <ProjectReference Include="..\Vlingo.Directory\Vlingo.Directory.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
-    </ItemGroup>
-
 </Project>
