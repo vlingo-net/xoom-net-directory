@@ -153,13 +153,13 @@ namespace Vlingo.Directory.Tests.Model
             var info3 = new ServiceRegistrationInfo("test-service3", new List<Location> { location3 });
             _client3.Actor.Register(info3);
         
-            accessSafely1.ReadFromExpecting("interestedIn", 3, 100_000);
-            accessSafely2.ReadFromExpecting("interestedIn", 3, 100_000);
-            accessSafely3.ReadFromExpecting("interestedIn", 3, 100_000);
+            accessSafely1.ReadFromExpecting("interestedIn", 3, 50_000);
+            accessSafely2.ReadFromExpecting("interestedIn", 3, 50_000);
+            accessSafely3.ReadFromExpecting("interestedIn", 3, 50_000);
             
-            accessSafely1.ReadFromExpecting("informDiscovered", 3, 100_000);
-            accessSafely2.ReadFromExpecting("informDiscovered", 3, 100_000);
-            accessSafely3.ReadFromExpecting("informDiscovered", 3, 100_000);
+            accessSafely1.ReadFromExpecting("informDiscovered", 3, 50_000);
+            accessSafely2.ReadFromExpecting("informDiscovered", 3, 50_000);
+            accessSafely3.ReadFromExpecting("informDiscovered", 3, 50_000);
             
             foreach (var interest in _interests)
             {
@@ -208,13 +208,13 @@ namespace Vlingo.Directory.Tests.Model
             accessSafely2 = _interest2.AfterCompleting(3);
             accessSafely3 = _interest3.AfterCompleting(3);
             
-            accessSafely1.ReadFromExpecting("interestedIn", 3, 100_000);
-            accessSafely2.ReadFromExpecting("interestedIn", 3, 100_000);
-            accessSafely3.ReadFromExpecting("interestedIn", 3, 100_000);
+            accessSafely1.ReadFromExpecting("interestedIn", 3, 50_000);
+            accessSafely2.ReadFromExpecting("interestedIn", 3, 50_000);
+            accessSafely3.ReadFromExpecting("interestedIn", 3, 50_000);
         
-            accessSafely1.ReadFromExpecting("informDiscovered", 3, 100_000);
-            accessSafely2.ReadFromExpecting("informDiscovered", 3, 100_000);
-            accessSafely3.ReadFromExpecting("informDiscovered", 3, 100_000);
+            accessSafely1.ReadFromExpecting("informDiscovered", 3, 50_000);
+            accessSafely2.ReadFromExpecting("informDiscovered", 3, 50_000);
+            accessSafely3.ReadFromExpecting("informDiscovered", 3, 50_000);
         
             foreach (var interest in _interests)
             {
