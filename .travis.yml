@@ -10,7 +10,7 @@ jobs:
     mono: none
 script:
 - dotnet restore ./src/Vlingo.Directory.sln; dotnet build ./src/Vlingo.Directory.sln;
-  dotnet test -l "console;verbosity=detailed" ./src/Vlingo.Directory.Tests/Vlingo.Directory.Tests.csproj;
+  dotnet test ./src/Vlingo.Directory.Tests/Vlingo.Directory.Tests.csproj;
 notifications:
   slack:
     secure: hAs/FoaZvyG9dre8F9PenxkfFgcMcecJHnkGRugSCxsh9qHOdgRosh/a0BOY04Sd591hj4EwrHBAi2No6Ga9fx4mvAuuLbgcXTY7VgVlxoV/HhG0F0hRz4w8wfhdHZcsdnhA19N8BZprJZgLLiYIT+EJldihZXjvsnSQXyC86cd5Q58rCOfqkDVr5qOeLBM/YZJupph1ORKGqpWt7F83KuVOsqezNjSpx6pXW9HNKs2glOOfOifCLI3cLY5ijrJ43xBPypCkmFks/NB8Lrx6CcP6yqwUg0SXzfVD+4Dpnaxl9vNNpCSpAAnbp4zlT0Q5+aWpu8yHCEQ55oksrMQE/+WpTW4B5ntQ2M94dhS39tePoS7rBcmqPBbe0cprPr3qcgP1v1v2LDfwuIJfH1kAT6Ipi51b7okJfGk+Pl80TkOjX1jC4jzNLYPUYjChwmRVPXYZnbizhLhLoRgrNfB0hRjHyms8Oe0TwQ9TxV8br53w6DC3OGMwVHG+QM0dXQ9NcMk0H3W97J2wdSOL9LX/EvQdwC5nmJsvykrZ9mh10F2P86iDr+EKTIvUb9/Atb6MxCKgifqD0rxbS1ME3Qlf55f7dyaYaHAzI8BJuaZWEOvu+CqPRW36TVqjon+iqhUZvHeWV/MLU60OO0wTiApj3899XhAV7ZUu0HE9jO0dqiQ=
