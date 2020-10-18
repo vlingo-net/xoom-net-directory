@@ -37,7 +37,7 @@ namespace Vlingo.Directory.Tests.Model
         private readonly TestWorld _testWorld;
         private readonly ITestOutputHelper _output;
 
-        [Fact(Skip = "Temporary deactivating for debug")]
+        [Fact]
         public void TestShouldInformInterest()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -59,7 +59,7 @@ namespace Vlingo.Directory.Tests.Model
             Assert.Contains(info, _interest1.DiscoveredServices);
         }
 
-        [Fact(Skip = "Temporary deactivating for debug")]
+        [Fact]
         public void TestShouldUnregister()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -110,7 +110,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
         
-        [Fact(Skip = "Temporary deactivating for debug")]
+        [Fact]
         public void TestShouldNotInformInterest()
         {
             _directory.Actor.Use(new TestAttributesClient());
@@ -228,7 +228,7 @@ namespace Vlingo.Directory.Tests.Model
             }
         }
 
-        [Fact(Skip = "Temporary deactivating for debug")]
+        [Fact]
         public void TestRegisterDiscoverMultiple()
         {
             _directory.Actor.Use(new TestAttributesClient());
