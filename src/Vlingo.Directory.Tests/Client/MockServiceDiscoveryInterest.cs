@@ -7,6 +7,7 @@
 
 using System.Collections.Concurrent;
 using System.Linq;
+using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
 using Vlingo.Directory.Client;
@@ -15,10 +16,12 @@ namespace Vlingo.Directory.Tests.Client
 {
     public class MockServiceDiscoveryInterest : IServiceDiscoveryInterest
     {
+        private readonly ILogger _logger;
         private AccessSafely _access;
 
-        public MockServiceDiscoveryInterest(string name)
+        public MockServiceDiscoveryInterest(string name, ILogger logger)
         {
+            _logger = logger;
             Name = name;
             DiscoveredServices = new ConcurrentBag<ServiceRegistrationInfo>();
             ServicesSeen = new ConcurrentBag<string>();
@@ -29,6 +32,7 @@ namespace Vlingo.Directory.Tests.Client
         {
             if (!ServicesSeen.Contains(serviceName))
             {
+                _logger.Debug($"Service seen: {serviceName}");
                 ServicesSeen.Add(serviceName);
                 _access?.WriteUsing("interestedIn", 1);
             }
@@ -39,6 +43,7 @@ namespace Vlingo.Directory.Tests.Client
         {
             if (!DiscoveredServices.Contains(discoveredService))
             {
+                _logger.Debug($"Service discovered: {discoveredService}");
                 DiscoveredServices.Add(discoveredService);
                 _access?.WriteUsing("informDiscovered", 1);
             }
@@ -48,6 +53,7 @@ namespace Vlingo.Directory.Tests.Client
         {
             if (!UnregisteredServices.Contains(unregisteredServiceName))
             {
+                _logger.Debug($"Service unregistered: {unregisteredServiceName}");
                 UnregisteredServices.Add(unregisteredServiceName);
                 _access?.WriteUsing("informUnregistered", 1);
             }

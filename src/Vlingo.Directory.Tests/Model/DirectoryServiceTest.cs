@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
 using Vlingo.Directory.Client;
@@ -294,20 +293,15 @@ namespace Vlingo.Directory.Tests.Model
             _directory = _testWorld.ActorFor<IDirectoryService>(
                 () => new DirectoryServiceActor(node, new Network(group, incomingPort), 1024, new Timing(10, 100), 10));
 
-            Thread.Sleep(1000);
-            
-            _interest1 = new MockServiceDiscoveryInterest("interest1");
-
+            _interest1 = new MockServiceDiscoveryInterest("interest1", _testWorld.DefaultLogger);
             _client1 = _testWorld.ActorFor<IDirectoryClient>(
                 () => new DirectoryClientActor(_interest1, group, 1024, 10, 10));
 
-            _interest2 = new MockServiceDiscoveryInterest("interest2");
-
+            _interest2 = new MockServiceDiscoveryInterest("interest2", _testWorld.DefaultLogger);
             _client2 = _testWorld.ActorFor<IDirectoryClient>(
                 () => new DirectoryClientActor(_interest2, group, 1024, 10, 10));
             
-            _interest3 = new MockServiceDiscoveryInterest("interest3");
-            
+            _interest3 = new MockServiceDiscoveryInterest("interest3", _testWorld.DefaultLogger);
             _client3 = _testWorld.ActorFor<IDirectoryClient>(
                 () => new DirectoryClientActor(_interest3, group, 1024, 10, 10));
 

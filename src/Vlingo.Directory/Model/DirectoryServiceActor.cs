@@ -214,6 +214,7 @@ namespace Vlingo.Directory.Model
             {
                 try
                 {
+                    Logger.Debug("DIRECTORY: initializing 'vlingo-directory-service'");
                     _publisher = new MulticastPublisherReader(
                         "vlingo-directory-service",
                         _network.PublisherGroup,
