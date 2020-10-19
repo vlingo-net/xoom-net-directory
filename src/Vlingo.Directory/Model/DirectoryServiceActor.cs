@@ -186,7 +186,7 @@ namespace Vlingo.Directory.Model
             var addresses = new List<Address>();
             foreach (var attribute in _attributesClient!.AllOf(name))
             {
-                addresses.Add(Vlingo.Wire.Node.Address.From(attribute.ToStringValue(), AddressType.Main));
+                addresses.Add(Vlingo.Wire.Node.Address.From(attribute.ToStringValue()!, AddressType.Main));
             }
             _publisher?.Send(RawMessage.From(0, 0, ServiceRegistered.As(Named(ServiceNamePrefix, name), addresses).ToString()));
         }
