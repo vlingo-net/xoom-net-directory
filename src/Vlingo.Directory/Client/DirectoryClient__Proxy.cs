@@ -1,3 +1,10 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using Vlingo.Actors;
 
@@ -10,94 +17,94 @@ namespace Vlingo.Directory.Client
         private const string UnregisterRepresentation2 = "Unregister(string)";
         private const string StopRepresentation3 = "Stop()";
 
-        private readonly Actor actor;
-        private readonly IMailbox mailbox;
+        private readonly Actor _actor;
+        private readonly IMailbox _mailbox;
 
         public DirectoryClient__Proxy(Actor actor, IMailbox mailbox)
         {
-            this.actor = actor;
-            this.mailbox = mailbox;
+            _actor = actor;
+            _mailbox = mailbox;
         }
 
         public bool IsStopped => false;
 
         public void Register(ServiceRegistrationInfo info)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IDirectoryClient> consumer = x => x.Register(info);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, RegisterRepresentation1);
+                    _mailbox.Send(_actor, consumer, null, RegisterRepresentation1);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IDirectoryClient>(actor, consumer, RegisterRepresentation1));
+                    _mailbox.Send(new LocalMessage<IDirectoryClient>(_actor, consumer, RegisterRepresentation1));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, RegisterRepresentation1));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, RegisterRepresentation1));
             }
         }
 
         public void Unregister(string serviceName)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IDirectoryClient> consumer = x => x.Unregister(serviceName);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, UnregisterRepresentation2);
+                    _mailbox.Send(_actor, consumer, null, UnregisterRepresentation2);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IDirectoryClient>(actor, consumer, UnregisterRepresentation2));
+                    _mailbox.Send(new LocalMessage<IDirectoryClient>(_actor, consumer, UnregisterRepresentation2));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, UnregisterRepresentation2));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, UnregisterRepresentation2));
             }
         }
         
         public void Conclude()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IStoppable> consumer = x => x.Conclude();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, ConcludeRepresentation0);
+                    _mailbox.Send(_actor, consumer, null, ConcludeRepresentation0);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IStoppable>(actor, consumer, ConcludeRepresentation0));
+                    _mailbox.Send(new LocalMessage<IStoppable>(_actor, consumer, ConcludeRepresentation0));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ConcludeRepresentation0));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ConcludeRepresentation0));
             }
         }
 
         public void Stop()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IDirectoryClient> consumer = x => x.Stop();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, StopRepresentation3);
+                    _mailbox.Send(_actor, consumer, null, StopRepresentation3);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IDirectoryClient>(actor, consumer, StopRepresentation3));
+                    _mailbox.Send(new LocalMessage<IDirectoryClient>(_actor, consumer, StopRepresentation3));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, StopRepresentation3));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StopRepresentation3));
             }
         }
     }
