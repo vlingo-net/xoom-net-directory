@@ -1,6 +1,7 @@
 # vlingo-net-directory
 
-[![Build status](https://ci.appveyor.com/api/projects/status/mdpg9vhjh9mf7jkb?svg=true)](https://ci.appveyor.com/project/VlingoNetOwner/vlingo-net-directory/branch/master) 
+[![Build status](https://ci.appveyor.com/api/projects/status/mdpg9vhjh9mf7jkb?svg=true)](https://ci.appveyor.com/project/VlingoNetOwner/vlingo-net-directory/branch/master)
+![Build master](https://github.com/vlingo-net/vlingo-net-directory/workflows/.NET/badge.svg)
 [![NuGet](https://img.shields.io/nuget/v/Vlingo.Directory.svg)](https://www.nuget.org/packages/Vlingo.Directory)
 [![Gitter](https://badges.gitter.im/vlingo-platform-net/community.svg)](https://gitter.im/vlingo-platform-net/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
