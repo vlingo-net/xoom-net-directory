@@ -32,7 +32,7 @@ namespace Vlingo.Directory.Model
         // ClusterApplication
         //====================================
         
-        public override void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder)
+        public override void HandleApplicationMessage(RawMessage message)
         {
         }
 
@@ -133,6 +133,11 @@ namespace Vlingo.Directory.Model
             {
                 _directoryService.RelinquishLeadership();
             }
+        }
+
+        public override void InformResponder(IApplicationOutboundStream? responder)
+        {
+            Logger.Warn("DIRECTORY: Inform responder. No implementation found");
         }
 
         public override void InformAttributesClient(IAttributesProtocol client)
