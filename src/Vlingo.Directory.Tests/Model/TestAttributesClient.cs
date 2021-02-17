@@ -56,7 +56,8 @@ namespace Vlingo.Directory.Tests.Model
                 {
                     var tracked = set.AttributeNamed(attributeName);
       
-                    if (tracked.IsPresent) {
+                    if (tracked.IsPresent)
+                    {
                         set.Remove(tracked.Attribute);
                     }
                 }
