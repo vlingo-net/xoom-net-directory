@@ -8,13 +8,13 @@
 using System;
 using System.IO;
 using Vlingo.Actors;
-using Vlingo.Common;
+using Vlingo.Xoom.Common;
 using Vlingo.Directory.Model.Message;
 using Vlingo.Wire.Channel;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Multicast;
 using Vlingo.Wire.Node;
-using ICancellable = Vlingo.Common.ICancellable;
+using ICancellable = Vlingo.Xoom.Common.ICancellable;
 
 namespace Vlingo.Directory.Client
 {
