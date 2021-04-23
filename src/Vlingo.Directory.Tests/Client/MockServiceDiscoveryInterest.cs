@@ -7,10 +7,10 @@
 
 using System.Collections.Concurrent;
 using System.Linq;
-using Vlingo.Actors;
-using Vlingo.Actors.TestKit;
 using Vlingo.Xoom.Common;
 using Vlingo.Directory.Client;
+using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Actors.TestKit;
 
 namespace Vlingo.Directory.Tests.Client
 {

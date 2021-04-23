@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Xoom.Common;
 using Vlingo.Directory.Model.Message;
@@ -16,6 +15,7 @@ using Vlingo.Wire.Channel;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Multicast;
 using Vlingo.Wire.Node;
+using Vlingo.Xoom.Actors;
 using ICancellable = Vlingo.Xoom.Common.ICancellable;
 
 namespace Vlingo.Directory.Model

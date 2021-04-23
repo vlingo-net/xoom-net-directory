@@ -9,13 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Vlingo.Actors.TestKit;
 using Vlingo.Xoom.Common;
 using Vlingo.Directory.Client;
 using Vlingo.Directory.Model;
 using Vlingo.Directory.Tests.Client;
 using Vlingo.Wire.Multicast;
 using Vlingo.Wire.Node;
+using Vlingo.Xoom.Actors.TestKit;
 using Xunit;
 using Xunit.Abstractions;
 
