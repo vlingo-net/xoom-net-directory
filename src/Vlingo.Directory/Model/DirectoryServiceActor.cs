@@ -15,7 +15,7 @@ using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Channel;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Multicast;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using ICancellable = Vlingo.Xoom.Common.ICancellable;
 
 namespace Vlingo.Directory.Model
@@ -186,7 +186,7 @@ namespace Vlingo.Directory.Model
             var addresses = new List<Address>();
             foreach (var attribute in _attributesClient!.AllOf(name))
             {
-                addresses.Add(Xoom.Wire.Node.Address.From(attribute.ToStringValue()!, AddressType.Main));
+                addresses.Add(Xoom.Wire.Nodes.Address.From(attribute.ToStringValue()!, AddressType.Main));
             }
             _publisher?.Send(RawMessage.From(0, 0, ServiceRegistered.As(Named(ServiceNamePrefix, name), addresses).ToString()));
         }

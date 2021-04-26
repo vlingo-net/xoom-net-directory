@@ -11,7 +11,7 @@ using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Directory.Model
 {

@@ -6,7 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Directory.Model.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 
 namespace Vlingo.Directory.Tests.Model.Message

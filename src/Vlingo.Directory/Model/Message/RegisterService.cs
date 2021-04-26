@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Directory.Model.Message
 {
@@ -16,7 +16,7 @@ namespace Vlingo.Directory.Model.Message
     {
         private readonly HashSet<Address> _addresses;
             
-        public static string TypeName { get; } = "REGSRVC";
+        public static string TypeName => "REGSRVC";
 
         public IEnumerable<Address> Addresses => _addresses;
 
