@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Directory.Client
 {

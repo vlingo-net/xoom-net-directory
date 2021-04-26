@@ -11,11 +11,11 @@ using System.Linq;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Xoom.Common;
 using Vlingo.Directory.Model.Message;
-using Vlingo.Wire.Channel;
-using Vlingo.Wire.Message;
-using Vlingo.Wire.Multicast;
-using Vlingo.Wire.Node;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Channel;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Multicast;
+using Vlingo.Xoom.Wire.Node;
 using ICancellable = Vlingo.Xoom.Common.ICancellable;
 
 namespace Vlingo.Directory.Model
@@ -186,7 +186,7 @@ namespace Vlingo.Directory.Model
             var addresses = new List<Address>();
             foreach (var attribute in _attributesClient!.AllOf(name))
             {
-                addresses.Add(Vlingo.Wire.Node.Address.From(attribute.ToStringValue()!, AddressType.Main));
+                addresses.Add(Xoom.Wire.Node.Address.From(attribute.ToStringValue()!, AddressType.Main));
             }
             _publisher?.Send(RawMessage.From(0, 0, ServiceRegistered.As(Named(ServiceNamePrefix, name), addresses).ToString()));
         }

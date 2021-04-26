@@ -7,7 +7,7 @@
 
 using System.Linq;
 using Vlingo.Directory.Model.Message;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 
 namespace Vlingo.Directory.Tests.Model.Message

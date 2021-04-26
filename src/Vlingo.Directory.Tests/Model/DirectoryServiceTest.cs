@@ -13,9 +13,9 @@ using Vlingo.Xoom.Common;
 using Vlingo.Directory.Client;
 using Vlingo.Directory.Model;
 using Vlingo.Directory.Tests.Client;
-using Vlingo.Wire.Multicast;
-using Vlingo.Wire.Node;
 using Vlingo.Xoom.Actors.TestKit;
+using Vlingo.Xoom.Wire.Multicast;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 

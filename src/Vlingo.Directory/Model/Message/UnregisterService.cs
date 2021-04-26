@@ -6,14 +6,14 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Text;
-using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Directory.Model.Message
 {
     public class UnregisterService : IMessage
     {
-        public static string TypeName { get; } = "UNREGSRVC";
+        public static string TypeName => "UNREGSRVC";
 
         public bool IsValid => !Name.HasNoName;
         
