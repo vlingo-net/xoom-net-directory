@@ -8,9 +8,9 @@ configuration: Release
 skip_commits:
   message: /.*\[ci\-skip\].*/
 before_build:
-  - dotnet restore src/Vlingo.Directory.sln
+  - dotnet restore src/Vlingo.Xoom.Directory.sln
 build:
-  project: src/Vlingo.Directory.sln
+  project: src/Vlingo.Xoom.Directory.sln
   verbosity: minimal
   publish_nuget: true
 for:
