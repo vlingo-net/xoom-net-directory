@@ -8,10 +8,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Xoom.Common;
 using Vlingo.Directory.Model.Message;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Cluster.Model.Attribute;
 using Vlingo.Xoom.Wire.Channel;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Multicast;

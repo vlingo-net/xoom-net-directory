@@ -6,8 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Cluster.Model.Attribute;
 
 namespace Vlingo.Directory.Model
 {

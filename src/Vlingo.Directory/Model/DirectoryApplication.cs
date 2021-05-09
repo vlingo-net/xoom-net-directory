@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using Vlingo.Cluster.Model.Application;
-using Vlingo.Cluster.Model.Attribute;
+using Vlingo.Xoom.Cluster.Model.Application;
+using Vlingo.Xoom.Cluster.Model.Attribute;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;

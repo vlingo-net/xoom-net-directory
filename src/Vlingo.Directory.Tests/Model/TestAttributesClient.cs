@@ -7,7 +7,7 @@
 
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Vlingo.Cluster.Model.Attribute;
+using Vlingo.Xoom.Cluster.Model.Attribute;
 
 namespace Vlingo.Directory.Tests.Model
 {
@@ -24,7 +24,7 @@ namespace Vlingo.Directory.Tests.Model
                 set = AttributeSet.Named(attributeSetName);
                 _attributeSets.AddOrUpdate(attributeSetName, a => set, (n, u) => set);
             }
-            set.AddIfAbsent(Cluster.Model.Attribute.Attribute<T>.From(attributeName, value));
+            set.AddIfAbsent(Xoom.Cluster.Model.Attribute.Attribute<T>.From(attributeName, value));
         }
 
         public void Replace<T>(string attributeSetName, string attributeName, T value)
@@ -37,7 +37,7 @@ namespace Vlingo.Directory.Tests.Model
       
                     if (tracked.IsPresent)
                     {
-                        var other = Cluster.Model.Attribute.Attribute<T>.From(attributeName, value);
+                        var other = Xoom.Cluster.Model.Attribute.Attribute<T>.From(attributeName, value);
         
                         if (!tracked.SameAs(other))
                         {
@@ -93,7 +93,7 @@ namespace Vlingo.Directory.Tests.Model
                     return (Attribute<T>)tracked.Attribute;
                 }
             }
-            return Cluster.Model.Attribute.Attribute<T>.Undefined;
+            return Xoom.Cluster.Model.Attribute.Attribute<T>.Undefined;
         }
 
         public IEnumerable<AttributeSet> All => _attributeSets.Values;
