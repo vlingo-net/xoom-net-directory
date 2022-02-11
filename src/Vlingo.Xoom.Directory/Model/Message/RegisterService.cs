@@ -10,58 +10,57 @@ using System.Text;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Directory.Model.Message
+namespace Vlingo.Xoom.Directory.Model.Message;
+
+public class RegisterService : IMessage
 {
-    public class RegisterService : IMessage
+    private readonly HashSet<Address> _addresses;
+            
+    public static string TypeName => "REGSRVC";
+
+    public IEnumerable<Address> Addresses => _addresses;
+
+    public bool IsValid => !Name.HasNoName;
+        
+    public Name Name { get; }
+
+    public static RegisterService From(string content)
     {
-        private readonly HashSet<Address> _addresses;
+        if (content.StartsWith(TypeName))
+        {
+            var name = MessagePartsBuilder.NameFrom(content);
+            var addresses = MessagePartsBuilder.AddressFromRecord(content, AddressType.Main);
+            return new RegisterService(name, addresses);
+        }
             
-        public static string TypeName => "REGSRVC";
+        return new RegisterService(Name.NoNodeName);
+    }
 
-        public IEnumerable<Address> Addresses => _addresses;
-
-        public bool IsValid => !Name.HasNoName;
+    public static RegisterService As(Name name, Address address) => new RegisterService(name, address);
         
-        public Name Name { get; }
+    public static RegisterService As(Name name, IEnumerable<Address> addresses) => new RegisterService(name, addresses);
 
-        public static RegisterService From(string content)
-        {
-            if (content.StartsWith(TypeName))
-            {
-                var name = MessagePartsBuilder.NameFrom(content);
-                var addresses = MessagePartsBuilder.AddressFromRecord(content, AddressType.Main);
-                return new RegisterService(name, addresses);
-            }
+    public RegisterService(Name name, Address address) : this(name) => _addresses.Add(address);
+
+    public RegisterService(Name name, IEnumerable<Address> addresses) : this(name) => _addresses.UnionWith(addresses);
+
+    public override string ToString()
+    {
+        var builder = new StringBuilder();
             
-            return new RegisterService(Name.NoNodeName);
-        }
+        builder.Append(TypeName).Append("\n").Append("nm=").Append(Name.Value);
 
-        public static RegisterService As(Name name, Address address) => new RegisterService(name, address);
-        
-        public static RegisterService As(Name name, IEnumerable<Address> addresses) => new RegisterService(name, addresses);
-
-        public RegisterService(Name name, Address address) : this(name) => _addresses.Add(address);
-
-        public RegisterService(Name name, IEnumerable<Address> addresses) : this(name) => _addresses.UnionWith(addresses);
-
-        public override string ToString()
+        foreach (var address in _addresses)
         {
-            var builder = new StringBuilder();
-            
-            builder.Append(TypeName).Append("\n").Append("nm=").Append(Name.Value);
-
-            foreach (var address in _addresses)
-            {
-                builder.Append("\n").Append(AddressType.Main.Field).Append(address.Host.Name).Append(":").Append(address.Port);
-            }
-
-            return builder.ToString();
+            builder.Append("\n").Append(AddressType.Main.Field).Append(address.Host.Name).Append(":").Append(address.Port);
         }
 
-        private RegisterService(Name name)
-        {
-            Name = name;
-            _addresses = new HashSet<Address>();
-        }
+        return builder.ToString();
+    }
+
+    private RegisterService(Name name)
+    {
+        Name = name;
+        _addresses = new HashSet<Address>();
     }
 }

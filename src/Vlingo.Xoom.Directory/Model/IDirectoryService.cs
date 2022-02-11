@@ -10,81 +10,80 @@ using Vlingo.Xoom.Cluster.Model.Attribute;
 using Vlingo.Xoom.Wire.Multicast;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Directory.Model
+namespace Vlingo.Xoom.Directory.Model;
+
+public interface IDirectoryService : IStartable, IStoppable
 {
-    public interface IDirectoryService : IStartable, IStoppable
-    {
-        void AssignLeadership();
+    void AssignLeadership();
         
-        void RelinquishLeadership();
+    void RelinquishLeadership();
         
-        void Use(IAttributesProtocol client);
-    }
+    void Use(IAttributesProtocol client);
+}
 
-    public static class DirectoryServiceFactory
+public static class DirectoryServiceFactory
+{
+    public static IDirectoryService Instance(Stage stage, Node localNode)
     {
-        public static IDirectoryService Instance(Stage stage, Node localNode)
-        {
-            var network =
-                new Network(
-                    new Group(Properties.Instance.DirectoryGroupAddress(), Properties.Instance.DirectoryGroupPort()),
-                    Properties.Instance.DirectoryIncomingPort());
+        var network =
+            new Network(
+                new Group(Properties.Instance.DirectoryGroupAddress(), Properties.Instance.DirectoryGroupPort()),
+                Properties.Instance.DirectoryIncomingPort());
             
-            var maxMessageSize = Properties.Instance.DirectoryMessageBufferSize();
+        var maxMessageSize = Properties.Instance.DirectoryMessageBufferSize();
             
-            var timing =
-                new Timing(
-                    Properties.Instance.DirectoryMessageProcessingInterval(),
-                    Properties.Instance.DirectoryMessagePublishingInterval());
+        var timing =
+            new Timing(
+                Properties.Instance.DirectoryMessageProcessingInterval(),
+                Properties.Instance.DirectoryMessagePublishingInterval());
             
-            var unpublishedNotifications = Properties.Instance.DirectoryUnregisteredServiceNotifications();
+        var unpublishedNotifications = Properties.Instance.DirectoryUnregisteredServiceNotifications();
             
-            var directoryService =
-                Instance(
-                    stage,
-                    localNode,
-                    network,
-                    maxMessageSize,
-                    timing,
-                    unpublishedNotifications);
+        var directoryService =
+            Instance(
+                stage,
+                localNode,
+                network,
+                maxMessageSize,
+                timing,
+                unpublishedNotifications);
 
-            return directoryService;
-        }
-
-        public static IDirectoryService Instance(
-            Stage stage,
-            Node localNode,
-            Network network,
-            int maxMessageSize,
-            Timing timing,
-            int unpublishedNotifications) =>
-            stage.ActorFor<IDirectoryService>(
-                () => new DirectoryServiceActor(localNode, network, maxMessageSize, timing, unpublishedNotifications), "vlingo-directory-service");
+        return directoryService;
     }
 
-    public class Timing
+    public static IDirectoryService Instance(
+        Stage stage,
+        Node localNode,
+        Network network,
+        int maxMessageSize,
+        Timing timing,
+        int unpublishedNotifications) =>
+        stage.ActorFor<IDirectoryService>(
+            () => new DirectoryServiceActor(localNode, network, maxMessageSize, timing, unpublishedNotifications), "vlingo-directory-service");
+}
+
+public class Timing
+{
+    public Timing(int processingInterval, int publishingInterval)
     {
-        public Timing(int processingInterval, int publishingInterval)
-        {
-            ProcessingInterval = processingInterval;
-            PublishingInterval = publishingInterval;
-        }
-            
-        public int ProcessingInterval { get; }
-            
-        public int PublishingInterval { get; }
+        ProcessingInterval = processingInterval;
+        PublishingInterval = publishingInterval;
     }
+            
+    public int ProcessingInterval { get; }
+            
+    public int PublishingInterval { get; }
+}
 
-    public class Network
+public class Network
+{
+    public Network(Group publisherGroup, int incomingPort)
     {
-        public Network(Group publisherGroup, int incomingPort)
-        {
-            PublisherGroup = publisherGroup;
-            IncomingPort = incomingPort;
-        }
-            
-        public Group PublisherGroup { get; }
-            
-        public int IncomingPort { get; }
+        PublisherGroup = publisherGroup;
+        IncomingPort = incomingPort;
     }
+            
+    public Group PublisherGroup { get; }
+            
+    public int IncomingPort { get; }
 }

@@ -9,41 +9,40 @@ using System.Text;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Directory.Model.Message
+namespace Vlingo.Xoom.Directory.Model.Message;
+
+public class UnregisterService : IMessage
 {
-    public class UnregisterService : IMessage
+    public static string TypeName => "UNREGSRVC";
+
+    public bool IsValid => !Name.HasNoName;
+        
+    public Name Name { get; }
+
+    public static UnregisterService From(string content)
     {
-        public static string TypeName => "UNREGSRVC";
-
-        public bool IsValid => !Name.HasNoName;
-        
-        public Name Name { get; }
-
-        public static UnregisterService From(string content)
+        if (content.StartsWith(TypeName))
         {
-            if (content.StartsWith(TypeName))
-            {
-                var name = MessagePartsBuilder.NameFrom(content);
-                return new UnregisterService(name);
-            }
+            var name = MessagePartsBuilder.NameFrom(content);
+            return new UnregisterService(name);
+        }
             
-            return new UnregisterService(Name.NoNodeName);
-        }
+        return new UnregisterService(Name.NoNodeName);
+    }
 
-        public static UnregisterService As(Name name) => new UnregisterService(name);
+    public static UnregisterService As(Name name) => new UnregisterService(name);
         
-        public UnregisterService(Name name)
-        {
-            Name = name;
-        }
+    public UnregisterService(Name name)
+    {
+        Name = name;
+    }
 
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
+    public override string ToString()
+    {
+        var builder = new StringBuilder();
             
-            builder.Append(TypeName).Append("\n").Append("nm=").Append(Name.Value);
+        builder.Append(TypeName).Append("\n").Append("nm=").Append(Name.Value);
 
-            return builder.ToString();
-        }
+        return builder.ToString();
     }
 }

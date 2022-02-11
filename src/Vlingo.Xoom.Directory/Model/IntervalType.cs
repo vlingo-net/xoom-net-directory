@@ -5,11 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Directory.Model
+namespace Vlingo.Xoom.Directory.Model;
+
+public enum IntervalType
 {
-    public enum IntervalType
-    {
-        Processing,
-        Publishing
-    }
+    Processing,
+    Publishing
 }

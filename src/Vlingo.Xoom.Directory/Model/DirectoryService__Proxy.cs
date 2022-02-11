@@ -9,147 +9,146 @@ using System;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Cluster.Model.Attribute;
 
-namespace Vlingo.Xoom.Directory.Model
+namespace Vlingo.Xoom.Directory.Model;
+
+public class DirectoryService__Proxy : IDirectoryService
 {
-    public class DirectoryService__Proxy : IDirectoryService
+    private const string ConcludeRepresentation0 = "Conclude()";
+    private const string AssignLeadershipRepresentation1 = "AssignLeadership()";
+    private const string RelinquishLeadershipRepresentation2 = "RelinquishLeadership()";
+    private const string UseRepresentation3 = "Use(IAttributesProtocol)";
+    private const string StartRepresentation4 = "Start()";
+    private const string StopRepresentation5 = "Stop()";
+
+    private readonly Actor _actor;
+    private readonly IMailbox _mailbox;
+
+    public DirectoryService__Proxy(Actor actor, IMailbox mailbox)
     {
-        private const string ConcludeRepresentation0 = "Conclude()";
-        private const string AssignLeadershipRepresentation1 = "AssignLeadership()";
-        private const string RelinquishLeadershipRepresentation2 = "RelinquishLeadership()";
-        private const string UseRepresentation3 = "Use(IAttributesProtocol)";
-        private const string StartRepresentation4 = "Start()";
-        private const string StopRepresentation5 = "Stop()";
+        _actor = actor;
+        _mailbox = mailbox;
+    }
 
-        private readonly Actor _actor;
-        private readonly IMailbox _mailbox;
+    public bool IsStopped => false;
 
-        public DirectoryService__Proxy(Actor actor, IMailbox mailbox)
+    public void AssignLeadership()
+    {
+        if (!_actor.IsStopped)
         {
-            _actor = actor;
-            _mailbox = mailbox;
-        }
-
-        public bool IsStopped => false;
-
-        public void AssignLeadership()
-        {
-            if (!_actor.IsStopped)
+            Action<IDirectoryService> consumer = x => x.AssignLeadership();
+            if (_mailbox.IsPreallocated)
             {
-                Action<IDirectoryService> consumer = x => x.AssignLeadership();
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, AssignLeadershipRepresentation1);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer, AssignLeadershipRepresentation1));
-                }
+                _mailbox.Send(_actor, consumer, null, AssignLeadershipRepresentation1);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, AssignLeadershipRepresentation1));
+                _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer, AssignLeadershipRepresentation1));
             }
         }
-
-        public void RelinquishLeadership()
+        else
         {
-            if (!_actor.IsStopped)
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, AssignLeadershipRepresentation1));
+        }
+    }
+
+    public void RelinquishLeadership()
+    {
+        if (!_actor.IsStopped)
+        {
+            Action<IDirectoryService> consumer = x => x.RelinquishLeadership();
+            if (_mailbox.IsPreallocated)
             {
-                Action<IDirectoryService> consumer = x => x.RelinquishLeadership();
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, RelinquishLeadershipRepresentation2);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer,
-                        RelinquishLeadershipRepresentation2));
-                }
+                _mailbox.Send(_actor, consumer, null, RelinquishLeadershipRepresentation2);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, RelinquishLeadershipRepresentation2));
+                _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer,
+                    RelinquishLeadershipRepresentation2));
             }
         }
-
-        public void Use(IAttributesProtocol client)
+        else
         {
-            if (!_actor.IsStopped)
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, RelinquishLeadershipRepresentation2));
+        }
+    }
+
+    public void Use(IAttributesProtocol client)
+    {
+        if (!_actor.IsStopped)
+        {
+            Action<IDirectoryService> consumer = x => x.Use(client);
+            if (_mailbox.IsPreallocated)
             {
-                Action<IDirectoryService> consumer = x => x.Use(client);
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, UseRepresentation3);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer, UseRepresentation3));
-                }
+                _mailbox.Send(_actor, consumer, null, UseRepresentation3);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, UseRepresentation3));
+                _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer, UseRepresentation3));
             }
         }
-
-        public void Start()
+        else
         {
-            if (!_actor.IsStopped)
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, UseRepresentation3));
+        }
+    }
+
+    public void Start()
+    {
+        if (!_actor.IsStopped)
+        {
+            Action<IDirectoryService> consumer = x => x.Start();
+            if (_mailbox.IsPreallocated)
             {
-                Action<IDirectoryService> consumer = x => x.Start();
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, StartRepresentation4);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer, StartRepresentation4));
-                }
+                _mailbox.Send(_actor, consumer, null, StartRepresentation4);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StartRepresentation4));
+                _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer, StartRepresentation4));
             }
         }
+        else
+        {
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StartRepresentation4));
+        }
+    }
         
-        public void Conclude()
+    public void Conclude()
+    {
+        if (!_actor.IsStopped)
         {
-            if (!_actor.IsStopped)
+            Action<IStoppable> consumer = x => x.Conclude();
+            if (_mailbox.IsPreallocated)
             {
-                Action<IStoppable> consumer = x => x.Conclude();
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, ConcludeRepresentation0);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IStoppable>(_actor, consumer, ConcludeRepresentation0));
-                }
+                _mailbox.Send(_actor, consumer, null, ConcludeRepresentation0);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ConcludeRepresentation0));
+                _mailbox.Send(new LocalMessage<IStoppable>(_actor, consumer, ConcludeRepresentation0));
             }
         }
-
-        public void Stop()
+        else
         {
-            if (!_actor.IsStopped)
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ConcludeRepresentation0));
+        }
+    }
+
+    public void Stop()
+    {
+        if (!_actor.IsStopped)
+        {
+            Action<IDirectoryService> consumer = x => x.Stop();
+            if (_mailbox.IsPreallocated)
             {
-                Action<IDirectoryService> consumer = x => x.Stop();
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, StopRepresentation5);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer, StopRepresentation5));
-                }
+                _mailbox.Send(_actor, consumer, null, StopRepresentation5);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StopRepresentation5));
+                _mailbox.Send(new LocalMessage<IDirectoryService>(_actor, consumer, StopRepresentation5));
             }
+        }
+        else
+        {
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StopRepresentation5));
         }
     }
 }

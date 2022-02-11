@@ -5,14 +5,13 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Directory.Client
-{
-    public interface IServiceDiscoveryInterest
-    {
-        bool InterestedIn(string serviceName);
+namespace Vlingo.Xoom.Directory.Client;
 
-        void InformDiscovered(ServiceRegistrationInfo discoveredService);
+public interface IServiceDiscoveryInterest
+{
+    bool InterestedIn(string serviceName);
+
+    void InformDiscovered(ServiceRegistrationInfo discoveredService);
         
-        void InformUnregistered(string unregisteredServiceName);
-    }
+    void InformUnregistered(string unregisteredServiceName);
 }

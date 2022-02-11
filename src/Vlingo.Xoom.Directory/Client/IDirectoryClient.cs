@@ -8,43 +8,42 @@
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Multicast;
 
-namespace Vlingo.Xoom.Directory.Client
+namespace Vlingo.Xoom.Directory.Client;
+
+public interface IDirectoryClient : IStoppable
 {
-    public interface IDirectoryClient : IStoppable
-    {
-        void Register(ServiceRegistrationInfo info);
+    void Register(ServiceRegistrationInfo info);
 
-        void Unregister(string serviceName);
-    }
+    void Unregister(string serviceName);
+}
     
-    // TODO: This is an workaround because C# doesn't allow implementation of default methods in interfaces. Should be fixed with C# 8
-    public static class DirectoryClientFactory
-    {
-        public static string ClientName => "vlingo-directory-client";
+// TODO: This is an workaround because C# doesn't allow implementation of default methods in interfaces. Should be fixed with C# 8
+public static class DirectoryClientFactory
+{
+    public static string ClientName => "vlingo-directory-client";
         
-        public static int DefaultMaxMessageSize = 32767;
+    public static int DefaultMaxMessageSize = 32767;
         
-        public static int DefaultProcessingInterval = 1000;
+    public static int DefaultProcessingInterval = 1000;
         
-        public static int DefaultProcessingTimeout = 10;
+    public static int DefaultProcessingTimeout = 10;
 
-        public static IDirectoryClient Instance(Stage stage, IServiceDiscoveryInterest interest, Group directoryPublisherGroup) =>
-            Instance(
-                stage,
-                interest,
-                directoryPublisherGroup,
-                DefaultMaxMessageSize,
-                DefaultProcessingInterval,
-                DefaultProcessingTimeout);
+    public static IDirectoryClient Instance(Stage stage, IServiceDiscoveryInterest interest, Group directoryPublisherGroup) =>
+        Instance(
+            stage,
+            interest,
+            directoryPublisherGroup,
+            DefaultMaxMessageSize,
+            DefaultProcessingInterval,
+            DefaultProcessingTimeout);
 
-        public static IDirectoryClient Instance(
-            Stage stage,
-            IServiceDiscoveryInterest interest,
-            Group directoryPublisherGroup,
-            int maxMessageSize,
-            long processingInterval,
-            int processingTimeout) =>
-            stage.ActorFor<IDirectoryClient>(
-                () => new DirectoryClientActor(interest, directoryPublisherGroup, maxMessageSize, processingInterval, processingTimeout), ClientName);
-    }
+    public static IDirectoryClient Instance(
+        Stage stage,
+        IServiceDiscoveryInterest interest,
+        Group directoryPublisherGroup,
+        int maxMessageSize,
+        long processingInterval,
+        int processingTimeout) =>
+        stage.ActorFor<IDirectoryClient>(
+            () => new DirectoryClientActor(interest, directoryPublisherGroup, maxMessageSize, processingInterval, processingTimeout), ClientName);
 }

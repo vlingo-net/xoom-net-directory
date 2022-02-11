@@ -10,40 +10,39 @@ using Vlingo.Xoom.Directory.Model.Message;
 using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 
-namespace Vlingo.Xoom.Directory.Tests.Model.Message
+namespace Vlingo.Xoom.Directory.Tests.Model.Message;
+
+public class ServiceRegisteredTest
 {
-    public class ServiceRegisteredTest
-    {
-        private readonly string _textMessage = "SRVCREGD\nnm=test-service\naddr=1.2.3.4:111\naddr=1.2.3.45:222";
+    private readonly string _textMessage = "SRVCREGD\nnm=test-service\naddr=1.2.3.4:111\naddr=1.2.3.45:222";
         
-        [Fact]
-        public void TestMessage()
-        {
-            var registerService = new ServiceRegistered(Name.Of("test-service"),
-                new[]
-                {
-                    Address.From(Host.Of("1.2.3.4"), 111, AddressType.Main),
-                    Address.From(Host.Of("1.2.3.45"), 222, AddressType.Main),
-                });
+    [Fact]
+    public void TestMessage()
+    {
+        var registerService = new ServiceRegistered(Name.Of("test-service"),
+            new[]
+            {
+                Address.From(Host.Of("1.2.3.4"), 111, AddressType.Main),
+                Address.From(Host.Of("1.2.3.45"), 222, AddressType.Main),
+            });
                 
             
-            Assert.Equal(2, registerService.Addresses.Count());
-            Assert.Equal(_textMessage, registerService.ToString());
-        }
+        Assert.Equal(2, registerService.Addresses.Count());
+        Assert.Equal(_textMessage, registerService.ToString());
+    }
 
-        [Fact]
-        public void TestValidity()
-        {
-            var registerService = new ServiceRegistered(Name.Of("test-service"),
-                new[]
-                {
-                    Address.From(Host.Of("1.2.3.4"), 111, AddressType.Main),
-                    Address.From(Host.Of("1.2.3.45"), 222, AddressType.Main),
-                });
+    [Fact]
+    public void TestValidity()
+    {
+        var registerService = new ServiceRegistered(Name.Of("test-service"),
+            new[]
+            {
+                Address.From(Host.Of("1.2.3.4"), 111, AddressType.Main),
+                Address.From(Host.Of("1.2.3.45"), 222, AddressType.Main),
+            });
             
-            Assert.True(registerService.IsValid);
-            Assert.False(ServiceRegistered.From("blah").IsValid);
-            Assert.True(ServiceRegistered.From(_textMessage).IsValid);
-        }
+        Assert.True(registerService.IsValid);
+        Assert.False(ServiceRegistered.From("blah").IsValid);
+        Assert.True(ServiceRegistered.From(_textMessage).IsValid);
     }
 }

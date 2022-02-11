@@ -9,29 +9,28 @@ using Vlingo.Xoom.Directory.Model.Message;
 using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 
-namespace Vlingo.Xoom.Directory.Tests.Model.Message
-{
-    public class UnregisterServiceTest
-    {
-        private readonly string _textMessage = "UNREGSRVC\nnm=test-service";
-        
-        [Fact]
-        public void TestMessage()
-        {
-            var unregisterService = UnregisterService.As(Name.Of("test-service"));
-            
-            Assert.Equal(Name.Of("test-service"), unregisterService.Name);
-            Assert.Equal(_textMessage, unregisterService.ToString());
-        }
+namespace Vlingo.Xoom.Directory.Tests.Model.Message;
 
-        [Fact]
-        public void TestValidity()
-        {
-            var unregisterService = UnregisterService.As(Name.Of("test-service"));
+public class UnregisterServiceTest
+{
+    private readonly string _textMessage = "UNREGSRVC\nnm=test-service";
+        
+    [Fact]
+    public void TestMessage()
+    {
+        var unregisterService = UnregisterService.As(Name.Of("test-service"));
             
-            Assert.True(unregisterService.IsValid);
-            Assert.False(UnregisterService.From("blah").IsValid);
-            Assert.True(UnregisterService.From(_textMessage).IsValid);
-        }
+        Assert.Equal(Name.Of("test-service"), unregisterService.Name);
+        Assert.Equal(_textMessage, unregisterService.ToString());
+    }
+
+    [Fact]
+    public void TestValidity()
+    {
+        var unregisterService = UnregisterService.As(Name.Of("test-service"));
+            
+        Assert.True(unregisterService.IsValid);
+        Assert.False(UnregisterService.From("blah").IsValid);
+        Assert.True(UnregisterService.From(_textMessage).IsValid);
     }
 }

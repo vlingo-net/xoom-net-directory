@@ -9,103 +9,102 @@ using System;
 using System.IO;
 using Vlingo.Xoom.Common;
 
-namespace Vlingo.Xoom.Directory.Model
+namespace Vlingo.Xoom.Directory.Model;
+
+public sealed class Properties : ConfigurationProperties
 {
-    public sealed class Properties : ConfigurationProperties
+    private static readonly string _propertiesFile = "vlingo-directory.json";
+
+    private static readonly Func<Properties> Factory = () =>
     {
-        private static readonly string _propertiesFile = "vlingo-directory.json";
+        var props = new Properties();
+        props.Load(new FileInfo(_propertiesFile));
+        return props;
+    };
 
-        private static readonly Func<Properties> Factory = () =>
+    private static Lazy<Properties> SingleInstance { get; } = new Lazy<Properties>(Factory, true);
+
+    public static Properties Instance => SingleInstance.Value;
+
+    public string DirectoryGroupAddress()
+    {
+        var address = GetString("directory.group.address", string.Empty);
+
+        if (string.IsNullOrWhiteSpace(address))
         {
-           var props = new Properties();
-           props.Load(new FileInfo(_propertiesFile));
-           return props;
-        };
-
-        private static Lazy<Properties> SingleInstance { get; } = new Lazy<Properties>(Factory, true);
-
-        public static Properties Instance => SingleInstance.Value;
-
-        public string DirectoryGroupAddress()
-        {
-            var address = GetString("directory.group.address", string.Empty);
-
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                throw new InvalidOperationException("Must define a directory group address in properties file.");
-            }
-
-            return address!;
+            throw new InvalidOperationException("Must define a directory group address in properties file.");
         }
 
-        public int DirectoryGroupPort()
+        return address!;
+    }
+
+    public int DirectoryGroupPort()
+    {
+        var port = GetInteger("directory.group.port", -1);
+
+        if (port == -1)
         {
-            var port = GetInteger("directory.group.port", -1);
-
-            if (port == -1)
-            {
-                throw new InvalidOperationException("Must define a directory group port in properties file.");
-            }
-
-            return port;
+            throw new InvalidOperationException("Must define a directory group port in properties file.");
         }
 
-        public int DirectoryIncomingPort()
+        return port;
+    }
+
+    public int DirectoryIncomingPort()
+    {
+        var port = GetInteger("directory.incoming.port", -1);
+
+        if (port == -1)
         {
-            var port = GetInteger("directory.incoming.port", -1);
-
-            if (port == -1)
-            {
-                throw new InvalidOperationException("Must define a directory incoming port in properties file.");
-            }
-
-            return port;
+            throw new InvalidOperationException("Must define a directory incoming port in properties file.");
         }
 
-        public int DirectoryMessageBufferSize() => GetInteger("directory.message.buffer.size", 32767);
+        return port;
+    }
 
-        public int DirectoryMessageProcessingInterval() => GetInteger("directory.message.processing.interval", 100);
+    public int DirectoryMessageBufferSize() => GetInteger("directory.message.buffer.size", 32767);
 
-        public int DirectoryMessagePublishingInterval() => GetInteger("directory.message.publishing.interval", 5000);
+    public int DirectoryMessageProcessingInterval() => GetInteger("directory.message.processing.interval", 100);
 
-        public int DirectoryUnregisteredServiceNotifications() => GetInteger("directory.unregistered.service.notifications", 20);
+    public int DirectoryMessagePublishingInterval() => GetInteger("directory.message.publishing.interval", 5000);
 
-        public bool GetBoolean(string key, bool defaultValue)
+    public int DirectoryUnregisteredServiceNotifications() => GetInteger("directory.unregistered.service.notifications", 20);
+
+    public bool GetBoolean(string key, bool defaultValue)
+    {
+        var parsed = GetString(key, defaultValue.ToString());
+        if (!string.IsNullOrEmpty(parsed))
         {
-            var parsed = GetString(key, defaultValue.ToString());
-            if (!string.IsNullOrEmpty(parsed))
-            {
-                return bool.Parse(parsed);   
-            }
-
-            return defaultValue;
+            return bool.Parse(parsed);   
         }
 
-        public int GetInteger(string key, int defaultValue)
-        {
-            var parsed = GetString(key, defaultValue.ToString());
-            if (!string.IsNullOrEmpty(parsed))
-            {
-                return int.Parse(parsed);   
-            }
+        return defaultValue;
+    }
 
-            return defaultValue;
+    public int GetInteger(string key, int defaultValue)
+    {
+        var parsed = GetString(key, defaultValue.ToString());
+        if (!string.IsNullOrEmpty(parsed))
+        {
+            return int.Parse(parsed);   
         }
 
-        public string? GetString(string key, string defaultValue)
-        {
-            return GetProperty(key, defaultValue);
-        }
+        return defaultValue;
+    }
 
-        public void ValidateRequired(string nodeName)
-        {
-            // assertions in each accessor
+    public string? GetString(string key, string defaultValue)
+    {
+        return GetProperty(key, defaultValue);
+    }
 
-            DirectoryGroupAddress();
+    public void ValidateRequired(string nodeName)
+    {
+        // assertions in each accessor
 
-            DirectoryGroupPort();
+        DirectoryGroupAddress();
 
-            DirectoryIncomingPort();
-        }
+        DirectoryGroupPort();
+
+        DirectoryIncomingPort();
     }
 }

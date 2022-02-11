@@ -9,41 +9,40 @@ using System.Text;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Directory.Model.Message
+namespace Vlingo.Xoom.Directory.Model.Message;
+
+public class ServiceUnregistered : IMessage
 {
-    public class ServiceUnregistered : IMessage
+    public static string TypeName => "SRVCUNREGD";
+
+    public bool IsValid => !Name.HasNoName;
+        
+    public Name Name { get; }
+
+    public static ServiceUnregistered From(string content)
     {
-        public static string TypeName => "SRVCUNREGD";
-
-        public bool IsValid => !Name.HasNoName;
-        
-        public Name Name { get; }
-
-        public static ServiceUnregistered From(string content)
+        if (content.StartsWith(TypeName))
         {
-            if (content.StartsWith(TypeName))
-            {
-                var name = MessagePartsBuilder.NameFrom(content);
-                return new ServiceUnregistered(name);
-            }
+            var name = MessagePartsBuilder.NameFrom(content);
+            return new ServiceUnregistered(name);
+        }
             
-            return new ServiceUnregistered(Name.NoNodeName);
-        }
+        return new ServiceUnregistered(Name.NoNodeName);
+    }
 
-        public static ServiceUnregistered As(Name name) => new ServiceUnregistered(name);
+    public static ServiceUnregistered As(Name name) => new ServiceUnregistered(name);
         
-        public ServiceUnregistered(Name name)
-        {
-            Name = name;
-        }
+    public ServiceUnregistered(Name name)
+    {
+        Name = name;
+    }
 
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
+    public override string ToString()
+    {
+        var builder = new StringBuilder();
             
-            builder.Append(TypeName).Append("\n").Append("nm=").Append(Name.Value);
+        builder.Append(TypeName).Append("\n").Append("nm=").Append(Name.Value);
 
-            return builder.ToString();
-        }
+        return builder.ToString();
     }
 }
